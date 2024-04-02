@@ -1,7 +1,16 @@
+/* PARTIE SITE */
+
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
 
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700&family=Roboto:wght@100;300;400;500;900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap");
 
+.wrapper {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 10px;
+  grid-auto-rows: minmax(100px, auto);
+}
 
 html,body
 {
@@ -35,16 +44,97 @@ html,body
     text-align: center; /* Centre le texte du titre */
     margin-bottom: 20px; /* Espace entre le titre et les articles */
 }
-button{
+.buttonAll{
     height: 50px;
     width: 100px;
     border-radius:6px 6px 6px 6px;
     background-color:black;
     color:white;
 }
+
 .buttonAjoutFiche{
-    background : transparent; 
-    text-decoration:none;
-    background-color:none;
-    background-image: url("img/+.png");
+    width : 150px;
+    height : 150px;
+    background-image: url("img/PLUS.png");
+    background-color:white;
 }
+
+.wrapperBoutonListe{
+    display: grid;
+    grid-template-columns: repeat(2, 100px);
+    grid-gap: 10px;
+    text-align:center;
+    max-width: 800px; 
+    margin: 0 auto; 
+    padding: 20px;
+    margin-top: 20px; /* Espace supplémentaire en haut de la section */
+    height: 5%;
+}
+
+.wrapperajoutNote{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+
+/* PARTIE CSS POUR LE HEADER DU SITE !!! */
+
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap");
+
+.menu
+{
+    background: #39393B;
+    width:100%;
+    height:66px;
+    line-height:66px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.7);
+ 
+}
+
+.logo
+{
+    margin:0;padding:0;
+    color: #fff; 
+    font-family: "Open Sans";
+    font-weight: 900;
+    font-size: 30px;
+    letter-spacing:3px;
+}
+
+.m-left
+{
+    float:left; 
+}
+
+.m-right
+{
+    float: right; 
+}
+
+.m-link
+{
+    text-decoration: none; 
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: 700;
+    padding: 0; margin: 0 15px; 
+    /* padding 0 en haut et en bas, margin 0 en haut et en bas mais 15 pixels sur les côtés*/ 
+    transition: all 0.3s ease-in-out; 
+    border-bottom: 1px solid transparent;
+}
+
+a{
+    text-decoration:none;
+}
+
+.m-link:hover{
+    padding-bottom: 3px;
+    border-color: #fff; /* à retravailler*/
+}
+
+.m-link i
+{
+    margin-right: 5px; 
+    
+}
+

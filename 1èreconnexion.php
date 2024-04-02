@@ -1,26 +1,18 @@
-<?php
-    $mail=htmlspecialchars();
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/header.css">
     <link rel="stylesheet" href="css/style.css">
     <title>Bois Du Roy</title>
 </head>
 <body>
-
     <header>
         <nav class="menu" role="navigation">
-            <div class="inner">
-
-                <div class="m-left">
-                    <h1 class="logo"> Bois Du Roy</h1>
-                    <img src="img/arbre.png" alt="arbre">
-                </div>          
-                <!--
+                <div class="inner"> 
+                    <h1 class="logo">Bois Du Roy </h1> 
+                </div>      
+                <!-- 
                 <div class="m-right">
     
                     <a href="index.html" class="m-link"><i class="fa-solid fa-house"></i>     Accueil</a>
@@ -30,7 +22,6 @@
     
                 </div>
                 --> 
-            </div>
         </nav>
     </header>
 
@@ -45,7 +36,7 @@
             <label for="mdp">Confirmation Mot de passe:</label>
             <input type="password" name="mdp" id="mdp">
             <br> <br>
-            <button type="submit" name="btnConnexion" id="btnConnexion">Modifier</button>
+            <button type="submit" name="btnConnexion" id="btnConnexion" class="buttonAll">Modifier</button>
         </form>
     </div>
 </body>
