@@ -11,6 +11,7 @@
         <nav class="menu" role="navigation">
                 <div class="inner"> 
                     <h1 class="logo">Bois Du Roy </h1> 
+                    <a href="index.php"> <img src="img/arbre.png" alt=""></a>
                 </div>      
                 <!-- 
                 <div class="m-right">
