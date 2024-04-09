@@ -14,16 +14,6 @@
                     <h1 class="logo">Bois Du Roy</h1>
                     <a href="index.php"> <img src="img/arbre.png" alt=""></a>
                 </div>
-                <!--
-                <div class="m-right">
-    
-                    <a href="index.html" class="m-link"><i class="fa-solid fa-house"></i>     Accueil</a>
-                    <a href="article.html" class="m-link"><i class="fa-solid fa-newspaper"></i> Actualités</a>
-                    <a href="C:\Users\jeanp\Desktop\KPOP\groupe.html" class="m-link"><i class="fa-solid fa-music"></i> Groupes</a>
-                    <a href="jeu.php" class="m-link"><i class="fa-solid fa-newspaper"></i> Jeu</a>
-    
-                </div>
-                --> 
             </div>
         </nav>
     </header>

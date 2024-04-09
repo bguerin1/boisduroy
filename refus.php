@@ -24,29 +24,23 @@
             </div>
         </nav>
     </header>
-    
-    <div class="wrapperBoutonListe">
-        <div>
-            <button class="buttonAll"> <a href="ajoutNote.php">+ Ajouter une fiche</a> </button>
-        </div>
-        <div>
-            <button class="buttonAll"> <a href="ajoutNote.php"> Copier </a></button>
-        </div>
-        <div> 
-            <select name="listeDeroulante" id="listeDeroulante">
-                <option value="">Tri des notes ...</option>
-                <option value="1">Date</option>
-                <option value="2">Coût Total</option>
-                <option value="3">État</option>
-            </select>
-        </div>
-        <div>
-            <button class="buttonListe"> <img src="img/loupe.png" alt="loupe"></button>
-        </div>
-    </div>
-    
-    <div class="central-section" class="wrapper">
 
+    
+    <h1 class="central"> Raison du refus :</h1>
+    <div class="central-section" class="wrapper">
+        <textarea name="" id="" cols="100" rows="10" class="textareaRefus" placeholder="Ecrivez votre commentaire ici..."></textarea>
     </div>
+    <br>
+    <div class="wrapperajoutNote">
+        <div>
+            <label for=""></label>
+        </div>
+        <div>
+            <label for=""></label>
+        </div>
+        <div>
+            <button name="btnConnexion" id="btnConnexion" class="buttonAll">Confirmer le refus</button>
+        </div>
+    </div>    
 </body>
 </html>

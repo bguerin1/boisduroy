@@ -17,6 +17,9 @@ html,body
     margin:0;padding:0;
     font-family: "Lato";
 }
+a{
+    color:white;
+}
 .inner
 {
     width: 80%;
@@ -46,7 +49,7 @@ html,body
 }
 .buttonAll{
     height: 50px;
-    width: 100px;
+    width: 150px;
     border-radius:6px 6px 6px 6px;
     background-color:black;
     color:white;
@@ -61,7 +64,7 @@ html,body
 
 .wrapperBoutonListe{
     display: grid;
-    grid-template-columns: repeat(2, 100px);
+    grid-template-columns: repeat(4, 150px);
     grid-gap: 10px;
     text-align:center;
     max-width: 800px; 
@@ -75,6 +78,28 @@ html,body
     display: grid;
     grid-template-columns: repeat(3, 1fr);
   }
+
+.buttonListe{
+    height: 50px;
+}
+
+.ajoutLigne{
+    opacity: 1;
+    height: 50x;
+}
+
+.lblRaisonRefus{
+    width: 100%; /* Le titre occupe la largeur complète de la section */
+    margin-bottom: 20px; /* Espace entre le titre et les articles */
+}
+.textareaRefus{
+   resize:none;
+}
+select option{
+    font-size: 0.9rem;
+    padding: 2px 5px;
+}
+
 
 
 /* PARTIE CSS POUR LE HEADER DU SITE !!! */
@@ -138,3 +163,42 @@ a{
     
 }
 
+/* HEADER MENU DEROULANT BLABLA */  
+
+header li {
+    display: inline-block;
+    vertical-align: top;
+}
+
+header li a {
+    display: block;
+    padding: 20px;
+    padding-left: 50px;
+}
+
+header li:hover a {
+    background-color: #6495ED;
+    color: white;
+    width: 250px;
+}
+
+header li:hover .sous-menu {
+    display: block;
+}
+
+.sous-menu {
+    padding: 0;
+    display: none;
+    position: absolute;
+    background-color: #6495ED;
+    text-align: left;
+}
+
+.sous-menu li {
+    display: block;
+}
+
+.sous-menu li:hover a {
+    background-color: white;
+    color: #6495ED;
+}

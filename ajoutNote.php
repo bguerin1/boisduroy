@@ -13,17 +13,34 @@
     <header>
         <nav class="menu" role="navigation">
             <div class="inner">
+
+                <div class="m-left">
                     <h1 class="logo">Bois Du Roy </h1>
                     <a href="index.php"> <img src="img/arbre.png" alt=""></a>
+                </div>
+
                 <div class="m-right">
-                    <a href="index.html" class="m-link"><i class="fa-solid fa-house"></i>Accueil</a>
-                    <a href="article.html" class="m-link"><i class="fa-solid fa-newspaper"></i> Actualités</a>
-                    <a href="C:\Users\jeanp\Desktop\KPOP\groupe.html" class="m-link"><i class="fa-solid fa-music"></i> Groupes</a>
-                    <a href="jeu.php" class="m-link"><i class="fa-solid fa-newspaper"></i> Jeu</a>
+                    <a href="pageConnexion.php" class="m-link"><i class="fa-solid fa-house"></i>NDF Employé</a>
+                    <a href="" class="m-link"><i class="fa-solid fa-newspaper"></i> Liste des employés</a>
+                    <a href="" class="m-link"><i class="fa-solid fa-music"></i>Liste des produits</a>
+                    <ul>
+                        <li>
+                            <a href="">Articles</a>
+                            <ul class="sous-menu">
+                                <li>
+                                    <a href="../index.php">Compte</a>
+                                </li>
+                                <li>
+                                    <a href="">Déconnexion</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </nav>
     </header>
+    <br>
     <div class="central-section">
         <h1 class="central">Saisie des notes de frais :</h1>
         <form action="pageConnexion.php" method="post">
@@ -35,7 +52,7 @@
             <h2> Liste des frais à rembourser : </h2>
             <div class="wrapper">
                 <div>
-                    <button name="AjoutLigne"><img src="img/PLUS.png" alt=""></button>
+                    <button name="AjoutLigne" class="ajoutLigne"> <img src="img/PLUS copy.png" alt=""> </button>
                 </div> 
                 <div>
                     <label for="typeFrais">Type de frais</label>
@@ -66,7 +83,7 @@
                     <label for="coutTotal">Coût Total : </label><input type="number" name="coutTotal" id="coutTotal">
                 </div>
                 <div>
-                    <button type="submit" name="btnConnexion" id="btnConnexion" class="buttonAll">Annuler</button>
+                    <button name="btnConnexion" id="btnConnexion" class="buttonAll"> <a href="pageConnexion.php">Annuler</a></button>
                 </div>
                 <div>
                     <button type="submit" name="btnConnexion" id="btnConnexion" class="buttonAll">Envoyer la fiche</button>
