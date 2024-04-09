@@ -100,8 +100,10 @@ select option{
     padding: 2px 5px;
 }
 
-
-
+table{
+    border-collapse:separate;
+    border-spacing: 15px;
+}
 /* PARTIE CSS POUR LE HEADER DU SITE !!! */
 
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap");
@@ -163,42 +165,7 @@ a{
     
 }
 
-/* HEADER MENU DEROULANT BLABLA */  
-
-header li {
-    display: inline-block;
-    vertical-align: top;
-}
-
-header li a {
-    display: block;
-    padding: 20px;
-    padding-left: 50px;
-}
-
-header li:hover a {
-    background-color: #6495ED;
-    color: white;
-    width: 250px;
-}
-
-header li:hover .sous-menu {
-    display: block;
-}
-
-.sous-menu {
-    padding: 0;
-    display: none;
-    position: absolute;
-    background-color: #6495ED;
-    text-align: left;
-}
-
-.sous-menu li {
-    display: block;
-}
-
-.sous-menu li:hover a {
-    background-color: white;
-    color: #6495ED;
+/* SOUS MENU DU HEADER */
+.lienMenu{
+    color:black;
 }

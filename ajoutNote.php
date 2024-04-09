@@ -13,29 +13,11 @@
     <header>
         <nav class="menu" role="navigation">
             <div class="inner">
-
                 <div class="m-left">
                     <h1 class="logo">Bois Du Roy </h1>
-                    <a href="index.php"> <img src="img/arbre.png" alt=""></a>
                 </div>
-
                 <div class="m-right">
-                    <a href="pageConnexion.php" class="m-link"><i class="fa-solid fa-house"></i>NDF Employé</a>
-                    <a href="" class="m-link"><i class="fa-solid fa-newspaper"></i> Liste des employés</a>
-                    <a href="" class="m-link"><i class="fa-solid fa-music"></i>Liste des produits</a>
-                    <ul>
-                        <li>
-                            <a href="">Articles</a>
-                            <ul class="sous-menu">
-                                <li>
-                                    <a href="../index.php">Compte</a>
-                                </li>
-                                <li>
-                                    <a href="">Déconnexion</a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
+                    <a href="index.html" class="m-link"><i class="fa-solid fa-house"></i>Jean-Durand</a>
                 </div>
             </div>
         </nav>

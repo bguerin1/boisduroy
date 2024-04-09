@@ -17,9 +17,7 @@
                 </div>
 
                 <div class="m-right">
-                    <a href="index.html" class="m-link"><i class="fa-solid fa-house"></i>NDF Employé</a>
-                    <a href="article.html" class="m-link"><i class="fa-solid fa-newspaper"></i> Liste des employés</a>
-                    <a href="C:\Users\jeanp\Desktop\KPOP\groupe.html" class="m-link"><i class="fa-solid fa-music"></i>Liste des produits</a>
+                    <a href="index.html" class="m-link"><i class="fa-solid fa-house"></i>Jean-Durand</a>
                 </div>
             </div>
         </nav>
