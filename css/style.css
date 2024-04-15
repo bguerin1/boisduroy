@@ -27,11 +27,10 @@ a{
 }
 .central-section {
     text-align:center;
-    max-width: 800px; /* Ajustez la largeur selon vos besoins */
+    max-width: 1300px; /* Ajustez la largeur selon vos besoins */
     margin: 0 auto; /* Centre la section horizontalement */
     padding: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Ombre légère pour la section */
-    border-radius: 10px; /* Coins arrondis pour un aspect moderne */
     border: 2px solid black;
     margin-top: 20px; /* Espace supplémentaire en haut de la section */
     height: 5%;
@@ -102,7 +101,15 @@ select option{
 
 table{
     border-collapse:separate;
-    border-spacing: 15px;
+    border-spacing: 100px;
+    margin-top: -50px;
+}
+
+.formErrorMsg{
+	padding: 0.5em;
+	font-size: 80%;	
+	color: white;
+	background-color: #900;
 }
 /* PARTIE CSS POUR LE HEADER DU SITE !!! */
 
@@ -166,6 +173,35 @@ a{
 }
 
 /* SOUS MENU DU HEADER */
+
 .lienMenu{
     color:black;
+}
+.mainmenubtn {
+    background-color: black;
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding:20px;
+    margin-top:20px;
+    min-width:200px;
+}
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+.dropdown-child {
+    display: none;
+    background-color: #39393B;
+    min-width: 200px;
+    text-align:center;
+}
+.dropdown-child a {
+    color: white;
+    padding: 20px;
+    text-decoration: none;
+    display: block;
+}
+.dropdown:hover .dropdown-child {
+    display: block;
 }

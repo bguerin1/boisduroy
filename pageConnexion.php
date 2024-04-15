@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,7 +8,6 @@
     <title>Bois Du Roy</title>
 </head>
 <body>
-
     <header>
         <nav class="menu" role="navigation">
             <div class="inner">
@@ -16,19 +16,13 @@
                 </div>
 
                 <div class="m-right">
-                <ul>
-                        <li>
-                            <a href="index.html" class="m-link"><i class="fa-solid fa-house"></i>Jean-Durand</a>
-                            <ul>
-                                <li>
-                                    <a href="" class="lienMenu">Compte</a>
-                                </li>
-                                <li>
-                                    <a href="" class="lienMenu">Déconnexion</a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
+                    <div class="dropdown">
+                        <button class="mainmenubtn">Jean-Durand</button>
+                        <div class="dropdown-child">
+                            <a href="informationCompte.php">Compte</a>
+                            <a href="index.php">Déconnexion</a>
+                        </div>
+                    </div>             
                 </div>
             </div>
         </nav>
@@ -65,6 +59,61 @@
             <th>Coût Total :</th>
         </tr>
         <?php
+
+            // Connexion à la base de donnée 
+            $servername="localhost";
+            $dbname="ap1";
+            $username="root";
+            $password="";
+            try{
+                /*
+                if (!isset($_POST["mail"]) || !isset($_POST["mdp"])) {
+                    header("Location: index.html");
+                }
+                else {
+                    $indexjoueur = array_search($_POST["mail"], $joueur);
+                    if ($indexjoueur !== false) {
+                        if ($motDePasse[$indexjoueur] == $_POST["mdp"]) {
+                            echo "personnages du joueur : <br>";
+                            foreach ($persoJoueur[$indexjoueur] as $perso ) {
+                                echo "nom du personnage : " . $perso . "<br>";
+                                foreach ($personnage[$perso] as $carac => $value ) {
+                                    echo $carac . " : " . $value . "<br>";
+                                }
+                                echo "<a href='jeu.php?perso=" . $perso ."'>Jouer avec ce personnage</a><br>";
+                            }
+                        } else {
+                            echo "mot de passe incorrect<br>";
+                        }
+                    } else {
+                        echo "adresse mail incorrect";
+                    }
+                }
+                */
+                $conn=new PDO("mysql:host=$servername;dbname=$dbname", $username,$password);
+                /*$mail=$_POST["mail"];
+                $mdp=$_POST["mdp"];
+                */
+                $requete=$conn ->prepare("SELECT CONCAT(PRENOM,' ',NOM) AS NOM FROM notefrais JOIN employe ON notefrais.MATRICULE = employe.MATRICULE;");
+                // On lie la variable $email définie au-dessus au paramètre :mail de la requête préparée
+                /*$requete->bindValue(':mail',$mail , PDO::PARAM_STR);
+                $requete->bindValue(':pwd',$pwd , PDO::PARAM_STR);*/
+                //On exécute la requête
+                $requete->execute();
+                // On récupère le résultat
+               $data= $requete -> fetch();
+                echo $data["NOM"];
+                    
+                //Fermeture de la connexion
+                $conn=null;
+
+            }
+            catch(PDOException $e){
+                echo "Erreur :" . $e ->getMessage();
+                echo "Le numéro de l'erreur est : " . $e ->getCode();
+                die;
+            }
+
             for($i=0;$i<50;$i++)
             {
                 echo "<tr>";

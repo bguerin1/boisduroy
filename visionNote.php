@@ -25,7 +25,7 @@
     <br>
     <div class="central-section">
         <h1 class="central">Saisie des notes de frais :</h1>
-        <form action="" method="post">
+        <form action="pageConnexion.php" method="post">
             <label for="date">Date :</label>
             <input type="Date" name="date" id="date" required>
             <br><br>
@@ -59,34 +59,7 @@
                     <input type="text" name="coutNoteFrais" id="coutNoteFrais" required>
                 </div>
             </div>
-            <?php
-                if(isset($_POST["AjoutLigne"]))
-                {
-                    echo "<div class='wrapper'>";
-                        echo "<div>";
-                        
-                        echo "</div>"; 
-                    
-                        echo "<div>";
-                            echo "<select name='typeFrais' id='typefrais' required>";
-                                echo "<option value='1'>Frais Kilométriques</option>";                            
-                                echo "<option value='2'>Repas midi</option>";
-                                echo "<option value='3'>Repas soir</option>";
-                                echo "<option value='4'>Soir hors Paris</option>";
-                                echo "<option value='5'>Soir Paris</option>";
-                            echo "</select>";
-                        echo "</div>";
-                        echo "<div>";
-                            echo "<input type='number' name='quantite' id='quantite' required>";
-                            echo "<br>";
-                        echo "</div>";
-                        echo "<div>";
-                            echo "<input type='text' name='coutNoteFrais' id='coutNoteFrais' required>";
-                        echo "</div>";
-                    echo "</div>";
-                    echo "<br>";
-                }
-            ?>
+            <br>
             <div class="wrapperajoutNote">
                 <div>
                     <label for="coutTotal">Coût Total : </label><input type="number" name="coutTotal" id="coutTotal">
