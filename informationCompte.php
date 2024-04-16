@@ -26,7 +26,7 @@
             </div>
         </nav>
     </header>
-    
+    <br>
     <h1 class="central">Informations du compte :</h1>
     
     <div class="central-section">

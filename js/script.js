@@ -1,17 +1,3 @@
-// Fonction permettant de vérifier si l'adresse email est correcte
-// La règle utilisée ici dans l'expression régulière est normée
-// Paramètre : emailAVerifier chaine de caractères contenant l'adresse email à valider
-// Sortie : la fonction renvoie vraie si l'adresse est correctre, faux sinon
-function validationEmail(emailAVerifier) {
-	let reponse=false;
-	let expressionReguliere = /^(([^<>()[]\.,;:s@]+(.[^<>()[]\.,;:s@]+)*)|(.+))@(([[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}])|(([a-zA-Z-0-9]+.)+[a-zA-Z]{2,}))$/;
-	if (expressionReguliere.test(emailAVerifier))
-	{ 
-		reponse=true;
-	}
-	return(reponse);
-}
-
 function validationMotDePasse(mdpAVerifier)
 {
 	let reponse=false;	
@@ -38,15 +24,6 @@ document.addEventListener('DOMContentLoaded', function() {
 		document.getElementById("form1MdpError").className = "";
 		document.getElementById("form1LoginError").innerHTML="";
 		document.getElementById("form1MdpError").innerHTML = "";
-
-		// On vérifie l'adresse email avec la fonction validationEmail
-	  	if (!validationEmail(document.getElementById("form1Login").value))
-		{
-			errorHTML=" L'adresse email n'est pas valide !";
-			document.getElementById("form1LoginError").innerHTML = errorHTML
-			document.getElementById("form1LoginError").className="formErrorMsg";
-			inscriptionValide=false;
-		}
 		// A On vérifie si un mot de passe est saisi
 		if (document.getElementById("form1Mdp").value=="")
 		{

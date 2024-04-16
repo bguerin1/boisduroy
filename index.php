@@ -18,17 +18,20 @@
             </div>
         </nav>
     </header>
-
+    <br><br><br>
     <div class="central-section">
         <h1 class="central"> Se connecter :</h1>
-        <form action="1èreconnexion.php" class="formAccueil" method="post" id="formConnexion">
+        <form action="pageConnexion.php" class="formAccueil" method="post" id="formConnexion">
             <label for="identifiant">Identifiant :</label>
             <input type="text" name="matricule" id="form1Login">
-            <div id="form1LoginError"></div>
             <br>
+            <br>
+            <div id="form1LoginError"></div>
             <br>
             <label for="mdp">Mot de passe:</label>
             <input type="password" name="mdp" id="form1Mdp">
+            <br>
+            <br>
             <div id="form1MdpError"></div>
             <br><br>
             <button type="submit" name="btnConnexion" id="btnConnexion" class="buttonAll">Connexion</button>

@@ -1,4 +1,62 @@
+<?php
+    //session_start();
+    if (!isset($_POST["matricule"]) || !isset($_POST["mdp"])) {
+        header("Location: index.php");
+    }
+    else{
+        $matricule=htmlspecialchars($_POST["matricule"]);
+        $mdp=htmlspecialchars($_POST["mdp"]);
+        if($matricule=="")
+        {
+            echo "L'adresse mail est vide";
+            header("Location : index.php");
+        }
+        else if($mdp=="")
+        {
+            echo "Le mot de passe est vide";
+            header("Location : index.php");
+        }
+        else{
+            // Connexion à la base de donnée 
+            $servername="192.168.10.16";
+            $dbname="guerin2_bryan_boisduroy";
+            $username="guerin2_bryan";
+            $pwd="Bs9IP91a";
+            try{
+                $conn=new PDO("mysql:host=$servername;dbname=$dbname", $username,$pwd);
+                $requete=$conn ->prepare("SELECT MATRICULE,MDPCOMPTE FROM EMPLOYE WHERE MATRICULE = :matricule AND MDPCOMPTE=PASSWORD(:mdp);");
+                // On lie la variable $email définie au-dessus au paramètre :mail de la requête préparée
+                $requete->bindValue(':matricule',$matricule , PDO::PARAM_STR);
+                $requete->bindValue(':mdp',$mdp , PDO::PARAM_STR);
+                //On exécute la requête
+                $requete->execute();
+                // On récupère le résultat
+                if ($requete->fetch()) {
+                    $requete2 = $conn->prepare("SELECT PRENOM,NOM, ETAPE_VALIDATION.MATRICULE AS MATRICULE,DATENOTEFRAIS,NOMSTATUT FROM EMPLOYE JOIN NOTEFRAIS ON NOTEFRAIS.MATRICULE = EMPLOYE.MATRICULE JOIN ETAPE_VALIDATION ON ETAPE_VALIDATION.MATRICULE=NOTEFRAIS.MATRICULE JOIN STATUT ON ETAPE_VALIDATION.IDSTATUT = STATUT.IDSTATUT  WHERE EMPLOYE.MATRICULE = :matricule AND MDPCOMPTE=PASSWORD(:mdp);");
+                    $requete2 ->bindValue(":matricule",$matricule,PDO::PARAM_STR);
+                    $requete2 ->bindValue(":mdp",$mdp,PDO::PARAM_STR);
+                    $requete2->execute();
+                    $data = $requete2->fetchALL(PDO::FETCH_ASSOC);
+                } else {
+                    header("Location : index.php");
+                }
+                //Fermeture de la connexion
+                $conn=null;
+            }
+            catch(PDOException $e){
+                echo "Erreur :" . $e ->getMessage();
+                echo "Le numéro de l'erreur est : " . $e ->getCode();
+                die;
+            }
+        }
+        }
+?>
+<?php
+    foreach($data as $donnee)
+    {
 
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,7 +75,7 @@
 
                 <div class="m-right">
                     <div class="dropdown">
-                        <button class="mainmenubtn">Jean-Durand</button>
+                        <button class="mainmenubtn"> <?= $donnee['PRENOM'] . " " .$donnee['NOM'] ?> </button>
                         <div class="dropdown-child">
                             <a href="informationCompte.php">Compte</a>
                             <a href="index.php">Déconnexion</a>
@@ -27,8 +85,8 @@
             </div>
         </nav>
     </header>
-    
-    <h1 class="central">Bienvenue Jean-Durand(E431)</h1>
+    <br>
+    <h1 class='central'>Bienvenue <?= $donnee['PRENOM'] . " " . $donnee['NOM'] . " " . "(" . $donnee['MATRICULE'] . ")" ?> !</h1>
     <div class="wrapperBoutonListe">
         <div>
             <button class="buttonAll"> <a href="ajoutNote.php">+ Ajouter une fiche</a> </button>
@@ -37,6 +95,16 @@
             <button class="buttonAll"> <a href="ajoutNote.php"> Copier </a></button>
         </div>
         <div> 
+            <?php
+                if($_POST["listeDeroulante"]==2)
+                {
+                    $requete3 = $conn->prepare("SELECT PRENOM,NOM, ETAPE_VALIDATION.MATRICULE AS MATRICULE,DATENOTEFRAIS,NOMSTATUT FROM EMPLOYE JOIN NOTEFRAIS ON NOTEFRAIS.MATRICULE = EMPLOYE.MATRICULE JOIN ETAPE_VALIDATION ON ETAPE_VALIDATION.MATRICULE=NOTEFRAIS.MATRICULE JOIN STATUT ON ETAPE_VALIDATION.IDSTATUT = STATUT.IDSTATUT  WHERE EMPLOYE.MATRICULE = :matricule AND MDPCOMPTE=PASSWORD(:mdp) ORDER BY DATENOTEFRAIS DESC;");
+                    $requete3 ->bindValue(":matricule",$matricule,PDO::PARAM_STR);
+                    $requete3 ->bindValue(":mdp",$mdp,PDO::PARAM_STR);
+                    $requete3->execute();
+                    $data1 = $requete3->fetchALL(PDO::FETCH_ASSOC);
+                }
+            ?>
             <select name="listeDeroulante" id="listeDeroulante">
                 <option value="">Tri des notes ...</option>
                 <option value="1">Date</option>
@@ -51,101 +119,45 @@
     
     <div class="central-section">
         <table>
-        <tr>
-            <th> <p>  </p></th>
-            <th>Notes :</th>
-            <th>État :</th>
-            <th>Date :</th>
-            <th>Coût Total :</th>
-        </tr>
-        <?php
-
-            // Connexion à la base de donnée 
-            $servername="localhost";
-            $dbname="ap1";
-            $username="root";
-            $password="";
-            try{
-                /*
-                if (!isset($_POST["mail"]) || !isset($_POST["mdp"])) {
-                    header("Location: index.html");
-                }
-                else {
-                    $indexjoueur = array_search($_POST["mail"], $joueur);
-                    if ($indexjoueur !== false) {
-                        if ($motDePasse[$indexjoueur] == $_POST["mdp"]) {
-                            echo "personnages du joueur : <br>";
-                            foreach ($persoJoueur[$indexjoueur] as $perso ) {
-                                echo "nom du personnage : " . $perso . "<br>";
-                                foreach ($personnage[$perso] as $carac => $value ) {
-                                    echo $carac . " : " . $value . "<br>";
-                                }
-                                echo "<a href='jeu.php?perso=" . $perso ."'>Jouer avec ce personnage</a><br>";
-                            }
-                        } else {
-                            echo "mot de passe incorrect<br>";
-                        }
-                    } else {
-                        echo "adresse mail incorrect";
-                    }
-                }
-                */
-                $conn=new PDO("mysql:host=$servername;dbname=$dbname", $username,$password);
-                /*$mail=$_POST["mail"];
-                $mdp=$_POST["mdp"];
-                */
-                $requete=$conn ->prepare("SELECT CONCAT(PRENOM,' ',NOM) AS NOM FROM notefrais JOIN employe ON notefrais.MATRICULE = employe.MATRICULE;");
-                // On lie la variable $email définie au-dessus au paramètre :mail de la requête préparée
-                /*$requete->bindValue(':mail',$mail , PDO::PARAM_STR);
-                $requete->bindValue(':pwd',$pwd , PDO::PARAM_STR);*/
-                //On exécute la requête
-                $requete->execute();
-                // On récupère le résultat
-               $data= $requete -> fetch();
-                echo $data["NOM"];
-                    
-                //Fermeture de la connexion
-                $conn=null;
-
-            }
-            catch(PDOException $e){
-                echo "Erreur :" . $e ->getMessage();
-                echo "Le numéro de l'erreur est : " . $e ->getCode();
-                die;
-            }
-
-            for($i=0;$i<50;$i++)
-            {
-                echo "<tr>";
-                    echo "<td>";
-                        echo "<div>";
-                            echo "<img src='img/caseacocher.png' alt=''>";
-                        echo "</div>";
-                    echo "</td>";     
-                    echo "<td>";
-                        echo "<div>";
-                            echo "<p>Note de frais de Jean-Dupont</p>";
-                        echo "</div>";
-                    echo "</td>"; 
-                    echo "<td>";
-                        echo "<div>";
-                            echo "<p>En cours de validation Responsable</p>";
-                        echo "</div>";
-                    echo "</td>";
-                    echo "<td>";
-                        echo "<div>";
-                            echo "<p>15/03/2024 </p>";
-                        echo "</div>";
-                    echo "</td>";
-                    echo "<td>";
-                        echo "<div>";
-                            echo "<p>1000 €</p>";
-                        echo "</div>";
-                    echo "</td>";
-                echo "</tr>";
-            }
-            
-        ?>
+            <tr>
+                <th> <p>  </p></th>
+                <th>Notes :</th>
+                <th>État :</th>
+                <th>Date :</th>
+                <th>Coût Total :</th>
+            </tr>
+            <?php
+                foreach($data as $donnee)
+                {
+                    echo "<tr>";
+                        echo "<td>";
+                            echo "<div>";
+                                echo "<input type='checkbox' name='contact' id='contact_email' value='1' />";
+                            echo "</div>";
+                        echo "</td>";     
+                        echo "<td>";
+                            echo "<div>";
+                                echo "<p>Note de frais de " . $donnee['PRENOM'] . " " . $donnee['NOM']. "</p>";
+                            echo "</div>";
+                        echo "</td>"; 
+                        echo "<td>";
+                            echo "<div>";
+                                echo "<p>" . $donnee['NOMSTATUT'] . "</p>";
+                            echo "</div>";
+                        echo "</td>";
+                        echo "<td>";
+                            echo "<div>";
+                                echo "<p>" . $donnee['DATENOTEFRAIS'] . "</p>";
+                            echo "</div>";
+                        echo "</td>";
+                        echo "<td>";
+                            echo "<div>";
+                                echo "<p>1000 €</p>";
+                            echo "</div>";
+                        echo "</td>";
+                    echo "</tr>";
+                } 
+            ?>
         </table>
     </div>
 </body>

@@ -178,13 +178,14 @@ a{
     color:black;
 }
 .mainmenubtn {
+    float : right;
     background-color: black;
     color: white;
     border: none;
     cursor: pointer;
-    padding:20px;
-    margin-top:20px;
-    min-width:200px;
+    width:200px;
+    height:66px;
+    line-height:66px;
 }
 .dropdown {
     position: relative;
@@ -195,10 +196,11 @@ a{
     background-color: #39393B;
     min-width: 200px;
     text-align:center;
+    
 }
 .dropdown-child a {
     color: white;
-    padding: 20px;
+    padding: 0px;
     text-decoration: none;
     display: block;
 }
