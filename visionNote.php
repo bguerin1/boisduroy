@@ -14,16 +14,25 @@
         <nav class="menu" role="navigation">
             <div class="inner">
                 <div class="m-left">
-                    <h1 class="logo">Bois Du Roy </h1>
+                    <h1 class="logo">Bois Du Roy</h1>
+                </div>
+                <div class="m-left2">
+                    <a href="pageConnexion.php"> <img src="img/arbre.png" alt="" class="imageLogo"></a>
                 </div>
                 <div class="m-right">
-                    <a href="index.html" class="m-link"><i class="fa-solid fa-house"></i>Jean-Durand</a>
+                    <div class="dropdown">
+                        <button class="mainmenubtn">Jeremy</button>
+                        <div class="dropdown-child">
+                            <a href="informationCompte.php">Compte</a>
+                            <a href="index.php">Déconnexion</a>
+                        </div>
+                    </div>             
                 </div>
             </div>
         </nav>
     </header>
     <br>
-    <div class="central-section">
+    <div class="central-sectionVisionNote">
         <h1 class="central">Saisie des notes de frais :</h1>
         <form action="pageConnexion.php" method="post">
             <label for="date">Date :</label>

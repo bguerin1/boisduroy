@@ -14,10 +14,20 @@
         <nav class="menu" role="navigation">
             <div class="inner">
                 <div class="m-left">
-                    <h1 class="logo">Bois Du Roy </h1>
+                    <h1 class="logo">Bois Du Roy</h1>
                 </div>
+                <div class="m-left2">
+                    <a href="pageConnexion.php"> <img src="img/arbre.png" alt="" class="imageLogo"></a>
+                </div>
+
                 <div class="m-right">
-                    <a href="index.html" class="m-link"><i class="fa-solid fa-house"></i>Jean-Durand</a>
+                    <div class="dropdown">
+                        <button class="mainmenubtn"> <?= $donnee['PRENOM'] . " " .$donnee['NOM'] ?> </button>
+                        <div class="dropdown-child">
+                            <a href="informationCompte.php">Compte</a>
+                            <a href="index.php">Déconnexion</a>
+                        </div>
+                    </div>             
                 </div>
             </div>
         </nav>
@@ -38,7 +48,20 @@
                 </div> 
                 <div>
                     <label for="typeFrais">Type de frais</label>
+                </div>
+                <div>
+                    <label for="typeFrais">Quantité</label>
+                </div>
+                <div>
+                    <label for="coutNoteFrais">Coûts</label>
                     <br><br>
+                </div>
+            </div>
+            <div class="wrapper">
+                <div>
+                    
+                </div> 
+                <div>
                     <select name="typeFrais" id="typefrais" required>
                         <option value="1">Frais Kilométriques</option>
                         <option value="2">Repas midi</option>
@@ -48,14 +71,10 @@
                     </select>
                 </div>
                 <div>
-                    <label for="typeFrais">Quantité</label>
-                    <br><br>
                     <input type="number" name="quantite" id="quantite" required>
                     <br>
                 </div>
                 <div>
-                    <label for="coutNoteFrais">Coûts</label>
-                    <br><br>
                     <input type="text" name="coutNoteFrais" id="coutNoteFrais" required>
                 </div>
             </div>
@@ -87,18 +106,18 @@
                     echo "<br>";
                 }
             ?>
-            <div class="wrapperajoutNote">
-                <div>
-                    <label for="coutTotal">Coût Total : </label><input type="number" name="coutTotal" id="coutTotal">
-                </div>
-                <div>
-                    <button name="btnConnexion" id="btnConnexion" class="buttonAll"> <a href="pageConnexion.php">Annuler</a></button>
-                </div>
-                <div>
-                    <button type="submit" name="btnConnexion" id="btnConnexion" class="buttonAll">Envoyer la fiche</button>
-                </div>
-            </div>
         </form>
+        <div class="wrapperajoutNote">
+            <div>
+                <label for="coutTotal">Coût Total : </label><input type="number" name="coutTotal" id="coutTotal">
+            </div>
+            <div>
+                <button name="btnConnexion" id="btnConnexion" class="buttonAll"> <a href="pageConnexion.php">Annuler</a></button>
+            </div>
+            <div>
+                <button type="submit" name="btnConnexion" id="btnConnexion" class="buttonAll">Envoyer la fiche</button>
+            </div>
+        </div>
     </div>
 </body>
 </html>

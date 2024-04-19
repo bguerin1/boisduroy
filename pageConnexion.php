@@ -70,7 +70,10 @@
         <nav class="menu" role="navigation">
             <div class="inner">
                 <div class="m-left">
-                    <h1 class="logo">Bois Du Roy </h1>
+                    <h1 class="logo">Bois Du Roy</h1>
+                </div>
+                <div class="m-left2">
+                    <a href="pageConnexion.php"> <img src="img/arbre.png" alt="" class="imageLogo"></a>
                 </div>
 
                 <div class="m-right">
@@ -96,14 +99,14 @@
         </div>
         <div> 
             <?php
-                if($_POST["listeDeroulante"]==2)
+                /*if($_POST["listeDeroulante"]==2)
                 {
                     $requete3 = $conn->prepare("SELECT PRENOM,NOM, ETAPE_VALIDATION.MATRICULE AS MATRICULE,DATENOTEFRAIS,NOMSTATUT FROM EMPLOYE JOIN NOTEFRAIS ON NOTEFRAIS.MATRICULE = EMPLOYE.MATRICULE JOIN ETAPE_VALIDATION ON ETAPE_VALIDATION.MATRICULE=NOTEFRAIS.MATRICULE JOIN STATUT ON ETAPE_VALIDATION.IDSTATUT = STATUT.IDSTATUT  WHERE EMPLOYE.MATRICULE = :matricule AND MDPCOMPTE=PASSWORD(:mdp) ORDER BY DATENOTEFRAIS DESC;");
                     $requete3 ->bindValue(":matricule",$matricule,PDO::PARAM_STR);
                     $requete3 ->bindValue(":mdp",$mdp,PDO::PARAM_STR);
                     $requete3->execute();
                     $data1 = $requete3->fetchALL(PDO::FETCH_ASSOC);
-                }
+                }*/
             ?>
             <select name="listeDeroulante" id="listeDeroulante">
                 <option value="">Tri des notes ...</option>

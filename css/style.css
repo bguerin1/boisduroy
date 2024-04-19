@@ -5,6 +5,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700&family=Roboto:wght@100;300;400;500;900&display=swap');
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap");
 
+
+
 .wrapper {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -14,6 +16,7 @@
 
 html,body
 {
+    font-size: 14pt;
     margin:0;padding:0;
     font-family: "Lato";
 }
@@ -27,12 +30,12 @@ a{
 }
 .central-section {
     text-align:center;
-    max-width: 1300px; /* Ajustez la largeur selon vos besoins */
+    max-width: 1650px; /* Ajustez la largeur selon vos besoins */
     margin: 0 auto; /* Centre la section horizontalement */
     padding: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Ombre légère pour la section */
     border: 2px solid black;
-    margin-top: 20px; /* Espace supplémentaire en haut de la section */
+    margin-top: 0px; /* Espace supplémentaire en haut de la section */
     height: 5%;
 }
 .central {
@@ -101,8 +104,8 @@ select option{
 
 table{
     border-collapse:separate;
-    border-spacing: 100px;
-    margin-top: -50px;
+    border-spacing: 150px;
+    margin: -50px;
 }
 
 .formErrorMsg{
@@ -111,6 +114,24 @@ table{
 	color: white;
 	background-color: #900;
 }
+
+.imageLogo{
+    height:66px;
+    float:right;
+}
+
+.central-sectionVisionNote{
+    text-align:center;
+    max-width: 1650px; /* Ajustez la largeur selon vos besoins */
+    margin: 0 auto; /* Centre la section horizontalement */
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Ombre légère pour la section */
+    border: 2px solid black;
+    margin-top: 20px; /* Espace supplémentaire en haut de la section */
+    height: 5%;
+    border-radius:30px;
+}
+
 /* PARTIE CSS POUR LE HEADER DU SITE !!! */
 
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap");
@@ -138,6 +159,14 @@ table{
 .m-left
 {
     float:left; 
+    width: 250px;
+    height:66px;
+}
+.m-left2
+{
+    width:40px;
+    float:left; 
+    height:66px;
 }
 
 .m-right
@@ -188,7 +217,7 @@ a{
     line-height:66px;
 }
 .dropdown {
-    position: relative;
+    position: absolute;
     display: inline-block;
 }
 .dropdown-child {

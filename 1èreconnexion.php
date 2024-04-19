@@ -11,9 +11,11 @@
         <nav class="menu" role="navigation">
                 <div class="inner">
                     <div class="m-left">
-                        <h1 class="logo">Bois Du Roy </h1> 
-                        <a href="index.php"> <img src="img/arbre.png" alt=""></a>
-                    </div> 
+                        <h1 class="logo">Bois Du Roy</h1>
+                    </div>
+                    <div class="m-left2">
+                        <a href="index.php"> <img src="img/arbre.png" alt="" class="imageLogo"></a>
+                    </div>
                 </div>     
         </nav>
     </header>

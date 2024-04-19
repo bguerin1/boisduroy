@@ -13,12 +13,14 @@
             <div class="inner">
                 <div class="m-left">
                     <h1 class="logo">Bois Du Roy</h1>
-                    <a href="index.php"> <img src="img/arbre.png" alt=""></a>
+                </div>
+                <div class="m-left2">
+                    <a href="index.php"> <img src="img/arbre.png" alt="" class="imageLogo"></a>
                 </div>
             </div>
         </nav>
     </header>
-    <br><br><br>
+    <br><br><br><br>
     <div class="central-section">
         <h1 class="central"> Se connecter :</h1>
         <form action="pageConnexion.php" class="formAccueil" method="post" id="formConnexion">
