@@ -1,5 +1,5 @@
 <?php
-
+    session_start();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -24,63 +24,90 @@
                         <button class="mainmenubtn">Jeremy</button>
                         <div class="dropdown-child">
                             <a href="informationCompte.php">Compte</a>
-                            <a href="index.php">Déconnexion</a>
+                            <a href="deconnexion.php">Déconnexion</a>
                         </div>
                     </div>             
                 </div>
             </div>
         </nav>
     </header>
-    <br>
-    <div class="central-sectionVisionNote">
-        <h1 class="central">Saisie des notes de frais :</h1>
-        <form action="pageConnexion.php" method="post">
-            <label for="date">Date :</label>
-            <input type="Date" name="date" id="date" required>
-            <br><br>
-            <label for="employé">Employé :</label>
-            <input type="text" name="employé" id="employé" required>
-            <h2> Liste des frais à rembourser : </h2>
-            <div class="wrapper">
-                <div>
-                    <button name="AjoutLigne" class="ajoutLigne"> <img src="img/PLUS copy.png" alt=""> </button>
-                </div> 
-                <div>
-                    <label for="typeFrais">Type de frais</label>
-                    <br><br>
-                    <select name="typeFrais" id="typefrais" required>
-                        <option value="1">Frais Kilométriques</option>
-                        <option value="2">Repas midi</option>
-                        <option value="3">Repas soir</option>
-                        <option value="4">Soir hors Paris</option>
-                        <option value="5">Soir Paris</option>
-                    </select>
-                </div>
-                <div>
-                    <label for="typeFrais">Quantité</label>
-                    <br><br>
-                    <input type="number" name="quantite" id="quantite" required>
-                    <br>
-                </div>
-                <div>
-                    <label for="coutNoteFrais">Coûts</label>
-                    <br><br>
-                    <input type="text" name="coutNoteFrais" id="coutNoteFrais" required>
-                </div>
-            </div>
-            <br>
-            <div class="wrapperajoutNote">
-                <div>
-                    <label for="coutTotal">Coût Total : </label><input type="number" name="coutTotal" id="coutTotal">
-                </div>
-                <div>
-                    <button name="btnConnexion" id="btnConnexion" class="buttonAll"> <a href="pageConnexion.php">Annuler</a></button>
-                </div>
-                <div>
-                    <button type="submit" name="btnConnexion" id="btnConnexion" class="buttonAll">Envoyer la fiche</button>
-                </div>
-            </div>
-        </form>
+    <div class="divdivCentralVision">
+        <h1>Note de frais du 15/03/2024</h1>
+        <div class="central-sectionVisionNote">
+            <form action="" method="post">
+                <table class="tableauFormSaisie">
+                    <tr>
+                        <th><label for="date">Date :</label></th>
+                        <td>    
+                            <div>
+                                <input type="Date" name="date" id="date" required class="inputVision">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><label for="employé">Employé :</label></th>
+                        <td>
+                            <div>
+                                <input type="text" name="employé" id="employé" required class="inputVision">
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <h1 class="central"> Liste des frais à rembourser : </h2>
+                <table class="tableauFormSaisie">
+                    <tr>
+                        <th>    
+                            <label for="typeFrais">Type de frais</label>
+                        </th>
+                        <th><label for="typeFrais">Quantité</label></th>
+                        <th> <label for="coutNoteFrais">Coûts</label></th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div>
+                                <select name="typeFrais" id="typefrais" required class="inputVision">
+                                <option value="1">Frais Kilométriques</option>
+                                <option value="2">Repas midi</option>
+                                <option value="3">Repas soir</option>
+                                <option value="4">Soir hors Paris</option>
+                                <option value="5">Soir Paris</option>
+                                </select>
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                <input type="number" name="quantite" id="quantite" required class="inputVision">
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                <input type="text" name="coutNoteFrais" id="coutNoteFrais" required class="inputVision">
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <table class="tableauFormSaisie">
+                    <tr>
+                        <th><label for="coutTotal">Coût Total : </label></th>
+                        <td>
+                            <div>
+                                <input type="number" name="coutTotal" id="coutTotal" class="inputVision">
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                <button name="btnConnexion" id="btnConnexion" class="buttonAll"> <a href="pageConnexion.php">Annuler</a></button>
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                <button type="submit" name="btnConnexion" id="btnConnexion" class="buttonAll">Valider</button>
+                            </div>
+                        </td>
+                    </tr>
+                </table> 
+            </form> 
+        </div>
     </div>
 </body>
 </html>

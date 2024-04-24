@@ -1,3 +1,6 @@
+<?php
+    session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,30 +25,23 @@
                         <button class="mainmenubtn">Jeremy</button>
                         <div class="dropdown-child">
                             <a href="informationCompte.php">Compte</a>
-                            <a href="index.php">Déconnexion</a>
+                            <a href="deconnexion.php">Déconnexion</a>
                         </div>
                     </div>             
                 </div>
             </div>
         </nav>
     </header>
-
-    
-    <h1 class="central"> Raison du refus :</h1>
-    <div class="central-section" class="wrapper">
-        <textarea name="" id="" cols="100" rows="10" class="textareaRefus" placeholder="Ecrivez votre commentaire ici..."></textarea>
+    <br><br>
+    <div class="divdivCentralRefus">
+        <h1> Raison du refus de la note de frais :</h1>
+        <div class="centralsectionRefus">
+            <textarea name="" id="" cols="10" rows="10" class="textareaRefus" placeholder="Ecrivez votre commentaire ici..."></textarea>
+        </div>
+        <br>
+        <div class="btnRefus">
+            <button name="btnRefus" id="btnRefus" class="buttonAll">Confirmer le refus</button>
+        </div>        
     </div>
-    <br>
-    <div class="wrapperajoutNote">
-        <div>
-            <label for=""></label>
-        </div>
-        <div>
-            <label for=""></label>
-        </div>
-        <div>
-            <button name="btnConnexion" id="btnConnexion" class="buttonAll">Confirmer le refus</button>
-        </div>
-    </div>    
 </body>
 </html>

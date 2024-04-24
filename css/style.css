@@ -5,11 +5,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700&family=Roboto:wght@100;300;400;500;900&display=swap');
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap");
 
-
+@import url("https://fontawesome.com/icons/eye-slash?f=classic&s=solid");
 
 .wrapper {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   grid-gap: 10px;
   grid-auto-rows: minmax(100px, auto);
 }
@@ -50,9 +50,9 @@ a{
     margin-bottom: 20px; /* Espace entre le titre et les articles */
 }
 .buttonAll{
-    height: 50px;
-    width: 150px;
-    border-radius:6px 6px 6px 6px;
+    height: 37px;
+    width: 250px;
+    border-radius:100px;
     background-color:black;
     color:white;
 }
@@ -90,13 +90,37 @@ a{
     height: 50x;
 }
 
+
+.divdivCentralRefus{
+    max-width: 1150px; /* Ajustez la largeur selon vos besoins */
+    margin: 0 auto; /* Centre la section horizontalement */
+    padding: 20px;
+    margin-top: 0px; /* Espace supplémentaire en haut de la section */
+    height: 300px;
+}
+
+.divdivCentralVision{
+    max-width: 1350px; /* Ajustez la largeur selon vos besoins */
+    margin: 0 auto; /* Centre la section horizontalement */
+    padding: 20px;
+    margin-top: 0px; /* Espace supplémentaire en haut de la section */
+    height: 300px;
+}
+
 .lblRaisonRefus{
     width: 100%; /* Le titre occupe la largeur complète de la section */
     margin-bottom: 20px; /* Espace entre le titre et les articles */
 }
 .textareaRefus{
    resize:none;
+   width:1090px;
+   height:290px;
 }
+
+.btnRefus{
+    float:right;
+}
+
 select option{
     font-size: 0.9rem;
     padding: 2px 5px;
@@ -106,6 +130,11 @@ table{
     border-collapse:separate;
     border-spacing: 150px;
     margin: -50px;
+}
+
+.tableNote{
+    border-collapse:separate;
+    border-spacing: 100px;
 }
 
 .formErrorMsg{
@@ -122,14 +151,142 @@ table{
 
 .central-sectionVisionNote{
     text-align:center;
-    max-width: 1650px; /* Ajustez la largeur selon vos besoins */
+    border: 2px solid black;
+    max-width: 1300px; /* Ajustez la largeur selon vos besoins */
+    margin: 0 auto; /* Centre la section horizontalement */
+    height: 850px;;
+    border-radius:30px;
+}
+
+.centralsectionRefus{
+    max-width: 1100px; /* Ajustez la largeur selon vos besoins */
     margin: 0 auto; /* Centre la section horizontalement */
     padding: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Ombre légère pour la section */
     border: 2px solid black;
-    margin-top: 20px; /* Espace supplémentaire en haut de la section */
+    margin-top: 0px; /* Espace supplémentaire en haut de la section */
+    height: 300px;
+}
+
+.tableauInformation{
+    text-align:center;
+    max-width: 1650px; /* Ajustez la largeur selon vos besoins */
+    margin: 0 auto; /* Centre la section horizontalement */
+    padding: 20px;
+    margin-top: 0px; /* Espace supplémentaire en haut de la section */
     height: 5%;
-    border-radius:30px;
+}
+
+.inputVision{
+    width: 350px;
+    padding: 9px;
+    border: 2px black solid;
+
+}
+
+.inputConn{
+    width: 250px;
+    border: 2px black solid;
+    border-radius:40px;
+    padding: 9px;
+}
+
+.inputSaisie{
+    width: 250px;
+    padding: 9px;
+    border: 2px black solid;
+}
+
+.mdp {
+    position: relative; /* Position the icon relative to the mdp div */
+    display: flex; /* Allow aligning icon and input horizontally */
+    align-items: center; /* Center icon and input vertically */
+}
+
+.mdp input{
+    border: 2px black solid;
+    border-radius:40px;
+    padding: 9px;
+}
+
+.mdp i{
+    position:absolute;
+    top:11px;
+    right:10px;
+    font-size : 18px;
+    cursor:pointer;
+}
+
+.mdp i.active::before{
+    content: '\f070';
+    color: black;
+}
+
+.tableauFormConn{
+    text-align:center;
+    max-width: 1650px; /* Ajustez la largeur selon vos besoins */
+    margin: 0 auto; /* Centre la section horizontalement */
+    padding: 20px;
+    margin-top: 0px; /* Espace supplémentaire en haut de la section */
+    height: 5%;
+    border-collapse:separate;
+    border-spacing: 25px;
+}
+
+.tableauFormSaisie{
+    text-align:center;
+    max-width: 1200px; /* Ajustez la largeur selon vos besoins */
+    margin: 0 auto; /* Centre la section horizontalement */
+    padding: 20px;
+    margin-top: 0px; /* Espace supplémentaire en haut de la section */
+    height: 5%;
+    border-collapse:separate;
+    border-spacing: 50px;
+
+}
+
+.central-sectionFormConn{
+
+    align-items:center;
+    display: flex;
+    text-align:center;
+    max-width: 550px; /* Ajustez la largeur selon vos besoins */
+    margin: 0 auto; /* Centre la section horizontalement */
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Ombre légère pour la section */
+    border: 2px solid black;
+    margin-top: 0px; /* Espace supplémentaire en haut de la section */
+    min-height:550px;
+    border-radius:50px;
+}
+
+select{
+    width: 250px;
+    height: 40px;
+}
+
+.central-sectionFormSaisie{
+    text-align:center;
+    max-width: 1200px; /* Ajustez la largeur selon vos besoins */
+    margin: 0 auto; /* Centre la section horizontalement */
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Ombre légère pour la section */
+    border: 2px solid black;
+    margin-top: 0px; /* Espace supplémentaire en haut de la section */
+    min-height:550px;
+    border-radius:50px;
+}
+
+.central-sectionFormPremsConn{
+    text-align:center;
+    max-width: 1000px; /* Ajustez la largeur selon vos besoins */
+    margin: 0 auto; /* Centre la section horizontalement */
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Ombre légère pour la section */
+    border: 2px solid black;
+    margin-top: 0px; /* Espace supplémentaire en haut de la section */
+    min-height:235px;
+    border-radius:50px;
 }
 
 /* PARTIE CSS POUR LE HEADER DU SITE !!! */

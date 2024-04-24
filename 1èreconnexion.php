@@ -1,9 +1,13 @@
+<?php
+    session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="fontawesome-free-6.5.1-web\css\all.min.css" />
     <title>Bois Du Roy</title>
 </head>
 <body>
@@ -19,19 +23,41 @@
                 </div>     
         </nav>
     </header>
+    <br><br><br>
+    <h1 class="central">Bienvenue Jean-Dupont !</h1>
+    <p class="central"> Pour votre première connexion, veuillez changer votre mot de passe : </p> 
+    <div class="central-sectionFormPremsConn">
+        <form action="pageConnexion.php">
+            <table class="tableauFormConn">
+                <tr>
+                    <th><label for="mdp">Nouveau Mot de passe:</label></th>
+                    <td>
+                        <div class="mdp">
+                            <input type="password" name="mdp" id="form1Mdp" class="inputConn">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label for="mdp">Confirmation Mot de passe:</label></th>
+                    <td>
+                        <div class="mdp">
+                            <input type="password" name="mdp" id="form1Mdp" class="inputConn">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
 
-    <div class="central-section">
-        <h1 class="central">Bienvenue Jean-Dupont</h1>
-        <p class="central"> Pour votre première connexion, veuillez changer votre mot de passe : </p> 
-        <form action="pageConnexion.php" class="formAccueil">
-            <label for="mdp">Nouveau Mot de Passe :</label>
-            <input type="password" name="password" id="password">
-            <br>
-            <br>
-            <label for="mdp">Confirmation Mot de passe:</label>
-            <input type="password" name="mdp" id="mdp">
-            <br> <br>
-            <button type="submit" name="btnConnexion" id="btnConnexion" class="buttonAll">Modifier</button>
+                    </th>
+                    <td>
+                        <div>
+                            <button type="submit" name="btnModifierMDP" id="btnModifierMDP" class="buttonAll">Modifier</button>
+                        </div>
+                    </td>
+                </tr>
+            </table>
         </form>
     </div>
 </body>

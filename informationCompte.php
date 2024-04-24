@@ -1,3 +1,6 @@
+<?php
+    session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,10 +22,10 @@
 
                 <div class="m-right">
                     <div class="dropdown">
-                        <button class="mainmenubtn">Jean-Durand</button>
+                        <button class="mainmenubtn"><?= $_SESSION["PRENOM"] . " " .$_SESSION["NOM"] ?></button>
                         <div class="dropdown-child">
                             <a href="informationCompte.php">Compte</a>
-                            <a href="index.php">Déconnexion</a>
+                            <a href="deconnexion.php">Déconnexion</a>
                         </div>
                     </div>             
                 </div>
@@ -33,29 +36,27 @@
     <h1 class="central">Informations du compte :</h1>
     
     <div class="central-section">
-        <table>
-        <tr>
-            <th>Prénom :</th>
-            <td><input type="text" value="Jean" readonly></td>
-        </tr>
-        <tr>
-            <th>Nom :</th>
-            <td><input type="text" value="Dupont" readonly></td>
-        </tr>
-        <tr>
-            <th>Matricule</th>
-            <td><input type="text" value="E431" readonly></td>
-        </tr>
-        <tr>
-            <th>Date Naiss :</th>
-            <td><input type="text" value="19/06/2024" readonly></td>
-        </tr>
-        <tr>
-            <th>Responsable :</th>
-            <td><input type="text" value="E435" readonly></td>
-        </tr>
-
-        
+        <table class="tableauInformation">
+            <tr>
+                <th>Prénom :</th>
+                <td><input type="text" value="Jean" readonly></td>
+            </tr>
+            <tr>
+                <th>Nom :</th>
+                <td><input type="text" value="Dupont" readonly></td>
+            </tr>
+            <tr>
+                <th>Matricule</th>
+                <td><input type="text" value=<?=$_SESSION["matricule"]?> readonly></td>
+            </tr>
+            <tr>
+                <th>Date Naiss :</th>
+                <td><input type="text" value="19/06/2024" readonly></td>
+            </tr>
+            <tr>
+                <th>Responsable :</th>
+                <td><input type="text" value="E435" readonly></td>
+            </tr>
         </table>
     </div>
 </body>
