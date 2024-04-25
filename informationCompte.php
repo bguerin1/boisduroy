@@ -1,5 +1,15 @@
 <?php
     session_start();
+    if(!isset($_SESSION["IDSESSION"]))
+    {
+        header("Location: index.php");
+    }
+    else{
+        if($_SESSION["IDSESSION"] != session_id())
+        {
+            header("Location: index.php");
+        }
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -33,31 +43,50 @@
         </nav>
     </header>
     <br>
-    <h1 class="central">Informations du compte :</h1>
-    
-    <div class="central-section">
-        <table class="tableauInformation">
-            <tr>
-                <th>Prénom :</th>
-                <td><input type="text" value="Jean" readonly></td>
-            </tr>
-            <tr>
-                <th>Nom :</th>
-                <td><input type="text" value="Dupont" readonly></td>
-            </tr>
-            <tr>
-                <th>Matricule</th>
-                <td><input type="text" value=<?=$_SESSION["matricule"]?> readonly></td>
-            </tr>
-            <tr>
-                <th>Date Naiss :</th>
-                <td><input type="text" value="19/06/2024" readonly></td>
-            </tr>
-            <tr>
-                <th>Responsable :</th>
-                <td><input type="text" value="E435" readonly></td>
-            </tr>
-        </table>
+    <div class="divdivCentralRefus">
+        <h1>Informations du compte :</h1>
+        <div class="central-sectionInfoCompte">
+            <table class="tableauInformation">
+                <tr>
+                    <th>Prénom :</th>
+                    <td>
+                        <div>
+                            <input type="text" value=<?= $_SESSION["PRENOM"] ?> class="inputSaisie" readonly>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Nom :</th>
+                    <td> 
+                        <input type="text" value=<?=  $_SESSION["NOM"] ?> class="inputSaisie" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Matricule</th>
+                    <td>
+                        <div>
+                            <input type="text" value=<?=$_SESSION["MATRICULEEMPLOYE"]?> class="inputSaisie" readonly>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Date Naiss :</th>
+                    <td>
+                        <div>
+                            <input type="text" value=<?=  $_SESSION["DATENAISS"] ?> class="inputSaisie" readonly>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Responsable :</th>
+                    <td>
+                        <div>
+                            <input type="text" value=<?=  $_SESSION["RESPONSABLE"] ?> class="inputSaisie" readonly>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
     </div>
 </body>
 </html>

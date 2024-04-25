@@ -1,6 +1,3 @@
-<?php
-    session_start();
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,7 +23,7 @@
     </header>
     <br><br><br><br>
     <div class="central-sectionFormConn">  
-        <form action="pageConnexion.php" class="formAccueil" method="post" id="formConnexion">
+        <form action="redirection.php" class="formAccueil" method="post" id="formConnexion">
         <h1 class="central"> Se connecter :</h1>
         <table class="tableauFormConn">
             <tr>

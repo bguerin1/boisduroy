@@ -1,5 +1,15 @@
 <?php
     session_start();
+    if(!isset($_SESSION["IDSESSION"]))
+    {
+        header("Location: index.php");
+    }
+    else{
+        if($_SESSION["IDSESSION"] != session_id())
+        {
+            header("Location: index.php");
+        }
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -21,7 +31,7 @@
                 </div>
                 <div class="m-right">
                     <div class="dropdown">
-                        <button class="mainmenubtn">Jeremy</button>
+                        <button class="mainmenubtn"><?= $_SESSION["PRENOM"] . " " .$_SESSION["NOM"] ?></button>
                         <div class="dropdown-child">
                             <a href="informationCompte.php">Compte</a>
                             <a href="deconnexion.php">Déconnexion</a>

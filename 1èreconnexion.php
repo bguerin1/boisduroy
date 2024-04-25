@@ -1,5 +1,15 @@
 <?php
     session_start();
+    if(!isset($_SESSION["IDSESSION"]))
+    {
+        header("Location: index.php");
+    }
+    else{
+        if($_SESSION["IDSESSION"] != session_id())
+        {
+            header("Location: index.php");
+        }
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">

@@ -134,7 +134,7 @@ table{
 
 .tableNote{
     border-collapse:separate;
-    border-spacing: 100px;
+    border-spacing: 135px;
 }
 
 .formErrorMsg{
@@ -142,6 +142,15 @@ table{
 	font-size: 80%;	
 	color: white;
 	background-color: #900;
+}
+
+.checkbox {
+    display: inline-block;
+    position: relative;
+    width: 20px; 
+    height: 20px; 
+    border: 5px solid black; 
+    cursor: pointer;
 }
 
 .imageLogo{
@@ -175,6 +184,8 @@ table{
     padding: 20px;
     margin-top: 0px; /* Espace supplémentaire en haut de la section */
     height: 5%;
+    border-collapse:separate;
+    border-spacing: 60px;
 }
 
 .inputVision{
@@ -260,6 +271,19 @@ table{
     border-radius:50px;
 }
 
+.central-sectionInfoCompte{
+    align-items:center;
+    display: flex;
+    text-align:center;
+    max-width: 1200px; /* Ajustez la largeur selon vos besoins */
+    margin: 0 auto; /* Centre la section horizontalement */
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Ombre légère pour la section */
+    border: 2px solid black;
+    margin-top: 0px; /* Espace supplémentaire en haut de la section */
+    min-height:400px;
+}
+
 select{
     width: 250px;
     height: 40px;
@@ -275,6 +299,19 @@ select{
     margin-top: 0px; /* Espace supplémentaire en haut de la section */
     min-height:550px;
     border-radius:50px;
+}
+
+.central-sectionNote{
+    align-items:center;
+    display: flex;
+    text-align:center;
+    max-width: 1500px; /* Ajustez la largeur selon vos besoins */
+    margin: 0 auto; /* Centre la section horizontalement */
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Ombre légère pour la section */
+    border: 2px solid black;
+    margin-top: 0px; /* Espace supplémentaire en haut de la section */
+    min-height:550px;
 }
 
 .central-sectionFormPremsConn{

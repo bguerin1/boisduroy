@@ -1,3 +1,16 @@
+<?php
+    session_start();
+    if(!isset($_SESSION["IDSESSION"]))
+    {
+        header("Location: index.php");
+    }
+    else{
+        if($_SESSION["IDSESSION"] != session_id())
+        {
+            header("Location: index.php");
+        }
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,7 +32,7 @@
 
                 <div class="m-right">
                     <div class="dropdown">
-                        <button class="mainmenubtn">  </button>
+                        <button class="mainmenubtn"><?= $_SESSION["PRENOM"] . " " .$_SESSION["NOM"] ?></button>
                         <div class="dropdown-child">
                             <a href="informationCompte.php">Compte</a>
                             <a href="deconnexion.php">Déconnexion</a>
@@ -32,7 +45,7 @@
     <br><br>
 
     <div class="central-sectionFormSaisie">
-        <form action="" method="post">
+        <form action="pageConnexion.php" method="post">
             <h1 class="central">Saisie des notes de frais :</h1>
             <table class="tableauFormSaisie">
                 <tr>
@@ -139,3 +152,7 @@
     <br>
 </body>
 </html>
+<?php
+    /*unset($_SESSION);
+    session_destroy()*/
+?>

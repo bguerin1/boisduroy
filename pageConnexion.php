@@ -1,25 +1,13 @@
 <?php
     session_start();
-    if (!isset($_POST["matricule"]) || !isset($_POST["mdp"])) {
+    if(!isset($_SESSION["IDSESSION"]))
+    {
         header("Location: index.php");
-        exit();
     }
     else{
-
-        $matricule=htmlspecialchars($_POST["matricule"]);
-        $mdp=htmlspecialchars($_POST["mdp"]);
-        $_SESSION["matricule"]=$matricule;
-        if($matricule=="")
+        if($_SESSION["IDSESSION"] != session_id())
         {
-            echo "L'adresse mail est vide";
             header("Location: index.php");
-            exit();
-        }
-        else if($mdp=="")
-        {
-            echo "Le mot de passe est vide";
-            header("Location: index.php");
-            exit();
         }
         else{
             // Connexion à la base de donnée 
@@ -31,15 +19,15 @@
                 $conn=new PDO("mysql:host=$servername;dbname=$dbname", $username,$pwd);
                 $requete=$conn ->prepare("SELECT MATRICULE,MDPCOMPTE FROM EMPLOYE WHERE MATRICULE = :matricule AND MDPCOMPTE=PASSWORD(:mdp);");
                 // On lie la variable $email définie au-dessus au paramètre :mail de la requête préparée
-                $requete->bindValue(':matricule',$matricule , PDO::PARAM_STR);
-                $requete->bindValue(':mdp',$mdp , PDO::PARAM_STR);
+                $requete->bindValue(':matricule', $_SESSION["MATRICULE"] , PDO::PARAM_STR);
+                $requete->bindValue(':mdp',$_SESSION["MDP"] , PDO::PARAM_STR);
                 //On exécute la requête
                 $requete->execute();
                 // On récupère le résultat
                 if ($requete->fetch()) {
-                    $requete2 = $conn->prepare("SELECT IDNOTEFRAIS, PRENOM, NOM, EMPLOYE.MATRICULE, DATEVALID, NOMSTATUT FROM NOTEFRAIS JOIN EMPLOYE ON EMPLOYE.MATRICULE = NOTEFRAIS.MATRICULE JOIN ETAPE_VALIDATION ON ETAPE_VALIDATION.MATRICULE = EMPLOYE.MATRICULE JOIN STATUT ON ETAPE_VALIDATION.IDSTATUT = STATUT.IDSTATUT WHERE EMPLOYE.MATRICULE = :matricule AND MDPCOMPTE=PASSWORD(:mdp);");
-                    $requete2 ->bindValue(":matricule",$matricule,PDO::PARAM_STR);
-                    $requete2 ->bindValue(":mdp",$mdp,PDO::PARAM_STR);
+                    $requete2 = $conn->prepare("SELECT IDNOTEFRAIS, PRENOM, NOM, EMPLOYE.MATRICULE, DATEVALID, NOMSTATUT, DATENAISS, MATRICULE_ETRE_RESPONSABLE FROM NOTEFRAIS JOIN EMPLOYE ON EMPLOYE.MATRICULE = NOTEFRAIS.MATRICULE JOIN ETAPE_VALIDATION ON ETAPE_VALIDATION.MATRICULE = EMPLOYE.MATRICULE JOIN STATUT ON ETAPE_VALIDATION.IDSTATUT = STATUT.IDSTATUT WHERE EMPLOYE.MATRICULE = :matricule AND MDPCOMPTE=PASSWORD(:mdp);");
+                    $requete2 ->bindValue(":matricule",$_SESSION["MATRICULE"],PDO::PARAM_STR);
+                    $requete2 ->bindValue(":mdp",$_SESSION["MDP"],PDO::PARAM_STR);
                     $requete2->execute();
                     $data = $requete2->fetchALL(PDO::FETCH_ASSOC);
                 } else {
@@ -55,15 +43,24 @@
                 die;
             }
         }
-        }
+    }
 ?>
 <?php
     foreach($data as $donnee)
     {
         $prenom=$donnee["PRENOM"];
         $nom=$donnee["NOM"];
+        $matriculeEmploye=$donnee["MATRICULE"];
+        $dateNaiss=$donnee["DATENAISS"];
+        $responsable=$donnee["MATRICULE_ETRE_RESPONSABLE"];
+        
+        // Variable de sessions à utiliser pour la page des informations du compte
+
         $_SESSION["PRENOM"]=$prenom;
         $_SESSION["NOM"]=$nom;
+        $_SESSION["MATRICULEEMPLOYE"]=$matriculeEmploye;
+        $_SESSION["DATENAISS"]=$dateNaiss;
+        $_SESSION["RESPONSABLE"]=$responsable;
     }
 ?>
 <!DOCTYPE html>
@@ -111,7 +108,7 @@
                     <button class="buttonAll"> <a href="ajoutNote.php"> Copier </a></button>
                 </div>
             </td>
-            <form action="pageConnexion.php" method="get" name="formA">
+            <form action="" method="get" name="formA">
             <td>
                 <div>
                     <select name="listeDeroulante" id="listeDeroulante">
@@ -126,25 +123,25 @@
                             switch($_GET["listeDeroulante"])
                             {
                                 case 1:
-                                    $requete2 = $conn->prepare("SELECT PRENOM,NOM, ETAPE_VALIDATION.MATRICULE AS MATRICULE,DATENOTEFRAIS,NOMSTATUT FROM EMPLOYE JOIN NOTEFRAIS ON NOTEFRAIS.MATRICULE = EMPLOYE.MATRICULE JOIN ETAPE_VALIDATION ON ETAPE_VALIDATION.MATRICULE=NOTEFRAIS.MATRICULE JOIN STATUT ON ETAPE_VALIDATION.IDSTATUT = STATUT.IDSTATUT  WHERE EMPLOYE.MATRICULE = :matricule AND MDPCOMPTE=PASSWORD(:mdp) ORDER BY DATENOTEFRAIS DESC;");
-                                    $requete2 ->bindValue(":matricule",$matricule,PDO::PARAM_STR);
-                                    $requete2 ->bindValue(":mdp",$mdp,PDO::PARAM_STR);
-                                    $requete2->execute();
-                                    $data = $requete2->fetchALL(PDO::FETCH_ASSOC);
+                                    $requete3 = $conn->prepare("SELECT PRENOM,NOM, ETAPE_VALIDATION.MATRICULE AS MATRICULE,DATENOTEFRAIS,NOMSTATUT FROM EMPLOYE JOIN NOTEFRAIS ON NOTEFRAIS.MATRICULE = EMPLOYE.MATRICULE JOIN ETAPE_VALIDATION ON ETAPE_VALIDATION.MATRICULE=NOTEFRAIS.MATRICULE JOIN STATUT ON ETAPE_VALIDATION.IDSTATUT = STATUT.IDSTATUT  WHERE EMPLOYE.MATRICULE = :matricule AND MDPCOMPTE=PASSWORD(:mdp) ORDER BY DATENOTEFRAIS DESC;");
+                                    $requete3 ->bindValue(":matricule",$_SESSION["MATRICULE"],PDO::PARAM_STR);
+                                    $requete3 ->bindValue(":mdp",$_SESSION["MDP"],PDO::PARAM_STR);
+                                    $requete3->execute();
+                                    $data = $requete3->fetchALL(PDO::FETCH_ASSOC);
                                     break;
                                 case 2:
-                                    $requete2 = $conn->prepare("SELECT PRENOM,NOM, ETAPE_VALIDATION.MATRICULE AS MATRICULE,DATENOTEFRAIS,NOMSTATUT FROM EMPLOYE JOIN NOTEFRAIS ON NOTEFRAIS.MATRICULE = EMPLOYE.MATRICULE JOIN ETAPE_VALIDATION ON ETAPE_VALIDATION.MATRICULE=NOTEFRAIS.MATRICULE JOIN STATUT ON ETAPE_VALIDATION.IDSTATUT = STATUT.IDSTATUT  WHERE EMPLOYE.MATRICULE = :matricule AND MDPCOMPTE=PASSWORD(:mdp) ORDER BY COUTTOTAL;");
-                                    $requete2 ->bindValue(":matricule",$matricule,PDO::PARAM_STR);
-                                    $requete2 ->bindValue(":mdp",$mdp,PDO::PARAM_STR);
-                                    $requete2->execute();
+                                    $requete3 = $conn->prepare("SELECT PRENOM,NOM, ETAPE_VALIDATION.MATRICULE AS MATRICULE,DATENOTEFRAIS,NOMSTATUT FROM EMPLOYE JOIN NOTEFRAIS ON NOTEFRAIS.MATRICULE = EMPLOYE.MATRICULE JOIN ETAPE_VALIDATION ON ETAPE_VALIDATION.MATRICULE=NOTEFRAIS.MATRICULE JOIN STATUT ON ETAPE_VALIDATION.IDSTATUT = STATUT.IDSTATUT  WHERE EMPLOYE.MATRICULE = :matricule AND MDPCOMPTE=PASSWORD(:mdp) ORDER BY COUTTOTAL;");
+                                    $requete3 ->bindValue(":matricule",$_SESSION["MATRICULE"],PDO::PARAM_STR);
+                                    $requete3 ->bindValue(":mdp",$_SESSION["MDP"],PDO::PARAM_STR);
+                                    $requete3->execute();
                                     $data = $requete2->fetchALL(PDO::FETCH_ASSOC);
                                     break;
                                 case 3:
-                                    $requete2 = $conn->prepare("SELECT PRENOM,NOM, ETAPE_VALIDATION.MATRICULE AS MATRICULE,DATENOTEFRAIS,NOMSTATUT FROM EMPLOYE JOIN NOTEFRAIS ON NOTEFRAIS.MATRICULE = EMPLOYE.MATRICULE JOIN ETAPE_VALIDATION ON ETAPE_VALIDATION.MATRICULE=NOTEFRAIS.MATRICULE JOIN STATUT ON ETAPE_VALIDATION.IDSTATUT = STATUT.IDSTATUT  WHERE EMPLOYE.MATRICULE = :matricule AND MDPCOMPTE=PASSWORD(:mdp) ORDER BY DATENOTEFRAIS DESC;");
-                                    $requete2 ->bindValue(":matricule",$matricule,PDO::PARAM_STR);
-                                    $requete2 ->bindValue(":mdp",$mdp,PDO::PARAM_STR);
-                                    $requete2->execute();
-                                    $data = $requete2->fetchALL(PDO::FETCH_ASSOC);
+                                    $requete3 = $conn->prepare("SELECT PRENOM,NOM, ETAPE_VALIDATION.MATRICULE AS MATRICULE,DATENOTEFRAIS,NOMSTATUT FROM EMPLOYE JOIN NOTEFRAIS ON NOTEFRAIS.MATRICULE = EMPLOYE.MATRICULE JOIN ETAPE_VALIDATION ON ETAPE_VALIDATION.MATRICULE=NOTEFRAIS.MATRICULE JOIN STATUT ON ETAPE_VALIDATION.IDSTATUT = STATUT.IDSTATUT  WHERE EMPLOYE.MATRICULE = :matricule AND MDPCOMPTE=PASSWORD(:mdp) ORDER BY DATENOTEFRAIS DESC;");
+                                    $requete3 ->bindValue(":matricule",$_SESSION["MATRICULE"],PDO::PARAM_STR);
+                                    $requete3 ->bindValue(":mdp",$_SESSION["MDP"],PDO::PARAM_STR);
+                                    $requete3->execute();
+                                    $data = $requete3->fetchALL(PDO::FETCH_ASSOC);
                                     break;
                             }
                         }
@@ -159,13 +156,13 @@
             </td>
             <td>
                 <div>
-                    <button type="submit" class="buttonListe"> <img src="img/loupe.png" alt="loupe"></button>
+                    <button class="buttonListe"> <img src="img/loupe.png" alt="loupe"></button>
                 </div>
             </td>
             </form>
         </tr>
     </table>
-    <div class="central-section">
+    <div class="central-sectionNote">
         <table class="tableNote">
             <tr>
                 <th> <p>  </p></th>
@@ -180,7 +177,7 @@
                     echo "<tr>";
                         echo "<td>";
                             echo "<div>";
-                                echo "<input type='checkbox' name='contact' id='contact_email' value='1' />";
+                                echo "<input type='checkbox' name='contact' id='contact_email' value='1' class='checkbox' />";
                             echo "</div>";
                         echo "</td>";     
                         echo "<td>";
