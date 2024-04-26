@@ -4,7 +4,7 @@
     if (!isset($_POST["matricule"]) || !isset($_POST["mdp"]) || !isset($id_Session)) {
         echo "Le matricule, le mot de passe ou l'id de session sont vides !";
         usleep(2);
-        header("Location: index.php");
+        header("Location: connexion.php");
         exit();
     }
     else{
@@ -15,21 +15,21 @@
         {
             echo "L'adresse mail est vide";
             usleep(2);
-            header("Location: index.php");
+            header("Location: connexion.php");
             exit();
         }
         else if($mdp=="")
         {
             echo "Le mot de passe est vide";
             usleep(2);
-            header("Location: index.php");
+            header("Location: connexion.php");
             exit();
         }
         else{
             $_SESSION["IDSESSION"]=$id_Session;
             $_SESSION["MATRICULE"] = $matricule;
             $_SESSION["MDP"] = $mdp;
-            header("Location: pageConnexion.php");
+            header("Location: index.php");
         }
     }
 ?>
