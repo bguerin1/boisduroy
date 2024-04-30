@@ -1,12 +1,12 @@
 <div class="central-sectionFormSaisie">
-        <form action="index.php" method="post">
+        <form action="ajoutNote.php" method="post">
             <h1 class="central">Saisie des notes de frais :</h1>
             <table class="tableauFormSaisie">
                 <tr>
                     <th><label for="date">Date :</label></th>
                     <td>    
                         <div>
-                            <input type="Date" name="date" id="date" required class="inputSaisie">
+                            <input type="Date" name="DATENOTEFRAIS" id="date" required class="inputSaisie">
                         </div>
                     </td>
                 </tr>
@@ -14,7 +14,7 @@
                     <th><label for="employé">Employé :</label></th>
                     <td>
                         <div>
-                            <input type="text" name="employé" id="employé" required class="inputSaisie">
+                            <input type="text" name="employé" id="employé" class="inputSaisie" value=<?=$_SESSION["MATRICULEEMPLOYE"]?> readonly>
                         </div>
                     </td>
                 </tr>
@@ -48,7 +48,7 @@
                     </td>
                     <td>
                         <div>
-                            <input type="text" name="coutNoteFrais" id="coutNoteFrais" required class="inputSaisie">
+                            <input type="text" name="cout" id="coutNoteFrais" required class="inputSaisie">
                         </div>
                     </td>
                 </tr>
@@ -63,12 +63,12 @@
                     </td>
                     <td>
                         <div>
-                            <button name="btnConnexion" id="btnConnexion" class="buttonAll"> <a href="pageConnexion.php">Annuler</a></button>
+                            <button name="btnConnexion" id="btnConnexion" class="buttonAll"> <a href="index.php">Annuler</a></button>
                         </div>
                     </td>
                     <td>
                         <div>
-                            <button type="submit" name="btnConnexion" id="btnConnexion" class="buttonAll">Envoyer la fiche</button>
+                            <button type="submit" name="btnAjout" id="btnAjout" class="buttonAll">Envoyer la fiche</button>
                         </div>
                         <?php
                             if(isset($_POST["AjoutLigne"]))

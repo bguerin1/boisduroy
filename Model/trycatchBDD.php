@@ -9,11 +9,23 @@
         $requete->execute();
         // On récupère le résultat
         if ($requete->fetch()) {
-            $requete2 = $conn->prepare("SELECT IDNOTEFRAIS, PRENOM, NOM, EMPLOYE.MATRICULE, DATEVALID, NOMSTATUT, DATENAISS, MATRICULE_ETRE_RESPONSABLE FROM NOTEFRAIS JOIN EMPLOYE ON EMPLOYE.MATRICULE = NOTEFRAIS.MATRICULE JOIN ETAPE_VALIDATION ON ETAPE_VALIDATION.MATRICULE = EMPLOYE.MATRICULE JOIN STATUT ON ETAPE_VALIDATION.IDSTATUT = STATUT.IDSTATUT WHERE EMPLOYE.MATRICULE = :matricule AND MDPCOMPTE=PASSWORD(:mdp);");
-            $requete2 ->bindValue(":matricule",$_SESSION["MATRICULE"],PDO::PARAM_STR);
-            $requete2 ->bindValue(":mdp",$_SESSION["MDP"],PDO::PARAM_STR);
-            $requete2->execute();
-            $data = $requete2->fetchALL(PDO::FETCH_ASSOC);
+            // Vérification du nombre de notes de frais 
+            $requete4 = $conn->prepare("SELECT COUNT(IDNOTEFRAIS) AS NBNOTE FROM NOTEFRAIS WHERE MATRICULE=:matricule;");
+            $requete4 ->bindValue(":matricule",$_SESSION["MATRICULE"],PDO::PARAM_STR);
+            $requete4->execute();
+            $data = $requete4 -> fetch();
+            $_SESSION["NBNOTE"] = $data;
+            if($_SESSION["NBNOTE"] == 0)
+            {
+                echo "kfdgljk,ng";
+            }
+            else{
+                $requete2 = $conn->prepare("SELECT IDNOTEFRAIS, PRENOM, NOM, EMPLOYE.MATRICULE, DATENOTEFRAIS, NOMSTATUT, DATENAISS, MATRICULE_ETRE_RESPONSABLE, ADMINI FROM NOTEFRAIS JOIN EMPLOYE ON EMPLOYE.MATRICULE = NOTEFRAIS.MATRICULE JOIN ETAPE_VALIDATION ON ETAPE_VALIDATION.MATRICULE = EMPLOYE.MATRICULE JOIN STATUT ON ETAPE_VALIDATION.IDSTATUT = STATUT.IDSTATUT WHERE EMPLOYE.MATRICULE = :matricule AND MDPCOMPTE=PASSWORD(:mdp);");
+                $requete2 ->bindValue(":matricule",$_SESSION["MATRICULE"],PDO::PARAM_STR);
+                $requete2 ->bindValue(":mdp",$_SESSION["MDP"],PDO::PARAM_STR);
+                $requete2->execute();
+                $data = $requete2->fetchALL(PDO::FETCH_ASSOC);
+            }
         } else {
             header("Location: index.php");
             exit();

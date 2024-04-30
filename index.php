@@ -22,7 +22,15 @@
     require("View/Index/headerIndex.php");
 ?>
 <br>
-<h1 class='central'>Bienvenue <?= $donnee['PRENOM'] . " " . $donnee['NOM'] . " " . "(" . $donnee['MATRICULE'] . ")" ?> !</h1>
+<?php
+    if($_SESSION["NBNOTE"] !=0)
+    {
+        echo "<h1 class='central'>Bienvenue" . " " . $donnee['PRENOM'] . " " . $donnee['NOM'] . " " . "(" . $donnee['MATRICULE'] . ")" . "! </h1>";    
+    }
+    else{
+        echo "<h1 class='central'>Bienvenue !</h1>";
+    }
+?>
 <?php
     require("View/Index/boutonIndex.php");
 ?>

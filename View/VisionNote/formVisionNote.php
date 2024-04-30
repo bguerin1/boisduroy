@@ -1,5 +1,52 @@
+<?php
+    try{
+        // Connexion à la base de donnée 
+        $servername="192.168.10.16";
+        $dbname="guerin2_bryan_boisduroy";
+        $username="guerin2_bryan";
+        $pwd="Bs9IP91a";
+        
+        $conn=new PDO("mysql:host=$servername;dbname=$dbname", $username,$pwd);
+        $requete=$conn ->prepare("SELECT MATRICULE,MDPCOMPTE FROM EMPLOYE WHERE MATRICULE = :matricule AND MDPCOMPTE=PASSWORD(:mdp);");
+        // On lie la variable $email définie au-dessus au paramètre :mail de la requête préparée
+        $requete->bindValue(':matricule', $_SESSION["MATRICULE"] , PDO::PARAM_STR);
+        $requete->bindValue(':mdp',$_SESSION["MDP"] , PDO::PARAM_STR);
+        //On exécute la requête
+        $requete->execute();
+        // On récupère le résultat
+        if ($requete->fetch()) {
+            // Vérification du nombre de notes de frais 
+            $requete2 = $conn->prepare("SELECT DATENOTEFRAIS, TYPEFRAIS, QUANTITE, COUTTOTAL, COUT FROM EMPLOYE JOIN NOTEFRAIS ON EMPLOYE.MATRICULE = NOTEFRAIS.MATRICULE JOIN LIGNENOTE ON NOTEFRAIS.IDNOTEFRAIS = LIGNENOTE.IDNOTEFRAIS JOIN TYPEFRAIS ON TYPEFRAIS.IDTYPEFRAIS = LIGNENOTE.IDTYPEFRAIS WHERE EMPLOYE.MATRICULE = :matricule AND MDPCOMPTE=PASSWORD(:mdp)");
+            $requete2 ->bindValue(":matricule",$_SESSION["MATRICULE"],PDO::PARAM_STR);
+            $requete2 ->bindValue(":mdp",$_SESSION["MDP"],PDO::PARAM_STR);
+            //$requete2 ->bindValue(":dateNoteFrais",$_SESSION["DATENOTEFRAIS"],PDO::PARAM_STR);
+            $requete2->execute();
+            $data = $requete2 -> fetchALL(PDO::FETCH_ASSOC);
+        } else {
+            header("Location: index.php");
+            exit();
+        }
+        //Fermeture de la connexion
+        $conn=null;
+     }
+     catch(PDOException $e){
+         echo "Erreur :" . $e ->getMessage();
+         echo "Le numéro de l'erreur est : " . $e ->getCode();
+         die;
+     }
+?>
+<?php 
+    foreach($data as $donnee)
+    {
+        $dateNoteFrais = $donnee["DATENOTEFRAIS"];
+        $typeFrais = $donnee["TYPEFRAIS"];
+        $quantite = $donnee["QUANTITE"];
+        $coutTotal = $donnee["COUTTOTAL"];
+        $cout = $donnee["COUT"];
+    }
+?>
 <div class="divdivCentralVision">
-    <h1>Note de frais du 15/03/2024</h1>
+    <h1>Note de frais du <?= $dateNoteFrais ?></h1>
     <div class="central-sectionVisionNote">
         <form action="" method="post">
             <table class="tableauFormSaisie">
@@ -7,7 +54,7 @@
                     <th><label for="date">Date :</label></th>
                     <td>    
                         <div>
-                            <input type="Date" name="date" id="date" required class="inputVision">
+                            <input type="Date" name="dateVision" id="dateVision" class="inputVision" value=<?=$dateNoteFrais ?> required readonly>
                         </div>
                     </td>
                 </tr>
@@ -15,7 +62,7 @@
                     <th><label for="employé">Employé :</label></th>
                     <td>
                         <div>
-                            <input type="text" name="employé" id="employé" required class="inputVision">
+                            <input type="text" name="employé" id="employé" class="inputVision" value=<?= $_SESSION["MATRICULE"]?> readonly required>
                         </div>
                     </td>
                 </tr>
@@ -32,23 +79,25 @@
                 <tr>
                     <td>
                         <div>
-                            <select name="typeFrais" id="typefrais" required class="inputVision">
+                            <!--<select name="typeFrais" id="typefrais" required class="inputVision" value=>
                             <option value="1">Frais Kilométriques</option>
                             <option value="2">Repas midi</option>
                             <option value="3">Repas soir</option>
                             <option value="4">Soir hors Paris</option>
                             <option value="5">Soir Paris</option>
                             </select>
+                        -->
+                        <input type="text" name="typeFrais" id="typeFrais" class="inputVision" value=<?= $typeFrais?> readonly required>
                         </div>
                     </td>
                     <td>
                         <div>
-                            <input type="number" name="quantite" id="quantite" required class="inputVision">
+                            <input type="number" name="quantite" id="quantite" class="inputVision" value=<?= $quantite?> readonly required>
                         </div>
                     </td>
                     <td>
                         <div>
-                            <input type="text" name="coutNoteFrais" id="coutNoteFrais" required class="inputVision">
+                            <input type="text" name="coutNoteFrais" id="coutNoteFrais" class="inputVision" value=<?= $cout?> required readonly>
                         </div>
                     </td>
                 </tr>
@@ -58,21 +107,75 @@
                     <th><label for="coutTotal">Coût Total : </label></th>
                     <td>
                         <div>
-                            <input type="number" name="coutTotal" id="coutTotal" class="inputVision">
+                            <input type="number" name="coutTotal" id="coutTotal" class="inputCoutTotal" value=<?= $coutTotal?> require readonly>
+                        </div>
+                    </td>
+                    <?php
+                        if($_SESSION["ADMINI"]==1)
+                        {
+                            echo "<td>";
+                                echo "<div>";
+                                    echo "<button name='btnValiderNote' id='btnValiderNote' class='buttonAll'>Valider</button>";
+                                echo "</div>";
+                            echo "</td>";
+                            echo "<td>";
+                                echo "<div>";
+                                    echo "<button name='btnRefuserNote' id='btnRefuserNote' class='buttonAll'> <a href='refus.php'>Refuser </a> </button>";
+                                echo "</div>";
+                            echo "</td>";
+                        }
+                        else{
+                            echo "<td>";
+                                echo "<div>";
+                                    echo "<button class='buttonAll'> <a href='index.php'>Annuler</a></button>";
+                                echo "</div>";
+                            echo "</td>";
+                            echo "<td>";
+                                echo "<div>";
+                                    echo "<button type='button' name='btnModifier' id='btnModifier' class='buttonAll' onclick='readOnly()'>Modifier</button>";
+                                echo "</div>";
+                            echo "</td>";
+                        }
+                    ?>
+                    <!--<td>
+                        <div>
+                            <button class="buttonAll"> <a href="index.php">Annuler</a></button>
                         </div>
                     </td>
                     <td>
                         <div>
-                            <button name="btnConnexion" id="btnConnexion" class="buttonAll"> <a href="pageConnexion.php">Annuler</a></button>
+                            <button type="button" name="btnModifier" id="btnModifier" class="buttonAll" onclick="readOnly()">Modifier</button>
                         </div>
                     </td>
+                    -->
                     <td>
-                        <div>
-                            <button type="submit" name="btnConnexion" id="btnConnexion" class="buttonAll">Valider</button>
+                        <div id="valider">
+                            <?php
+                                if(isset($_POST["validationButton"]))
+                                {
+                                    $conn=new PDO("mysql:host=$servername;dbname=$dbname", $username,$pwd);
+                                    $requete2 = $conn->prepare("UPDATE NOTEFRAIS SET DATENOTEFRAIS=:dateNoteFrais WHERE MATRICULE = :matricule AND DATENOTEFRAIS = :dateNoteFraisInsert;");
+                                    $requete2 ->bindValue(":dateNoteFrais",$_POST["dateVision"],PDO::PARAM_STR);
+                                    $requete2 ->bindValue(":matricule",$_SESSION["MATRICULE"],PDO::PARAM_STR);
+                                    $requete2 ->bindValue(":dateNoteFraisInsert",$_SESSION["DATENOTEFRAIS"],PDO::PARAM_STR);
+                                    $requete2->execute();
+
+                                    $requete2 = $conn->prepare("UPDATE LIGNENOTE JOIN NOTEFRAIS ON NOTEFRAIS.IDNOTEFRAIS = LIGNENOTE.IDNOTEFRAIS SET QUANTITE = :quantite, COUTTOTAL = :coutTotal, COUT=:cout WHERE MATRICULE = :matricule;");
+                                    //$requete2 ->bindValue(":typefrais",$_POST["typeFrais"],PDO::PARAM_STR);
+                                    $requete2 ->bindValue(":quantite",$_POST["quantite"],PDO::PARAM_STR);
+                                    $requete2 ->bindValue(":coutTotal",$_POST["coutTotal"],PDO::PARAM_STR);
+                                    $requete2 ->bindValue(":cout",$_POST["coutNoteFrais"],PDO::PARAM_STR);
+                                    
+                                    $requete2 ->bindValue(":matricule",$_SESSION["MATRICULE"],PDO::PARAM_STR);
+                                    $requete2->execute();
+                                    
+                                    $conn = null;
+                                }
+                            ?>
                         </div>
                     </td>
                 </tr>
             </table> 
-        </form> 
+        </form>
     </div>
 </div>

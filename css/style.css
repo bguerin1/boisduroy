@@ -23,6 +23,9 @@ html,body
 a{
     color:white;
 }
+.lienNote{
+    color:black;
+}
 .inner
 {
     width: 80%;
@@ -161,7 +164,7 @@ table{
 .central-sectionVisionNote{
     text-align:center;
     border: 2px solid black;
-    max-width: 1300px; /* Ajustez la largeur selon vos besoins */
+    max-width: 2000px; /* Ajustez la largeur selon vos besoins */
     margin: 0 auto; /* Centre la section horizontalement */
     height: 850px;;
     border-radius:30px;
@@ -193,6 +196,11 @@ table{
     padding: 9px;
     border: 2px black solid;
 
+}
+.inputCoutTotal{
+    width: 220px;
+    padding: 9px;
+    border: 2px black solid;
 }
 
 .inputConn{
