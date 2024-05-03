@@ -15,7 +15,7 @@
             else{
                 foreach($data as $donnee)
                 {
-                    
+                    $id=$donnee["IDNOTEFRAIS"];
                     echo "<tr>";
                         echo "<td>";
                             echo "<div>";
@@ -24,7 +24,7 @@
                         echo "</td>";     
                         echo "<td>";
                             echo "<div>";
-                                echo "<a href='visionNote.php' class='lienNote'><p>Note de frais de " . $donnee['PRENOM'] . " " . $donnee['NOM']. "</p> </a>";
+                                echo "<a href='visionNote.php?idNoteFrais=$id' class='lienNote'><p>Note de frais de " . $_SESSION['PRENOM'] . " " . $_SESSION['NOM']. "</p> </a>";
                             echo "</div>";
                         echo "</td>"; 
                         echo "<td>";
@@ -39,7 +39,7 @@
                         echo "</td>";
                         echo "<td>";
                             echo "<div>";
-                                echo "<p>1000 €</p>";
+                                echo "<p>" . $donnee["COUTTOTAL"] . "€" . "</p>";
                             echo "</div>";
                         echo "</td>";
                     echo "</tr>";

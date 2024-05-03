@@ -25,22 +25,37 @@
                     if ($requete->fetch()) {
                         
                         // Insertion de la note de frais
-                        $requete2 = $conn->prepare("INSERT INTO NOTEFRAIS VALUES(4,:matricule,:dateNoteFrais,:libellenotefrais);");
+                        $requete2 = $conn->prepare("INSERT INTO NOTEFRAIS VALUES(3,:matricule,:dateNoteFrais,:libellenotefrais);");
                         $requete2 -> bindValue(":matricule",$_SESSION["MATRICULE"],PDO::PARAM_STR);
                         $requete2 -> bindValue(":dateNoteFrais",$_POST["DATENOTEFRAIS"],PDO::PARAM_STR);
-                        $requete2 -> bindValue(":libellenotefrais","Note de frais",PDO::PARAM_STR);
+                        $requete2 -> bindValue(":libellenotefrais","",PDO::PARAM_STR);
                         $requete2->execute();
 
                         $idNoteFrais = $conn -> lastInsertId();
     
-                        $requete2 = $conn->prepare("INSERT INTO LIGNENOTE VALUES(:idNoteFrais,4,:typeFrais,:quantite,:couttotal,:cout);");
-                        $requete2 -> bindValue(":idNoteFrais",$idNoteFrais,PDO::PARAM_STR);
+                        // Insertion d'une ligne de note de frais
+
+                        $requete2 = $conn->prepare("INSERT INTO LIGNENOTE VALUES(3,1,:typeFrais,:quantite,:couttotal,:cout);");
+                        //$requete2 -> bindValue(":idNoteFrais",$idNoteFrais,PDO::PARAM_STR);
                         $requete2 -> bindValue(":typeFrais",$_POST["typeFrais"],PDO::PARAM_STR);
                         $requete2 -> bindValue(":quantite",$_POST["quantite"],PDO::PARAM_STR);
-                        $requete2 -> bindValue(":couttotal",$_POST["coutTotal"],PDO::PARAM_STR);
+                        $requete2 -> bindValue(":couttotal",$_POST["coutTotal"],PDO::PARAM_STR);  
                         $requete2 -> bindValue(":cout",$_POST["cout"],PDO::PARAM_STR);
-
                         $requete2->execute();
+
+                        // Insertion d'une étape de validation de la note de frais
+                        
+                        $requete2 = $conn->prepare("INSERT INTO ETAPE_VALIDATION VALUES(1,:matricule,0,3,NULL);");
+                        $requete2 -> bindValue(":matricule",$_SESSION["MATRICULE"],PDO::PARAM_STR);
+                        $requete2->execute();
+
+                        // Insertion dans la table VALIDER
+                        
+                        $requete2 = $conn->prepare("INSERT INTO VALIDER VALUES(3,3);");
+                        //$requete2 -> bindValue(":idEtapValid",$idNoteFrais,PDO::PARAM_STR);
+                        //$requete2 -> bindValue(":idNoteFrais",$idNoteFrais,PDO::PARAM_STR);
+                        $requete2->execute();
+
                         
                     } else {
                         header("Location: index.php");

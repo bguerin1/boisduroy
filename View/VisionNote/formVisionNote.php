@@ -15,13 +15,19 @@
         $requete->execute();
         // On récupère le résultat
         if ($requete->fetch()) {
-            // Vérification du nombre de notes de frais 
-            $requete2 = $conn->prepare("SELECT DATENOTEFRAIS, TYPEFRAIS, QUANTITE, COUTTOTAL, COUT FROM EMPLOYE JOIN NOTEFRAIS ON EMPLOYE.MATRICULE = NOTEFRAIS.MATRICULE JOIN LIGNENOTE ON NOTEFRAIS.IDNOTEFRAIS = LIGNENOTE.IDNOTEFRAIS JOIN TYPEFRAIS ON TYPEFRAIS.IDTYPEFRAIS = LIGNENOTE.IDTYPEFRAIS WHERE EMPLOYE.MATRICULE = :matricule AND MDPCOMPTE=PASSWORD(:mdp)");
-            $requete2 ->bindValue(":matricule",$_SESSION["MATRICULE"],PDO::PARAM_STR);
-            $requete2 ->bindValue(":mdp",$_SESSION["MDP"],PDO::PARAM_STR);
-            //$requete2 ->bindValue(":dateNoteFrais",$_SESSION["DATENOTEFRAIS"],PDO::PARAM_STR);
-            $requete2->execute();
-            $data = $requete2 -> fetchALL(PDO::FETCH_ASSOC);
+            if(isset($_GET["idNoteFrais"]))
+            {
+                // CAS A PREVOIR 
+                $requete2 = $conn->prepare("SELECT NOTEFRAIS.IDNOTEFRAIS AS IDNOTEFRAIS,DATENOTEFRAIS, TYPEFRAIS, QUANTITE, COUTTOTAL, COUT FROM NOTEFRAIS JOIN LIGNENOTE ON NOTEFRAIS.IDNOTEFRAIS = LIGNENOTE.IDNOTEFRAIS JOIN TYPEFRAIS ON TYPEFRAIS.IDTYPEFRAIS = LIGNENOTE.IDTYPEFRAIS WHERE MATRICULE = :matricule AND NOTEFRAIS.IDNOTEFRAIS=:idNoteFrais;");
+                $requete2 ->bindValue(":matricule",$_SESSION["MATRICULE"],PDO::PARAM_STR);
+                $requete2 ->bindValue(":idNoteFrais",$_GET["idNoteFrais"],PDO::PARAM_STR);
+                $requete2->execute();
+                $data = $requete2 -> fetchALL(PDO::FETCH_ASSOC);
+            }
+            else{
+                header("Location: index.php");
+                exit();
+            }
         } else {
             header("Location: index.php");
             exit();
@@ -46,7 +52,7 @@
     }
 ?>
 <div class="divdivCentralVision">
-    <h1>Note de frais du <?= $dateNoteFrais ?></h1>
+    <h1>Note de frais du <?= $donnee["DATENOTEFRAIS"]?></h1>
     <div class="central-sectionVisionNote">
         <form action="" method="post">
             <table class="tableauFormSaisie">
@@ -54,7 +60,7 @@
                     <th><label for="date">Date :</label></th>
                     <td>    
                         <div>
-                            <input type="Date" name="dateVision" id="dateVision" class="inputVision" value=<?=$dateNoteFrais ?> required readonly>
+                            <input type="Date" name="dateVision" id="dateVision" class="inputVision" value=<?=$donnee["DATENOTEFRAIS"] ?> required readonly>
                         </div>
                     </td>
                 </tr>
@@ -137,36 +143,26 @@
                             echo "</td>";
                         }
                     ?>
-                    <!--<td>
-                        <div>
-                            <button class="buttonAll"> <a href="index.php">Annuler</a></button>
-                        </div>
-                    </td>
-                    <td>
-                        <div>
-                            <button type="button" name="btnModifier" id="btnModifier" class="buttonAll" onclick="readOnly()">Modifier</button>
-                        </div>
-                    </td>
-                    -->
                     <td>
                         <div id="valider">
                             <?php
                                 if(isset($_POST["validationButton"]))
                                 {
                                     $conn=new PDO("mysql:host=$servername;dbname=$dbname", $username,$pwd);
-                                    $requete2 = $conn->prepare("UPDATE NOTEFRAIS SET DATENOTEFRAIS=:dateNoteFrais WHERE MATRICULE = :matricule AND DATENOTEFRAIS = :dateNoteFraisInsert;");
+                                    $requete2 = $conn->prepare("UPDATE NOTEFRAIS SET DATENOTEFRAIS=:dateNoteFrais WHERE MATRICULE = :matricule AND IDNOTEFRAIS=:idNoteFrais;");
                                     $requete2 ->bindValue(":dateNoteFrais",$_POST["dateVision"],PDO::PARAM_STR);
                                     $requete2 ->bindValue(":matricule",$_SESSION["MATRICULE"],PDO::PARAM_STR);
-                                    $requete2 ->bindValue(":dateNoteFraisInsert",$_SESSION["DATENOTEFRAIS"],PDO::PARAM_STR);
+                                    $requete2 ->bindValue(":idNoteFrais",$_GET["idNoteFrais"],PDO::PARAM_STR);
                                     $requete2->execute();
 
-                                    $requete2 = $conn->prepare("UPDATE LIGNENOTE JOIN NOTEFRAIS ON NOTEFRAIS.IDNOTEFRAIS = LIGNENOTE.IDNOTEFRAIS SET QUANTITE = :quantite, COUTTOTAL = :coutTotal, COUT=:cout WHERE MATRICULE = :matricule;");
+                                    $requete2 = $conn->prepare("UPDATE LIGNENOTE JOIN NOTEFRAIS ON NOTEFRAIS.IDNOTEFRAIS = LIGNENOTE.IDNOTEFRAIS SET QUANTITE = :quantite, COUTTOTAL = :coutTotal, COUT=:cout WHERE MATRICULE = :matricule AND NOTEFRAIS.IDNOTEFRAIS=:idNoteFrais;");
                                     //$requete2 ->bindValue(":typefrais",$_POST["typeFrais"],PDO::PARAM_STR);
                                     $requete2 ->bindValue(":quantite",$_POST["quantite"],PDO::PARAM_STR);
                                     $requete2 ->bindValue(":coutTotal",$_POST["coutTotal"],PDO::PARAM_STR);
                                     $requete2 ->bindValue(":cout",$_POST["coutNoteFrais"],PDO::PARAM_STR);
                                     
                                     $requete2 ->bindValue(":matricule",$_SESSION["MATRICULE"],PDO::PARAM_STR);
+                                    $requete2 ->bindValue(":idNoteFrais",$_GET["idNoteFrais"],PDO::PARAM_STR);
                                     $requete2->execute();
                                     
                                     $conn = null;

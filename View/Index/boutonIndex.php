@@ -54,27 +54,24 @@
                                 {
                                     case 1:
                                         $conn=new PDO("mysql:host=$servername;dbname=$dbname", $username,$pwd);
-                                        $requete3 = $conn->prepare("SELECT IDNOTEFRAIS, PRENOM, NOM, EMPLOYE.MATRICULE, DATENOTEFRAIS, NOMSTATUT, DATENAISS, MATRICULE_ETRE_RESPONSABLE FROM NOTEFRAIS JOIN EMPLOYE ON EMPLOYE.MATRICULE = NOTEFRAIS.MATRICULE JOIN ETAPE_VALIDATION ON ETAPE_VALIDATION.MATRICULE = EMPLOYE.MATRICULE JOIN STATUT ON ETAPE_VALIDATION.IDSTATUT = STATUT.IDSTATUT WHERE EMPLOYE.MATRICULE = :matricule AND MDPCOMPTE=PASSWORD(:mdp) ORDER BY DATENOTEFRAIS DESC;");
+                                        $requete3 = $conn->prepare("SELECT NOTEFRAIS.IDNOTEFRAIS,DATE_FORMAT(DATENOTEFRAIS, '%d-%m-%Y') AS DATENOTEFRAIS, NOMSTATUT, COUTTOTAL FROM NOTEFRAIS JOIN VALIDER ON VALIDER.IDNOTEFRAIS = NOTEFRAIS.IDNOTEFRAIS JOIN LIGNENOTE ON LIGNENOTE.IDNOTEFRAIS=NOTEFRAIS.IDNOTEFRAIS JOIN ETAPE_VALIDATION ON ETAPE_VALIDATION.IDETAPVALID = VALIDER.IDETAPVALID JOIN STATUT ON STATUT.IDSTATUT = ETAPE_VALIDATION.IDSTATUT WHERE NOTEFRAIS.MATRICULE = :matricule ORDER BY DATENOTEFRAIS DESC;");
                                         $requete3 ->bindValue(":matricule",$_SESSION["MATRICULE"],PDO::PARAM_STR);
-                                        $requete3 ->bindValue(":mdp",$_SESSION["MDP"],PDO::PARAM_STR);
                                         $requete3->execute();
                                         $data = $requete3->fetchALL(PDO::FETCH_ASSOC);
                                         $conn = null;
                                         break;
                                     case 2:
                                         $conn=new PDO("mysql:host=$servername;dbname=$dbname", $username,$pwd);
-                                        $requete3 = $conn->prepare("SELECT IDNOTEFRAIS, PRENOM, NOM, EMPLOYE.MATRICULE, DATENOTEFRAIS, NOMSTATUT, DATENAISS, MATRICULE_ETRE_RESPONSABLE FROM NOTEFRAIS JOIN EMPLOYE ON EMPLOYE.MATRICULE = NOTEFRAIS.MATRICULE JOIN ETAPE_VALIDATION ON ETAPE_VALIDATION.MATRICULE = EMPLOYE.MATRICULE JOIN STATUT ON ETAPE_VALIDATION.IDSTATUT = STATUT.IDSTATUT WHERE EMPLOYE.MATRICULE = :matricule AND MDPCOMPTE=PASSWORD(:mdp);");
+                                        $requete3 = $conn->prepare("SELECT NOTEFRAIS.IDNOTEFRAIS, DATE_FORMAT(DATENOTEFRAIS, '%d-%m-%Y') AS DATENOTEFRAIS, NOMSTATUT, COUTTOTAL FROM NOTEFRAIS JOIN VALIDER ON VALIDER.IDNOTEFRAIS = NOTEFRAIS.IDNOTEFRAIS JOIN LIGNENOTE ON LIGNENOTE.IDNOTEFRAIS=NOTEFRAIS.IDNOTEFRAIS JOIN ETAPE_VALIDATION ON ETAPE_VALIDATION.IDETAPVALID = VALIDER.IDETAPVALID JOIN STATUT ON STATUT.IDSTATUT = ETAPE_VALIDATION.IDSTATUT WHERE NOTEFRAIS.MATRICULE = :matricule ORDER BY COUTTOTAL DESC;");
                                         $requete3 ->bindValue(":matricule",$_SESSION["MATRICULE"],PDO::PARAM_STR);
-                                        $requete3 ->bindValue(":mdp",$_SESSION["MDP"],PDO::PARAM_STR);
                                         $requete3->execute();
                                         $data = $requete3->fetchALL(PDO::FETCH_ASSOC);
                                         $conn = null;
                                         break;
                                     case 3:
                                         $conn=new PDO("mysql:host=$servername;dbname=$dbname", $username,$pwd);
-                                        $requete3 = $conn->prepare("SELECT IDNOTEFRAIS, PRENOM, NOM, EMPLOYE.MATRICULE, DATENOTEFRAIS, NOMSTATUT, DATENAISS, MATRICULE_ETRE_RESPONSABLE FROM NOTEFRAIS JOIN EMPLOYE ON EMPLOYE.MATRICULE = NOTEFRAIS.MATRICULE JOIN ETAPE_VALIDATION ON ETAPE_VALIDATION.MATRICULE = EMPLOYE.MATRICULE JOIN STATUT ON ETAPE_VALIDATION.IDSTATUT = STATUT.IDSTATUT WHERE EMPLOYE.MATRICULE = :matricule AND MDPCOMPTE=PASSWORD(:mdp) ORDER BY NOMSTATUT;");
+                                        $requete3 = $conn->prepare("SELECT NOTEFRAIS.IDNOTEFRAIS, DATE_FORMAT(DATENOTEFRAIS, '%d-%m-%Y') AS DATENOTEFRAIS, NOMSTATUT, COUTTOTAL FROM NOTEFRAIS JOIN VALIDER ON VALIDER.IDNOTEFRAIS = NOTEFRAIS.IDNOTEFRAIS JOIN LIGNENOTE ON LIGNENOTE.IDNOTEFRAIS=NOTEFRAIS.IDNOTEFRAIS JOIN ETAPE_VALIDATION ON ETAPE_VALIDATION.IDETAPVALID = VALIDER.IDETAPVALID JOIN STATUT ON STATUT.IDSTATUT = ETAPE_VALIDATION.IDSTATUT WHERE NOTEFRAIS.MATRICULE = :matricule ORDER BY NOMSTATUT;");
                                         $requete3 ->bindValue(":matricule",$_SESSION["MATRICULE"],PDO::PARAM_STR);
-                                        $requete3 ->bindValue(":mdp",$_SESSION["MDP"],PDO::PARAM_STR);
                                         $requete3->execute();
                                         $data = $requete3->fetchALL(PDO::FETCH_ASSOC);
                                         $conn = null;
@@ -86,21 +83,24 @@
                                 {
                                     case 1:
                                         $conn=new PDO("mysql:host=$servername;dbname=$dbname", $username,$pwd);
-                                        $requete3= $conn->prepare("SELECT IDNOTEFRAIS, PRENOM, NOM, EMPLOYE.MATRICULE, DATENOTEFRAIS, NOMSTATUT, DATENAISS, MATRICULE_ETRE_RESPONSABLE FROM NOTEFRAIS JOIN EMPLOYE ON EMPLOYE.MATRICULE = NOTEFRAIS.MATRICULE JOIN ETAPE_VALIDATION ON ETAPE_VALIDATION.MATRICULE = EMPLOYE.MATRICULE JOIN STATUT ON ETAPE_VALIDATION.IDSTATUT = STATUT.IDSTATUT ORDER BY DATENOTEFRAIS DESC;");
+                                        $requete3 = $conn->prepare("SELECT NOTEFRAIS.IDNOTEFRAIS, DATE_FORMAT(DATENOTEFRAIS, '%d-%m-%Y') AS DATENOTEFRAIS, NOMSTATUT, COUTTOTAL FROM NOTEFRAIS JOIN VALIDER ON VALIDER.IDNOTEFRAIS = NOTEFRAIS.IDNOTEFRAIS JOIN LIGNENOTE ON LIGNENOTE.IDNOTEFRAIS=NOTEFRAIS.IDNOTEFRAIS JOIN ETAPE_VALIDATION ON ETAPE_VALIDATION.IDETAPVALID = VALIDER.IDETAPVALID JOIN STATUT ON STATUT.IDSTATUT = ETAPE_VALIDATION.IDSTATUT WHERE NOTEFRAIS.MATRICULE != :matricule ORDER BY DATENOTEFRAIS DESC;");
+                                        $requete3 ->bindValue(":matricule",$_SESSION["MATRICULE"],PDO::PARAM_STR);
                                         $requete3->execute();
                                         $data = $requete3->fetchALL(PDO::FETCH_ASSOC);
                                         $conn = null;
                                         break;
                                     case 2:
                                         $conn=new PDO("mysql:host=$servername;dbname=$dbname", $username,$pwd);
-                                        $requete3 = $conn->prepare("SELECT IDNOTEFRAIS, PRENOM, NOM, EMPLOYE.MATRICULE, DATENOTEFRAIS, NOMSTATUT, DATENAISS, MATRICULE_ETRE_RESPONSABLE FROM NOTEFRAIS JOIN EMPLOYE ON EMPLOYE.MATRICULE = NOTEFRAIS.MATRICULE JOIN ETAPE_VALIDATION ON ETAPE_VALIDATION.MATRICULE = EMPLOYE.MATRICULE JOIN STATUT ON ETAPE_VALIDATION.IDSTATUT = STATUT.IDSTATUT;");
+                                        $requete3 = $conn->prepare("SELECT NOTEFRAIS.IDNOTEFRAIS, DATE_FORMAT(DATENOTEFRAIS, '%d-%m-%Y') AS DATENOTEFRAIS, NOMSTATUT, COUTTOTAL FROM NOTEFRAIS JOIN VALIDER ON VALIDER.IDNOTEFRAIS = NOTEFRAIS.IDNOTEFRAIS JOIN LIGNENOTE ON LIGNENOTE.IDNOTEFRAIS=NOTEFRAIS.IDNOTEFRAIS JOIN ETAPE_VALIDATION ON ETAPE_VALIDATION.IDETAPVALID = VALIDER.IDETAPVALID JOIN STATUT ON STATUT.IDSTATUT = ETAPE_VALIDATION.IDSTATUT WHERE NOTEFRAIS.MATRICULE != :matricule ORDER BY COUTTOTAL DESC;");
+                                        $requete3 ->bindValue(":matricule",$_SESSION["MATRICULE"],PDO::PARAM_STR);
                                         $requete3->execute();
                                         $data = $requete3->fetchALL(PDO::FETCH_ASSOC);
                                         $conn = null;
                                         break;
                                     case 3:
                                         $conn=new PDO("mysql:host=$servername;dbname=$dbname", $username,$pwd);
-                                        $requete3 = $conn->prepare("SELECT IDNOTEFRAIS, PRENOM, NOM, EMPLOYE.MATRICULE, DATENOTEFRAIS, NOMSTATUT, DATENAISS, MATRICULE_ETRE_RESPONSABLE FROM NOTEFRAIS JOIN EMPLOYE ON EMPLOYE.MATRICULE = NOTEFRAIS.MATRICULE JOIN ETAPE_VALIDATION ON ETAPE_VALIDATION.MATRICULE = EMPLOYE.MATRICULE JOIN STATUT ON ETAPE_VALIDATION.IDSTATUT = STATUT.IDSTATUT ORDER BY NOMSTATUT;");
+                                        $requete3 = $conn->prepare("SELECT NOTEFRAIS.IDNOTEFRAIS, DATE_FORMAT(DATENOTEFRAIS, '%d-%m-%Y') AS DATENOTEFRAIS, NOMSTATUT, COUTTOTAL FROM NOTEFRAIS JOIN VALIDER ON VALIDER.IDNOTEFRAIS = NOTEFRAIS.IDNOTEFRAIS JOIN LIGNENOTE ON LIGNENOTE.IDNOTEFRAIS=NOTEFRAIS.IDNOTEFRAIS JOIN ETAPE_VALIDATION ON ETAPE_VALIDATION.IDETAPVALID = VALIDER.IDETAPVALID JOIN STATUT ON STATUT.IDSTATUT = ETAPE_VALIDATION.IDSTATUT WHERE NOTEFRAIS.MATRICULE != :matricule ORDER BY NOMSTATUT;");
+                                        $requete3 ->bindValue(":matricule",$_SESSION["MATRICULE"],PDO::PARAM_STR);
                                         $requete3->execute();
                                         $data = $requete3->fetchALL(PDO::FETCH_ASSOC);
                                         $conn = null;
@@ -116,27 +116,24 @@
                             {
                                 case 1:
                                     $conn=new PDO("mysql:host=$servername;dbname=$dbname", $username,$pwd);
-                                    $requete3 = $conn->prepare("SELECT IDNOTEFRAIS, PRENOM, NOM, EMPLOYE.MATRICULE, DATENOTEFRAIS, NOMSTATUT, DATENAISS, MATRICULE_ETRE_RESPONSABLE FROM NOTEFRAIS JOIN EMPLOYE ON EMPLOYE.MATRICULE = NOTEFRAIS.MATRICULE JOIN ETAPE_VALIDATION ON ETAPE_VALIDATION.MATRICULE = EMPLOYE.MATRICULE JOIN STATUT ON ETAPE_VALIDATION.IDSTATUT = STATUT.IDSTATUT WHERE EMPLOYE.MATRICULE = :matricule AND MDPCOMPTE=PASSWORD(:mdp) ORDER BY DATENOTEFRAIS DESC;");
+                                    $requete3 = $conn->prepare("SELECT NOTEFRAIS.IDNOTEFRAIS, DATE_FORMAT(DATENOTEFRAIS, '%d-%m-%Y') AS DATENOTEFRAIS, NOMSTATUT, COUTTOTAL FROM NOTEFRAIS JOIN VALIDER ON VALIDER.IDNOTEFRAIS = NOTEFRAIS.IDNOTEFRAIS JOIN LIGNENOTE ON LIGNENOTE.IDNOTEFRAIS=NOTEFRAIS.IDNOTEFRAIS JOIN ETAPE_VALIDATION ON ETAPE_VALIDATION.IDETAPVALID = VALIDER.IDETAPVALID JOIN STATUT ON STATUT.IDSTATUT = ETAPE_VALIDATION.IDSTATUT WHERE NOTEFRAIS.MATRICULE = :matricule ORDER BY DATENOTEFRAIS DESC;");
                                     $requete3 ->bindValue(":matricule",$_SESSION["MATRICULE"],PDO::PARAM_STR);
-                                    $requete3 ->bindValue(":mdp",$_SESSION["MDP"],PDO::PARAM_STR);
                                     $requete3->execute();
                                     $data = $requete3->fetchALL(PDO::FETCH_ASSOC);
                                     $conn = null;
                                     break;
                                 case 2:
                                     $conn=new PDO("mysql:host=$servername;dbname=$dbname", $username,$pwd);
-                                    $requete3 = $conn->prepare("SELECT IDNOTEFRAIS, PRENOM, NOM, EMPLOYE.MATRICULE, DATENOTEFRAIS, NOMSTATUT, DATENAISS, MATRICULE_ETRE_RESPONSABLE FROM NOTEFRAIS JOIN EMPLOYE ON EMPLOYE.MATRICULE = NOTEFRAIS.MATRICULE JOIN ETAPE_VALIDATION ON ETAPE_VALIDATION.MATRICULE = EMPLOYE.MATRICULE JOIN STATUT ON ETAPE_VALIDATION.IDSTATUT = STATUT.IDSTATUT WHERE EMPLOYE.MATRICULE = :matricule AND MDPCOMPTE=PASSWORD(:mdp);");
+                                    $requete3 = $conn->prepare("SELECT NOTEFRAIS.IDNOTEFRAIS, DATE_FORMAT(DATENOTEFRAIS, '%d-%m-%Y') AS DATENOTEFRAIS, NOMSTATUT, COUTTOTAL FROM NOTEFRAIS JOIN VALIDER ON VALIDER.IDNOTEFRAIS = NOTEFRAIS.IDNOTEFRAIS JOIN LIGNENOTE ON LIGNENOTE.IDNOTEFRAIS=NOTEFRAIS.IDNOTEFRAIS JOIN ETAPE_VALIDATION ON ETAPE_VALIDATION.IDETAPVALID = VALIDER.IDETAPVALID JOIN STATUT ON STATUT.IDSTATUT = ETAPE_VALIDATION.IDSTATUT WHERE NOTEFRAIS.MATRICULE = :matricule ORDER BY COUTTOTAL DESC;");
                                     $requete3 ->bindValue(":matricule",$_SESSION["MATRICULE"],PDO::PARAM_STR);
-                                    $requete3 ->bindValue(":mdp",$_SESSION["MDP"],PDO::PARAM_STR);
                                     $requete3->execute();
                                     $data = $requete3->fetchALL(PDO::FETCH_ASSOC);
                                     $conn = null;
                                     break;
                                 case 3:
                                     $conn=new PDO("mysql:host=$servername;dbname=$dbname", $username,$pwd);
-                                    $requete3 = $conn->prepare("SELECT IDNOTEFRAIS, PRENOM, NOM, EMPLOYE.MATRICULE, DATENOTEFRAIS, NOMSTATUT, DATENAISS, MATRICULE_ETRE_RESPONSABLE FROM NOTEFRAIS JOIN EMPLOYE ON EMPLOYE.MATRICULE = NOTEFRAIS.MATRICULE JOIN ETAPE_VALIDATION ON ETAPE_VALIDATION.MATRICULE = EMPLOYE.MATRICULE JOIN STATUT ON ETAPE_VALIDATION.IDSTATUT = STATUT.IDSTATUT WHERE EMPLOYE.MATRICULE = :matricule AND MDPCOMPTE=PASSWORD(:mdp) ORDER BY NOMSTATUT;");
+                                    $requete3 = $conn->prepare("SELECT NOTEFRAIS.IDNOTEFRAIS, DATE_FORMAT(DATENOTEFRAIS, '%d-%m-%Y') AS DATENOTEFRAIS, NOMSTATUT, COUTTOTAL FROM NOTEFRAIS JOIN VALIDER ON VALIDER.IDNOTEFRAIS = NOTEFRAIS.IDNOTEFRAIS JOIN LIGNENOTE ON LIGNENOTE.IDNOTEFRAIS=NOTEFRAIS.IDNOTEFRAIS JOIN ETAPE_VALIDATION ON ETAPE_VALIDATION.IDETAPVALID = VALIDER.IDETAPVALID JOIN STATUT ON STATUT.IDSTATUT = ETAPE_VALIDATION.IDSTATUT WHERE NOTEFRAIS.MATRICULE = :matricule ORDER BY NOMSTATUT;");
                                     $requete3 ->bindValue(":matricule",$_SESSION["MATRICULE"],PDO::PARAM_STR);
-                                    $requete3 ->bindValue(":mdp",$_SESSION["MDP"],PDO::PARAM_STR);
                                     $requete3->execute();
                                     $data = $requete3->fetchALL(PDO::FETCH_ASSOC);
                                     $conn = null;
