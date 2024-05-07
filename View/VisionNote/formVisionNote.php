@@ -18,7 +18,7 @@
             if(isset($_GET["idNoteFrais"]))
             {
                 // CAS A PREVOIR 
-                $requete2 = $conn->prepare("SELECT NOTEFRAIS.MATRICULE, RAISONREFUS, NOTEFRAIS.IDNOTEFRAIS AS IDNOTEFRAIS,DATENOTEFRAIS, TYPEFRAIS, QUANTITE, COUTTOTAL, COUT, IDSTATUT FROM NOTEFRAIS JOIN LIGNENOTE ON NOTEFRAIS.IDNOTEFRAIS = LIGNENOTE.IDNOTEFRAIS JOIN VALIDER ON VALIDER.IDNOTEFRAIS = NOTEFRAIS.IDNOTEFRAIS JOIN ETAPE_VALIDATION ON ETAPE_VALIDATION.IDETAPVALID = VALIDER.IDETAPVALID JOIN TYPEFRAIS ON TYPEFRAIS.IDTYPEFRAIS = LIGNENOTE.IDTYPEFRAIS WHERE NOTEFRAIS.MATRICULE =:matricule AND NOTEFRAIS.IDNOTEFRAIS=:idNoteFrais;");
+                $requete2 = $conn->prepare("SELECT NOTEFRAIS.MATRICULE, RAISONREFUS, NOTEFRAIS.IDNOTEFRAIS AS IDNOTEFRAIS,DATENOTEFRAIS, TYPEFRAIS, QUANTITE, COUTTOTAL, IDSTATUT FROM NOTEFRAIS JOIN LIGNENOTE ON NOTEFRAIS.IDNOTEFRAIS = LIGNENOTE.IDNOTEFRAIS JOIN VALIDER ON VALIDER.IDNOTEFRAIS = NOTEFRAIS.IDNOTEFRAIS JOIN ETAPE_VALIDATION ON ETAPE_VALIDATION.IDETAPVALID = VALIDER.IDETAPVALID JOIN TYPEFRAIS ON TYPEFRAIS.IDTYPEFRAIS = LIGNENOTE.IDTYPEFRAIS WHERE NOTEFRAIS.MATRICULE =:matricule AND NOTEFRAIS.IDNOTEFRAIS=:idNoteFrais;");
                 $requete2 ->bindValue(":matricule",$_SESSION["MATRICULE"],PDO::PARAM_STR);
                 $requete2 ->bindValue(":idNoteFrais",$_GET["idNoteFrais"],PDO::PARAM_STR);
                 $requete2->execute();
@@ -54,7 +54,7 @@
         $typeFrais = $donnee["TYPEFRAIS"];
         $quantite = $donnee["QUANTITE"];
         $coutTotal = $donnee["COUTTOTAL"];
-        $cout = $donnee["COUT"];
+        /*$cout = $donnee["COUT"];*/
         $statut = $donnee["IDSTATUT"];
         $matricule = $donnee["MATRICULE"];
         $raisonRefus = $donnee["RAISONREFUS"];
@@ -89,7 +89,7 @@
                         <label for="typeFrais">Type de frais</label>
                     </th>
                     <th><label for="typeFrais">Quantité</label></th>
-                    <th> <label for="coutNoteFrais">Coûts</label></th>
+                    <!--<th> <label for="coutNoteFrais">Coûts</label></th>-->
                 </tr>
                 <tr>
                     <td>
@@ -110,11 +110,12 @@
                             <input type="number" name="quantite" id="quantite" class="inputVision" value=<?= $quantite?> readonly required>
                         </div>
                     </td>
-                    <td>
+                    <!--<td>
                         <div>
                             <input type="text" name="coutNoteFrais" id="coutNoteFrais" class="inputVision" value=<?= $cout?> required readonly>
                         </div>
                     </td>
+                    -->
                 </tr>
             </table>
             <table class="tableauFormSaisie">
@@ -179,20 +180,49 @@
                         else{
                             echo "<td>";
                                 echo "<div>";
-                                    echo "<button class='buttonAll'> <a href='index.php'>Annuler</a></button>";
+                                    echo "<button class='buttonAll'> <a href='index.php'>Retour</a></button>";
                                 echo "</div>";
                             echo "</td>";
                             echo "<td>";
-                                echo "<div>";
-                                    echo "<button type='button' name='btnModifier' id='btnModifier' class='buttonAll' onclick='readOnly()'>Modifier</button>";
-                                echo "</div>";
+                                echo "<form action='' method='post'>";
+                                    echo "<div>";
+                                        echo "<button type='submit' name='btnAnnuler' id='btnAnnuler' class='buttonAll'>Annuler la note</button>";
+                                    echo "</div>";
+                                echo "</form>";
                             echo "</td>";
+                            if(isset($_POST["btnAnnuler"]))
+                            {
+                                $conn=new PDO("mysql:host=$servername;dbname=$dbname", $username,$pwd);
+                                
+                                // SUPPRESSION DANS LA TABLE LIGNENOTE 
+
+                                $requete5 = $conn->prepare("DELETE FROM LIGNENOTE WHERE IDNOTEFRAIS=:idNoteFrais;");
+                                $requete5 ->bindValue(":idNoteFrais",$_GET["idNoteFrais"],PDO::PARAM_STR);
+                                $requete5->execute();
+
+                                // SUPPRESSION DANS LA TABLE VALIDER
+
+                                $requete6 = $conn->prepare("DELETE FROM VALIDER WHERE IDNOTEFRAIS=:idNoteFrais;");
+                                $requete6 ->bindValue(":idNoteFrais",$_GET["idNoteFrais"],PDO::PARAM_STR);
+                                $requete6->execute();
+
+                                // SUPPRESSION DANS LA TABLE ETAPE_VALIDATION
+                                $requete7 = $conn->prepare("DELETE FROM ETAPE_VALIDATION JOIN VALIDER ON VALIDER.IDETAPVALID = ETAPE_VALIDATION.IDETAPVALID WHERE IDNOTEFRAIS=:idNoteFrais;");
+                                $requete7 ->bindValue(":idNoteFrais",$_GET["idNoteFrais"],PDO::PARAM_STR);
+                                $requete7->execute();
+
+                                // SUPPRESSION DE LA NOTE DE FRAIS
+
+                                $requete4 = $conn->prepare("DELETE FROM NOTEFRAIS WHERE IDNOTEFRAIS=:idNoteFrais;");
+                                $requete4 ->bindValue(":idNoteFrais",$_GET["idNoteFrais"],PDO::PARAM_STR);
+                                $requete4->execute();
+                            }   
                         }
                     ?>
                     <td>
-                        <div id="valider">
+                        <!--<div id="valider">
                             <?php
-                                if(isset($_POST["validationButton"]))
+                                /*if(isset($_POST["validationButton"]))
                                 {
                                     $conn=new PDO("mysql:host=$servername;dbname=$dbname", $username,$pwd);
                                     $requete2 = $conn->prepare("UPDATE NOTEFRAIS SET DATENOTEFRAIS=:dateNoteFrais WHERE MATRICULE = :matricule AND IDNOTEFRAIS=:idNoteFrais;");
@@ -201,7 +231,7 @@
                                     $requete2 ->bindValue(":idNoteFrais",$_GET["idNoteFrais"],PDO::PARAM_STR);
                                     $requete2->execute();
 
-                                    $requete2 = $conn->prepare("UPDATE LIGNENOTE JOIN NOTEFRAIS ON NOTEFRAIS.IDNOTEFRAIS = LIGNENOTE.IDNOTEFRAIS SET QUANTITE = :quantite, COUTTOTAL = :coutTotal, COUT=:cout WHERE MATRICULE = :matricule AND NOTEFRAIS.IDNOTEFRAIS=:idNoteFrais;");
+                                    $requete2 = $conn->prepare("UPDATE LIGNENOTE JOIN NOTEFRAIS ON NOTEFRAIS.IDNOTEFRAIS = LIGNENOTE.IDNOTEFRAIS SET QUANTITE = :quantite WHERE MATRICULE = :matricule AND NOTEFRAIS.IDNOTEFRAIS=:idNoteFrais;");
                                     //$requete2 ->bindValue(":typefrais",$_POST["typeFrais"],PDO::PARAM_STR);
                                     $requete2 ->bindValue(":quantite",$_POST["quantite"],PDO::PARAM_STR);
                                     $requete2 ->bindValue(":coutTotal",$_POST["coutTotal"],PDO::PARAM_STR);
@@ -212,9 +242,10 @@
                                     $requete2->execute();
                                     
                                     $conn = null;
-                                }
+                                }*/
                             ?>
                         </div>
+                        -->
                     </td>
                 </tr>
             </table> 

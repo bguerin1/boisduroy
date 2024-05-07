@@ -32,14 +32,24 @@
                         $requete2->execute();
 
                         $idNoteFrais = $conn -> lastInsertId();
-    
+                        
+                        // Choisir le type de frais 
+
+                        $requeteFrais = $conn->prepare("SELECT REMBOURSEMENTTYPEFRAIS FROM TYPEFRAIS WHERE IDTYPEFRAIS=:idTypeFrais;");
+                        $requeteFrais -> bindValue(":idTypeFrais",$_POST["typeFrais"],PDO::PARAM_STR);
+                        $requeteFrais->execute();
+                        $data = $requeteFrais -> fetch();
+
+                        $quantite = $_POST["quantite"];
+                        $coutTotal =  $quantite * $data["REMBOURSEMENTTYPEFRAIS"];
+
                         // Insertion d'une ligne de note de frais
 
-                        $requete2 = $conn->prepare("INSERT INTO LIGNENOTE VALUES(:idNoteFrais,1,:typeFrais,:quantite,:couttotal);");
+                        $requete2 = $conn->prepare("INSERT INTO LIGNENOTE VALUES(:idNoteFrais,1,:typeFrais,:quantite,:coutTotal);");
                         $requete2 -> bindValue(":idNoteFrais",$idNoteFrais,PDO::PARAM_STR);
                         $requete2 -> bindValue(":typeFrais",$_POST["typeFrais"],PDO::PARAM_STR);
-                        $requete2 -> bindValue(":quantite",$_POST["quantite"],PDO::PARAM_STR);
-                        $requete2 -> bindValue(":couttotal",$_POST["coutTotal"],PDO::PARAM_STR);  
+                        $requete2 -> bindValue(":quantite",$quantite,PDO::PARAM_STR);
+                        $requete2 -> bindValue(":coutTotal",$coutTotal,PDO::PARAM_STR);
                         
                         $requete2->execute();
 
