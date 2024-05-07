@@ -129,6 +129,14 @@
                                     echo "<button name='btnRefuserNote' id='btnRefuserNote' class='buttonAll'> <a href='refus.php'>Refuser </a> </button>";
                                 echo "</div>";
                             echo "</td>";
+                            if(isset($_POST["btnValiderNote"]))
+                            {
+                                $conn=new PDO("mysql:host=$servername;dbname=$dbname", $username,$pwd);
+                                $requete3 = $conn->prepare("UPDATE ETAPE_VALIDATION JOIN VALIDER ON VALIDER.IDETAPVALID = ETAPE_VALIDATION.IDETAPVALID SET IDSTATUT=2 WHERE MATRICULE = :matricule AND IDNOTEFRAIS=:idNoteFrais;");
+                                $requete3 ->bindValue(":matricule",$_SESSION["MATRICULE"],PDO::PARAM_STR);
+                                $requete3 ->bindValue(":idNoteFrais",$_GET["idNoteFrais"],PDO::PARAM_STR);
+                                $requete3->execute();
+                            }
                         }
                         else{
                             echo "<td>";
