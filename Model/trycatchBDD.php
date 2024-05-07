@@ -9,7 +9,6 @@
         $requete->execute();
         // On récupère le résultat
         if ($requete->fetch()) {
-
             // Cas de première connexion 
             $requete1erConn = $conn ->prepare("SELECT PREMIERECONNEXION FROM EMPLOYE WHERE MATRICULE = :matricule AND MDPCOMPTE=PASSWORD(:mdp);");
             $requete1erConn->bindValue(':matricule', $_SESSION["MATRICULE"] , PDO::PARAM_STR);

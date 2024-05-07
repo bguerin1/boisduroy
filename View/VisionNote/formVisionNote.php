@@ -18,11 +18,17 @@
             if(isset($_GET["idNoteFrais"]))
             {
                 // CAS A PREVOIR 
-                $requete2 = $conn->prepare("SELECT NOTEFRAIS.IDNOTEFRAIS AS IDNOTEFRAIS,DATENOTEFRAIS, TYPEFRAIS, QUANTITE, COUTTOTAL, COUT FROM NOTEFRAIS JOIN LIGNENOTE ON NOTEFRAIS.IDNOTEFRAIS = LIGNENOTE.IDNOTEFRAIS JOIN TYPEFRAIS ON TYPEFRAIS.IDTYPEFRAIS = LIGNENOTE.IDTYPEFRAIS WHERE MATRICULE = :matricule AND NOTEFRAIS.IDNOTEFRAIS=:idNoteFrais;");
+                $requete2 = $conn->prepare("SELECT NOTEFRAIS.MATRICULE, RAISONREFUS, NOTEFRAIS.IDNOTEFRAIS AS IDNOTEFRAIS,DATENOTEFRAIS, TYPEFRAIS, QUANTITE, COUTTOTAL, COUT, IDSTATUT FROM NOTEFRAIS JOIN LIGNENOTE ON NOTEFRAIS.IDNOTEFRAIS = LIGNENOTE.IDNOTEFRAIS JOIN VALIDER ON VALIDER.IDNOTEFRAIS = NOTEFRAIS.IDNOTEFRAIS JOIN ETAPE_VALIDATION ON ETAPE_VALIDATION.IDETAPVALID = VALIDER.IDETAPVALID JOIN TYPEFRAIS ON TYPEFRAIS.IDTYPEFRAIS = LIGNENOTE.IDTYPEFRAIS WHERE NOTEFRAIS.MATRICULE =:matricule AND NOTEFRAIS.IDNOTEFRAIS=:idNoteFrais;");
                 $requete2 ->bindValue(":matricule",$_SESSION["MATRICULE"],PDO::PARAM_STR);
                 $requete2 ->bindValue(":idNoteFrais",$_GET["idNoteFrais"],PDO::PARAM_STR);
                 $requete2->execute();
                 $data = $requete2 -> fetchALL(PDO::FETCH_ASSOC);
+
+                // CAS A PREVOIR 
+                $requeteDate = $conn->prepare("SELECT CURRENT_DATE() AS DATEJOUR FROM EMPLOYE WHERE MATRICULE =:matricule");
+                $requeteDate ->bindValue(":matricule",$_SESSION["MATRICULE"],PDO::PARAM_STR);
+                $requeteDate->execute();
+                $dataDate = $requeteDate -> fetch();
             }
             else{
                 header("Location: index.php");
@@ -49,6 +55,9 @@
         $quantite = $donnee["QUANTITE"];
         $coutTotal = $donnee["COUTTOTAL"];
         $cout = $donnee["COUT"];
+        $statut = $donnee["IDSTATUT"];
+        $matricule = $donnee["MATRICULE"];
+        $raisonRefus = $donnee["RAISONREFUS"];
     }
 ?>
 <div class="divdivCentralVision">
@@ -110,6 +119,17 @@
             </table>
             <table class="tableauFormSaisie">
                 <tr>
+                    <?php
+                    if($statut==3)
+                    {
+                        echo "<th><label for='coutTotal'>Raison du Refus : </label></th>";
+                        echo "<td>";
+                            echo "<div>";
+                                echo "<input type='text' name='coutNoteFrais' id='coutNoteFrais' class='inputVision' value=$raisonRefus required readonly>";
+                            echo "</div>";
+                        echo "</td>";
+                    }
+                    ?>
                     <th><label for="coutTotal">Coût Total : </label></th>
                     <td>
                         <div>
@@ -117,22 +137,40 @@
                         </div>
                     </td>
                     <?php
+                        if($statut==3)
+                        {
+                            echo "<tr>";
+                            echo "<th><label for='coutTotal'>Refusé par : </label></th>";
+                            echo "<td>";
+                                echo "<div>";
+                                    echo "<input type='text' name='coutNoteFrais' id='coutNoteFrais' class='inputVision' value=$matricule required readonly>";
+                                echo "</div>";
+                            echo "</td>";
+                            echo "</tr>";
+                        }
+                    ?>
+                    <?php
                         if($_SESSION["ADMINI"]==1)
                         {
-                            echo "<td>";
-                                echo "<div>";
-                                    echo "<button name='btnValiderNote' id='btnValiderNote' class='buttonAll'>Valider</button>";
-                                echo "</div>";
-                            echo "</td>";
-                            echo "<td>";
-                                echo "<div>";
-                                    echo "<button name='btnRefuserNote' id='btnRefuserNote' class='buttonAll'> <a href='refus.php'>Refuser </a> </button>";
-                                echo "</div>";
-                            echo "</td>";
+                            if($statut ==1)
+                            {
+                                echo "<td>";
+                                    echo "<div>";
+                                        echo "<button name='btnValiderNote' id='btnValiderNote' class='buttonAll'>Valider</button>";
+                                    echo "</div>";
+                                echo "</td>";
+                                echo "<td>";
+                                    echo "<div>";
+                                        $id=$_GET["idNoteFrais"];
+                                        echo "<button name='btnRefuserNote' id='btnRefuserNote' class='buttonAll'> <a href='refus.php?idNoteFrais=$id'>Refuser </a> </button>";
+                                    echo "</div>";
+                                echo "</td>";
+                            }
                             if(isset($_POST["btnValiderNote"]))
                             {
                                 $conn=new PDO("mysql:host=$servername;dbname=$dbname", $username,$pwd);
-                                $requete3 = $conn->prepare("UPDATE ETAPE_VALIDATION JOIN VALIDER ON VALIDER.IDETAPVALID = ETAPE_VALIDATION.IDETAPVALID SET IDSTATUT=2 WHERE MATRICULE = :matricule AND IDNOTEFRAIS=:idNoteFrais;");
+                                $requete3 = $conn->prepare("UPDATE ETAPE_VALIDATION JOIN VALIDER ON VALIDER.IDETAPVALID = ETAPE_VALIDATION.IDETAPVALID SET IDSTATUT=4, DATEVALID=:dateValid WHERE MATRICULE = :matricule AND IDNOTEFRAIS=:idNoteFrais;");
+                                $requete3 ->bindValue(":dateValid",$dataDate["DATEJOUR"],PDO::PARAM_STR);
                                 $requete3 ->bindValue(":matricule",$_SESSION["MATRICULE"],PDO::PARAM_STR);
                                 $requete3 ->bindValue(":idNoteFrais",$_GET["idNoteFrais"],PDO::PARAM_STR);
                                 $requete3->execute();

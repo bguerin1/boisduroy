@@ -27,7 +27,7 @@
                         <label for="typeFrais">Type de frais</label>
                     </th>
                     <th><label for="typeFrais">Quantité</label></th>
-                    <th> <label for="coutNoteFrais">Coûts</label></th>
+                    <!--<th> <label for="coutNoteFrais">Coûts</label></th>-->
                 </tr>
                 <tr>
                     <td>
@@ -46,21 +46,23 @@
                             <input type="number" name="quantite" id="quantite" required class="inputSaisie">
                         </div>
                     </td>
-                    <td>
+                    <!--<td>
                         <div>
                             <input type="text" name="cout" id="coutNoteFrais" required class="inputSaisie">
                         </div>
                     </td>
+                    -->
                 </tr>
             </table>
             <table class="tableauFormSaisie">
                 <tr>
-                    <th><label for="coutTotal">Coût Total : </label></th>
+                    <!--<th><label for="coutTotal">Coût Total : </label></th>
                     <td>
                         <div>
                             <input type="number" name="coutTotal" id="coutTotal" class="inputSaisie">
                         </div>
                     </td>
+                    -->
                     <td>
                         <div>
                             <button name="btnConnexion" id="btnConnexion" class="buttonAll"> <a href="index.php">Annuler</a></button>

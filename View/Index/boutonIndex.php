@@ -54,6 +54,7 @@
                                 {
                                     case 1:
                                         $conn=new PDO("mysql:host=$servername;dbname=$dbname", $username,$pwd);
+                                        // PREVOIR 
                                         $requete3 = $conn->prepare("SELECT NOTEFRAIS.IDNOTEFRAIS,DATE_FORMAT(DATENOTEFRAIS, '%d-%m-%Y') AS DATENOTEFRAIS, NOMSTATUT, COUTTOTAL FROM NOTEFRAIS JOIN VALIDER ON VALIDER.IDNOTEFRAIS = NOTEFRAIS.IDNOTEFRAIS JOIN LIGNENOTE ON LIGNENOTE.IDNOTEFRAIS=NOTEFRAIS.IDNOTEFRAIS JOIN ETAPE_VALIDATION ON ETAPE_VALIDATION.IDETAPVALID = VALIDER.IDETAPVALID JOIN STATUT ON STATUT.IDSTATUT = ETAPE_VALIDATION.IDSTATUT WHERE NOTEFRAIS.MATRICULE = :matricule ORDER BY DATENOTEFRAIS DESC;");
                                         $requete3 ->bindValue(":matricule",$_SESSION["MATRICULE"],PDO::PARAM_STR);
                                         $requete3->execute();

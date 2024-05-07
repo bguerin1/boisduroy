@@ -35,17 +35,17 @@
     
                         // Insertion d'une ligne de note de frais
 
-                        $requete2 = $conn->prepare("INSERT INTO LIGNENOTE VALUES(:idNoteFrais,1,:typeFrais,:quantite,:couttotal,:cout);");
+                        $requete2 = $conn->prepare("INSERT INTO LIGNENOTE VALUES(:idNoteFrais,1,:typeFrais,:quantite,:couttotal);");
                         $requete2 -> bindValue(":idNoteFrais",$idNoteFrais,PDO::PARAM_STR);
                         $requete2 -> bindValue(":typeFrais",$_POST["typeFrais"],PDO::PARAM_STR);
                         $requete2 -> bindValue(":quantite",$_POST["quantite"],PDO::PARAM_STR);
                         $requete2 -> bindValue(":couttotal",$_POST["coutTotal"],PDO::PARAM_STR);  
-                        $requete2 -> bindValue(":cout",$_POST["cout"],PDO::PARAM_STR);
+                        
                         $requete2->execute();
 
                         // Insertion d'une étape de validation de la note de frais
                         
-                        $requete2 = $conn->prepare("INSERT INTO ETAPE_VALIDATION(IDSTATUT,MATRICULE,RAISONREFUS,DATEVALID) VALUES(1,:matricule,0,NULL);");
+                        $requete2 = $conn->prepare("INSERT INTO ETAPE_VALIDATION(IDSTATUT,MATRICULE,RAISONREFUS,DATEVALID) VALUES(1,:matricule,NULL,NULL);");
                         $requete2 -> bindValue(":matricule",$_SESSION["MATRICULE"],PDO::PARAM_STR);
                         $requete2->execute();
 
