@@ -18,8 +18,8 @@
             if(isset($_GET["idNoteFrais"]))
             {
                 // CAS A PREVOIR 
-                $requete2 = $conn->prepare("SELECT NOTEFRAIS.MATRICULE, RAISONREFUS, NOTEFRAIS.IDNOTEFRAIS AS IDNOTEFRAIS,DATENOTEFRAIS, TYPEFRAIS, QUANTITE, COUTTOTAL, IDSTATUT FROM NOTEFRAIS JOIN LIGNENOTE ON NOTEFRAIS.IDNOTEFRAIS = LIGNENOTE.IDNOTEFRAIS JOIN VALIDER ON VALIDER.IDNOTEFRAIS = NOTEFRAIS.IDNOTEFRAIS JOIN ETAPE_VALIDATION ON ETAPE_VALIDATION.IDETAPVALID = VALIDER.IDETAPVALID JOIN TYPEFRAIS ON TYPEFRAIS.IDTYPEFRAIS = LIGNENOTE.IDTYPEFRAIS WHERE NOTEFRAIS.MATRICULE =:matricule AND NOTEFRAIS.IDNOTEFRAIS=:idNoteFrais;");
-                $requete2 ->bindValue(":matricule",$_SESSION["MATRICULE"],PDO::PARAM_STR);
+                $requete2 = $conn->prepare("SELECT NOTEFRAIS.MATRICULE, RAISONREFUS, NOTEFRAIS.IDNOTEFRAIS AS IDNOTEFRAIS,DATENOTEFRAIS, TYPEFRAIS, QUANTITE, COUTTOTAL, IDSTATUT FROM NOTEFRAIS JOIN LIGNENOTE ON NOTEFRAIS.IDNOTEFRAIS = LIGNENOTE.IDNOTEFRAIS JOIN VALIDER ON VALIDER.IDNOTEFRAIS = NOTEFRAIS.IDNOTEFRAIS JOIN ETAPE_VALIDATION ON ETAPE_VALIDATION.IDETAPVALID = VALIDER.IDETAPVALID JOIN TYPEFRAIS ON TYPEFRAIS.IDTYPEFRAIS = LIGNENOTE.IDTYPEFRAIS WHERE NOTEFRAIS.IDNOTEFRAIS=:idNoteFrais;");
+                //$requete2 ->bindValue(":matricule",$_SESSION["MATRICULE"],PDO::PARAM_STR);
                 $requete2 ->bindValue(":idNoteFrais",$_GET["idNoteFrais"],PDO::PARAM_STR);
                 $requete2->execute();
                 $data = $requete2 -> fetchALL(PDO::FETCH_ASSOC);
@@ -54,7 +54,6 @@
         $typeFrais = $donnee["TYPEFRAIS"];
         $quantite = $donnee["QUANTITE"];
         $coutTotal = $donnee["COUTTOTAL"];
-        /*$cout = $donnee["COUT"];*/
         $statut = $donnee["IDSTATUT"];
         $matricule = $donnee["MATRICULE"];
         $raisonRefus = $donnee["RAISONREFUS"];
@@ -77,7 +76,7 @@
                     <th><label for="employé">Employé :</label></th>
                     <td>
                         <div>
-                            <input type="text" name="employé" id="employé" class="inputVision" value=<?= $_SESSION["MATRICULE"]?> readonly required>
+                            <input type="text" name="employé" id="employé" class="inputVision" value=<?=$matricule?> readonly required>
                         </div>
                     </td>
                 </tr>
@@ -102,7 +101,7 @@
                             <option value="5">Soir Paris</option>
                             </select>
                         -->
-                        <input type="text" name="typeFrais" id="typeFrais" class="inputVision" value=<?= $typeFrais?> readonly required>
+                        <textarea name='textAreaVision' id='' class='textareaVision' placeholder=<?= $typeFrais?> readonly></textarea>
                         </div>
                     </td>
                     <td>
@@ -126,7 +125,7 @@
                         echo "<th><label for='coutTotal'>Raison du Refus : </label></th>";
                         echo "<td>";
                             echo "<div>";
-                                echo "<input type='text' name='coutNoteFrais' id='coutNoteFrais' class='inputVision' value=$raisonRefus required readonly>";
+                                echo "<textarea name='textAreaVision' id='' class='textareaVision' placeholder='$raisonRefus' readonly></textarea>";
                             echo "</div>";
                         echo "</td>";
                     }
@@ -170,9 +169,8 @@
                             if(isset($_POST["btnValiderNote"]))
                             {
                                 $conn=new PDO("mysql:host=$servername;dbname=$dbname", $username,$pwd);
-                                $requete3 = $conn->prepare("UPDATE ETAPE_VALIDATION JOIN VALIDER ON VALIDER.IDETAPVALID = ETAPE_VALIDATION.IDETAPVALID SET IDSTATUT=4, DATEVALID=:dateValid WHERE MATRICULE = :matricule AND IDNOTEFRAIS=:idNoteFrais;");
+                                $requete3 = $conn->prepare("UPDATE ETAPE_VALIDATION JOIN VALIDER ON VALIDER.IDETAPVALID = ETAPE_VALIDATION.IDETAPVALID SET IDSTATUT=4, DATEVALID=:dateValid WHERE IDNOTEFRAIS=:idNoteFrais;");
                                 $requete3 ->bindValue(":dateValid",$dataDate["DATEJOUR"],PDO::PARAM_STR);
-                                $requete3 ->bindValue(":matricule",$_SESSION["MATRICULE"],PDO::PARAM_STR);
                                 $requete3 ->bindValue(":idNoteFrais",$_GET["idNoteFrais"],PDO::PARAM_STR);
                                 $requete3->execute();
                             }
@@ -200,14 +198,8 @@
                                 $requete5 ->bindValue(":idNoteFrais",$_GET["idNoteFrais"],PDO::PARAM_STR);
                                 $requete5->execute();
 
-                                // SUPPRESSION DANS LA TABLE VALIDER
-
-                                $requete6 = $conn->prepare("DELETE FROM VALIDER WHERE IDNOTEFRAIS=:idNoteFrais;");
-                                $requete6 ->bindValue(":idNoteFrais",$_GET["idNoteFrais"],PDO::PARAM_STR);
-                                $requete6->execute();
-
                                 // SUPPRESSION DANS LA TABLE ETAPE_VALIDATION
-                                $requete7 = $conn->prepare("DELETE FROM ETAPE_VALIDATION JOIN VALIDER ON VALIDER.IDETAPVALID = ETAPE_VALIDATION.IDETAPVALID WHERE IDNOTEFRAIS=:idNoteFrais;");
+                                $requete7 = $conn->prepare("DELETE FROM ETAPE_VALIDATION WHERE IDETAPVALID IN (SELECT IDETAPVALID FROM VALIDER WHERE IDNOTEFRAIS = :idNoteFrais);");
                                 $requete7 ->bindValue(":idNoteFrais",$_GET["idNoteFrais"],PDO::PARAM_STR);
                                 $requete7->execute();
 

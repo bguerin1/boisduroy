@@ -6,7 +6,15 @@
                     <th><label for="date">Date :</label></th>
                     <td>    
                         <div>
-                            <input type="Date" name="DATENOTEFRAIS" id="date" required class="inputSaisie">
+                            <?php
+                                if(isset($_POST["btnCopie"]) && isset($_POST["idNoteFrais"]))
+                                {
+                                    echo "<input type='Date' name='DATENOTEFRAIS' id='date' required class='inputSaisie' value=$dateNoteFrais>";
+                                }
+                                else{
+                                    echo "<input type='Date' name='DATENOTEFRAIS' id='date' required class='inputSaisie'>";
+                                }
+                            ?>                       
                         </div>
                     </td>
                 </tr>
@@ -32,18 +40,40 @@
                 <tr>
                     <td>
                         <div>
-                            <select name="typeFrais" id="typefrais" required class="inputSaisie">
-                            <option value="1">Frais Kilométriques</option>
-                            <option value="2">Repas midi</option>
-                            <option value="3">Repas soir</option>
-                            <option value="4">Soir hors Paris</option>
-                            <option value="5">Soir Paris</option>
-                            </select>
+                            <?php
+                                if(isset($_POST["btnCopie"]) && isset($_POST["idNoteFrais"]))
+                                {
+                                    echo "<select name='typeFrais' id='typefrais' required class='inputSaisie' value=$idTypeFrais>";
+                                        echo "<option value='1'>Frais Kilométriques</option>";
+                                        echo "<option value='2'>Repas midi</option>";
+                                        echo "<option value='3'>Repas soir</option>";
+                                        echo "<option value='4'>Soir hors Paris</option>";
+                                        echo "<option value='5'>Soir Paris</option>";
+                                    echo "</select>";
+                                }
+                                else{
+                                    echo "<select name='typeFrais' id='typefrais' required class='inputSaisie'>";
+                                        echo "<option value='1'>Frais Kilométriques</option>";
+                                        echo "<option value='2'>Repas midi</option>";
+                                        echo "<option value='3'>Repas soir</option>";
+                                        echo "<option value='4'>Soir hors Paris</option>";
+                                        echo "<option value='5'>Soir Paris</option>";
+                                    echo "</select>";
+                                }
+                            ?>
                         </div>
                     </td>
                     <td>
                         <div>
-                            <input type="number" name="quantite" id="quantite" required class="inputSaisie">
+                            <?php
+                                if(isset($_POST["btnCopie"]) && isset($_POST["idNoteFrais"]))
+                                {
+                                    echo "<input type='number' name='quantite' id='quantite' required class='inputSaisie' value=$quantite>";
+                                }
+                                else{
+                                    echo "<input type='number' name='quantite' id='quantite' required class='inputSaisie'>";
+                                }
+                            ?>
                         </div>
                     </td>
                     <!--<td>

@@ -87,6 +87,13 @@ a{
 .buttonListe{
     height: 50px;
 }
+.btnCopie{
+    height: 37px;
+    width: 150px;
+    border-radius:100px;
+    background-color:black;
+    color:white;
+}
 
 .ajoutLigne{
     opacity: 1;
@@ -119,6 +126,14 @@ a{
    width:1090px;
    height:290px;
 }
+.textareaVision{
+    resize:none;
+    width:350px;
+    padding: 4px;
+    color : black;
+    border:2px solid black;
+ }
+ 
 
 .btnRefus{
     float:right;
@@ -137,7 +152,7 @@ table{
 
 .tableNote{
     border-collapse:separate;
-    border-spacing: 135px;
+    border-spacing: 91px;
 }
 
 .formErrorMsg{

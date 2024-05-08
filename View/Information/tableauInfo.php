@@ -33,7 +33,13 @@
         <th>Responsable :</th>
         <td>
             <div>
-                <input type="text" value=<?=  $_SESSION["RESPONSABLE"] ?> class="inputSaisie" readonly>
+                <?php 
+                    if($_SESSION["RESPONSABLE"]==NULL)
+                    {
+                        $_SESSION["RESPONSABLE"]="";
+                    }
+                ?>
+                <input type="text" value=<?= $_SESSION["RESPONSABLE"] ?> class="inputSaisie" readonly>
             </div>
         </td>
     </tr>

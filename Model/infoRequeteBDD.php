@@ -12,12 +12,12 @@ else{
         $_SESSION["DATENOTEFRAIS"] = $dateNoteFrais;
         $_SESSION["NOMSTATUT"] = $nomStatut;
     }
-    foreach($data1 as $donnee1)
+    /*foreach($data1 as $donnee1)
     {
         $coutTotal = $donnee1["COUTTOTAL"];
         //Variable de session 
         $_SESSION["COUTTOTAL"] = $coutTotal;
-    }
+    }*/
     foreach($data2 as $donnee2)
     {
         $prenom=$donnee2["PRENOM"];
@@ -33,7 +33,6 @@ else{
         $_SESSION["DATENAISS"]=$dateNaiss;
         $_SESSION["RESPONSABLE"]=$responsable;
         $_SESSION["ADMINI"] = $admin;
-        $_SESSION["DATENOTEFRAIS"] = $dateNoteFrais;
     }
 }
 

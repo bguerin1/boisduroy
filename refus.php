@@ -11,9 +11,8 @@
 
         require("Model/infoBDD.php");
         $conn=new PDO("mysql:host=$servername;dbname=$dbname", $username,$pwd);
-        $requete3 = $conn->prepare("UPDATE ETAPE_VALIDATION JOIN VALIDER ON VALIDER.IDETAPVALID = ETAPE_VALIDATION.IDETAPVALID SET IDSTATUT=3, RAISONREFUS=:raisonRefus WHERE MATRICULE = :matricule AND IDNOTEFRAIS=:idNoteFrais;");
+        $requete3 = $conn->prepare("UPDATE ETAPE_VALIDATION JOIN VALIDER ON VALIDER.IDETAPVALID = ETAPE_VALIDATION.IDETAPVALID SET IDSTATUT=3, RAISONREFUS=:raisonRefus WHERE IDNOTEFRAIS=:idNoteFrais;");
         $requete3 ->bindValue(":raisonRefus",$raisonRefus,PDO::PARAM_STR);
-        $requete3 ->bindValue(":matricule",$_SESSION["MATRICULE"],PDO::PARAM_STR);
         $requete3 ->bindValue(":idNoteFrais",$_GET["idNoteFrais"],PDO::PARAM_STR);
         $requete3->execute();
     }

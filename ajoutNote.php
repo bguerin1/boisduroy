@@ -10,6 +10,29 @@
             header("Location: connexion.php");
         }
         else{
+            if(isset($_POST["btnCopie"]) && isset($_POST["idNoteFrais"]))
+            {
+                $idNoteFrais = htmlspecialchars($_POST["idNoteFrais"]);
+                if($idNoteFrais == "" || $idNoteFrais == 0 || $idNoteFrais < 0)
+                {
+                    header("Location:index.php");
+                }
+                else{
+                    require("Model/infoBDD.php");
+                    $conn=new PDO("mysql:host=$servername;dbname=$dbname", $username,$pwd);
+                    $requeteCopie = $conn->prepare("SELECT NOTEFRAIS.DATENOTEFRAIS,LIGNENOTE.IDTYPEFRAIS, QUANTITE FROM NOTEFRAIS JOIN LIGNENOTE ON LIGNENOTE.IDNOTEFRAIS = NOTEFRAIS.IDNOTEFRAIS JOIN TYPEFRAIS ON TYPEFRAIS.IDTYPEFRAIS = LIGNENOTE.IDTYPEFRAIS WHERE NOTEFRAIS.IDNOTEFRAIS =:idNoteFrais");
+                    $requeteCopie -> bindValue(":idNoteFrais",$idNoteFrais,PDO::PARAM_STR);
+                    $requeteCopie->execute();
+                    $data = $requeteCopie -> fetchALL(PDO::FETCH_ASSOC);
+                    
+                    foreach($data as $donnee)
+                    {
+                        $dateNoteFrais = $donnee["DATENOTEFRAIS"];
+                        $idTypeFrais = $donnee["IDTYPEFRAIS"];
+                        $quantite = $donnee["QUANTITE"];
+                    }
+                }
+            }
             if(isset($_POST["btnAjout"]))
             {
                 require("Model/infoBDD.php");
