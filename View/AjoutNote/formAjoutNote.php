@@ -31,11 +31,9 @@
             <table class="tableauFormSaisie">
                 <tr>
                     <th>    
-                        <button name="AjoutLigne" class="ajoutLigne"> <img src="img/PLUS copy.png" alt=""> </button>
                         <label for="typeFrais">Type de frais</label>
                     </th>
                     <th><label for="typeFrais">Quantité</label></th>
-                    <!--<th> <label for="coutNoteFrais">Coûts</label></th>-->
                 </tr>
                 <tr>
                     <td>
@@ -43,22 +41,10 @@
                             <?php
                                 if(isset($_POST["btnCopie"]) && isset($_POST["idNoteFrais"]))
                                 {
-                                    echo "<select name='typeFrais' id='typefrais' required class='inputSaisie' value=$idTypeFrais>";
-                                        echo "<option value='1'>Frais Kilométriques</option>";
-                                        echo "<option value='2'>Repas midi</option>";
-                                        echo "<option value='3'>Repas soir</option>";
-                                        echo "<option value='4'>Soir hors Paris</option>";
-                                        echo "<option value='5'>Soir Paris</option>";
-                                    echo "</select>";
+                                    echo "<label for='fraisKM'>Frais Kilométriques</label>";
                                 }
                                 else{
-                                    echo "<select name='typeFrais' id='typefrais' required class='inputSaisie'>";
-                                        echo "<option value='1'>Frais Kilométriques</option>";
-                                        echo "<option value='2'>Repas midi</option>";
-                                        echo "<option value='3'>Repas soir</option>";
-                                        echo "<option value='4'>Soir hors Paris</option>";
-                                        echo "<option value='5'>Soir Paris</option>";
-                                    echo "</select>";
+                                    echo "<label for='fraisKM'>Frais Kilométriques</label>";
                                 }
                             ?>
                         </div>
@@ -68,31 +54,99 @@
                             <?php
                                 if(isset($_POST["btnCopie"]) && isset($_POST["idNoteFrais"]))
                                 {
-                                    echo "<input type='number' name='quantite' id='quantite' required class='inputSaisie' value=$quantite>";
+                                    echo "<input type='number' name='quantiteFraisKM' id='quantite' required class='inputSaisie' value=$quantiteFrais>";
                                 }
                                 else{
-                                    echo "<input type='number' name='quantite' id='quantite' required class='inputSaisie'>";
+                                    echo "<input type='number' name='quantiteFraisKM' id='quantite' required class='inputSaisie'>";
                                 }
                             ?>
                         </div>
                     </td>
-                    <!--<td>
+                </tr>
+                <tr>
+                    <td>
                         <div>
-                            <input type="text" name="cout" id="coutNoteFrais" required class="inputSaisie">
+                            <label for="repasMidi">Repas Midi</label>
                         </div>
                     </td>
-                    -->
+                    <td>
+                        <div>
+                            <?php
+                                if(isset($_POST["btnCopie"]) && isset($_POST["idNoteFrais"]))
+                                {
+                                    echo "<input type='number' name='quantiteRepasMidi' id='quantite' required class='inputSaisie' value=$quantiteRepasMidi>";
+                                }
+                                else{
+                                    echo "<input type='number' name='quantiteRepasMidi' id='quantite' required class='inputSaisie'>";
+                                }
+                            ?>
+                        </div>
+                    </td>
                 </tr>
+                <tr>
+                    <td>
+                        <div>
+                            <label for="repasSoir">Repas Soir</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            <?php
+                                if(isset($_POST["btnCopie"]) && isset($_POST["idNoteFrais"]))
+                                {
+                                    echo "<input type='number' name='quantiteRepasSoir' id='quantite' required class='inputSaisie' value=$quantiteRepasSoir>";
+                                }
+                                else{
+                                    echo "<input type='number' name='quantiteRepasSoir' id='quantite' required class='inputSaisie'>";
+                                }
+                            ?>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div>
+                            <label for="soirHorsParis">Soir Hors Paris</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            <?php
+                                if(isset($_POST["btnCopie"]) && isset($_POST["idNoteFrais"]))
+                                {
+                                    echo "<input type='number' name='quantiteSoirHorsParis' id='quantite' required class='inputSaisie' value=$quantiteSoirHorsParis>";
+                                }
+                                else{
+                                    echo "<input type='number' name='quantiteSoirHorsParis' id='quantite' required class='inputSaisie'>";
+                                }
+                            ?>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div>
+                            <label for="soirParis">Soir Paris</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                                <?php
+                                    if(isset($_POST["btnCopie"]) && isset($_POST["idNoteFrais"]))
+                                    {
+                                        echo "<input type='number' name='quantiteSoirParis' id='quantite' required class='inputSaisie' value=$quantiteSoirParis>";
+                                    }
+                                    else{
+                                        echo "<input type='number' name='quantiteSoirParis' id='quantite' required class='inputSaisie'>";
+                                    }
+                                ?>
+                        </div>
+                    </td>
+                </tr>
+                
             </table>
             <table class="tableauFormSaisie">
                 <tr>
-                    <!--<th><label for="coutTotal">Coût Total : </label></th>
-                    <td>
-                        <div>
-                            <input type="number" name="coutTotal" id="coutTotal" class="inputSaisie">
-                        </div>
-                    </td>
-                    -->
                     <td>
                         <div>
                             <button name="btnConnexion" id="btnConnexion" class="buttonAll"> <a href="index.php">Annuler</a></button>
@@ -102,34 +156,6 @@
                         <div>
                             <button type="submit" name="btnAjout" id="btnAjout" class="buttonAll">Envoyer la fiche</button>
                         </div>
-                        <?php
-                            if(isset($_POST["AjoutLigne"]))
-                            {
-                                echo "<div class='wrapper'>";
-                                    echo "<div>";
-
-                                    echo "</div>"; 
-
-                                    echo "<div>";
-                                        echo "<select name='typeFrais' id='typefrais' required>";
-                                            echo "<option value='1'>Frais Kilométriques</option>";                            
-                                            echo "<option value='2'>Repas midi</option>";
-                                            echo "<option value='3'>Repas soir</option>";
-                                            echo "<option value='4'>Soir hors Paris</option>";
-                                            echo "<option value='5'>Soir Paris</option>";
-                                        echo "</select>";
-                                    echo "</div>";
-                                    echo "<div>";
-                                        echo "<input type='number' name='quantite' id='quantite' required>";
-                                        echo "<br>";
-                                    echo "</div>";
-                                    echo "<div>";
-                                        echo "<input type='text' name='coutNoteFrais' id='coutNoteFrais' required>";
-                                    echo "</div>";
-                                echo "</div>";
-                                echo "<br>";
-                            }
-                        ?>
                     </td>
                 </tr>
             </table> 

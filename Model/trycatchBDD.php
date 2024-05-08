@@ -34,19 +34,32 @@
             }
             else{
                 // SELECT DES INFOS LIES A LA NOTE DE FRAIS 
-                $requete2 = $conn->prepare("SELECT NOTEFRAIS.IDNOTEFRAIS AS IDNOTEFRAIS, DATE_FORMAT(DATENOTEFRAIS, '%d-%m-%Y') AS DATENOTEFRAIS, NOMSTATUT, COUTTOTAL, PRENOM, NOM FROM NOTEFRAIS JOIN EMPLOYE ON EMPLOYE.MATRICULE = NOTEFRAIS.MATRICULE JOIN VALIDER ON VALIDER.IDNOTEFRAIS = NOTEFRAIS.IDNOTEFRAIS JOIN LIGNENOTE ON LIGNENOTE.IDNOTEFRAIS=NOTEFRAIS.IDNOTEFRAIS JOIN ETAPE_VALIDATION ON ETAPE_VALIDATION.IDETAPVALID = VALIDER.IDETAPVALID JOIN STATUT ON STATUT.IDSTATUT = ETAPE_VALIDATION.IDSTATUT WHERE NOTEFRAIS.MATRICULE = :matricule;");
+                $requete2 = $conn->prepare("SELECT NOTEFRAIS.IDNOTEFRAIS AS IDNOTEFRAIS, DATE_FORMAT(DATENOTEFRAIS, '%d-%m-%Y') AS DATENOTEFRAIS, NOMSTATUT, PRENOM, NOM, COUTTOTAL FROM NOTEFRAIS JOIN EMPLOYE ON EMPLOYE.MATRICULE = NOTEFRAIS.MATRICULE JOIN VALIDER ON VALIDER.IDNOTEFRAIS = NOTEFRAIS.IDNOTEFRAIS JOIN ETAPE_VALIDATION ON ETAPE_VALIDATION.IDETAPVALID = VALIDER.IDETAPVALID JOIN STATUT ON STATUT.IDSTATUT = ETAPE_VALIDATION.IDSTATUT WHERE NOTEFRAIS.MATRICULE = :matricule;");
                 $requete2 ->bindValue(":matricule",$_SESSION["MATRICULE"],PDO::PARAM_STR);
                 $requete2->execute();
                 $data = $requete2->fetchALL(PDO::FETCH_ASSOC);      
                 $requete2->closeCursor();
 
+                /*foreach($data as $donnee)
+                {
+                    $id=$donnee["IDNOTEFRAIS"];
+                }*/
+
                 // SELECT LIGNENOTE POUR CHAQUE NOTE DE FRAIS 
 
-                /*$requete6 = $conn->prepare("SELECT COUTTOTAL,QUANTITE FROM NOTEFRAIS JOIN LIGNENOTE ON LIGNENOTE.IDNOTEFRAIS = NOTEFRAIS.IDNOTEFRAIS WHERE NOTEFRAIS.MATRICULE = :matricule;");
-                $requete6 ->bindValue(":matricule",$_SESSION["MATRICULE"],PDO::PARAM_STR);
-                $requete6->execute();
-                $data1 = $requete6->fetchALL(PDO::FETCH_ASSOC);
-                $requete6->closeCursor();*/
+                /*if($_SESSION["NBNOTE"]!=0)
+                {
+                    $requete6 = $conn->prepare("SELECT SUM(COUT) AS COUTTOTAL , IDNOTEFRAIS FROM LIGNENOTE WHERE IDNOTEFRAIS=:idNoteFrais;");
+                    $requete6 ->bindValue(":idNoteFrais",$donnee["IDNOTEFRAIS"],PDO::PARAM_STR);
+                    $requete6->execute();
+                    $data1 = $requete6->fetchALL(PDO::FETCH_ASSOC);
+                    $requete6->closeCursor();
+                }*/
+
+                /*foreach($data1 as $donneeData)
+                {
+                    $cout = $donneeData["COUTTOTAL"];
+                }*/
 
                 // SELECT EMPLOYE 
 

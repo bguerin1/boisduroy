@@ -39,7 +39,7 @@
                         echo "</td>";
                         echo "<td>";
                             echo "<div>";
-                                echo "<p>" . $donnee["COUTTOTAL"] . "€" . "</p>";
+                                echo "<p>" .  $donnee["COUTTOTAL"] ."€" . "</p>";
                             echo "</div>";
                         echo "</td>";
                         echo "<td>";

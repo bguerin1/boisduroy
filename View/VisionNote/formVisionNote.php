@@ -18,13 +18,13 @@
             if(isset($_GET["idNoteFrais"]))
             {
                 // CAS A PREVOIR 
-                $requete2 = $conn->prepare("SELECT NOTEFRAIS.MATRICULE, RAISONREFUS, NOTEFRAIS.IDNOTEFRAIS AS IDNOTEFRAIS,DATENOTEFRAIS, TYPEFRAIS, QUANTITE, COUTTOTAL, IDSTATUT FROM NOTEFRAIS JOIN LIGNENOTE ON NOTEFRAIS.IDNOTEFRAIS = LIGNENOTE.IDNOTEFRAIS JOIN VALIDER ON VALIDER.IDNOTEFRAIS = NOTEFRAIS.IDNOTEFRAIS JOIN ETAPE_VALIDATION ON ETAPE_VALIDATION.IDETAPVALID = VALIDER.IDETAPVALID JOIN TYPEFRAIS ON TYPEFRAIS.IDTYPEFRAIS = LIGNENOTE.IDTYPEFRAIS WHERE NOTEFRAIS.IDNOTEFRAIS=:idNoteFrais;");
-                //$requete2 ->bindValue(":matricule",$_SESSION["MATRICULE"],PDO::PARAM_STR);
+                $requete2 = $conn->prepare("SELECT NOTEFRAIS.MATRICULE, RAISONREFUS, NOTEFRAIS.IDNOTEFRAIS AS IDNOTEFRAIS,DATENOTEFRAIS, IDSTATUT, COUTTOTAL FROM NOTEFRAIS JOIN VALIDER ON VALIDER.IDNOTEFRAIS = NOTEFRAIS.IDNOTEFRAIS JOIN ETAPE_VALIDATION ON ETAPE_VALIDATION.IDETAPVALID = VALIDER.IDETAPVALID  WHERE NOTEFRAIS.IDNOTEFRAIS=:idNoteFrais;");
                 $requete2 ->bindValue(":idNoteFrais",$_GET["idNoteFrais"],PDO::PARAM_STR);
                 $requete2->execute();
                 $data = $requete2 -> fetchALL(PDO::FETCH_ASSOC);
 
-                // CAS A PREVOIR 
+            
+                // DATE DU JOUR POUR VALIDATION DE LA NOTE DE FRAIS 
                 $requeteDate = $conn->prepare("SELECT CURRENT_DATE() AS DATEJOUR FROM EMPLOYE WHERE MATRICULE =:matricule");
                 $requeteDate ->bindValue(":matricule",$_SESSION["MATRICULE"],PDO::PARAM_STR);
                 $requeteDate->execute();
@@ -51,13 +51,85 @@
     foreach($data as $donnee)
     {
         $dateNoteFrais = $donnee["DATENOTEFRAIS"];
-        $typeFrais = $donnee["TYPEFRAIS"];
-        $quantite = $donnee["QUANTITE"];
-        $coutTotal = $donnee["COUTTOTAL"];
         $statut = $donnee["IDSTATUT"];
         $matricule = $donnee["MATRICULE"];
         $raisonRefus = $donnee["RAISONREFUS"];
+        $cout = $donnee["COUTTOTAL"];
     }
+    
+    // DONNEE LIGNENOTE
+
+    // FRAIS KILOMETRIQUES 
+    $conn=new PDO("mysql:host=$servername;dbname=$dbname", $username,$pwd);
+    $requeteFrais = $conn->prepare("SELECT QUANTITE, COUT FROM NOTEFRAIS JOIN LIGNENOTE ON LIGNENOTE.IDNOTEFRAIS = NOTEFRAIS.IDNOTEFRAIS WHERE LIGNENOTE.IDLIGNENOTE = 1 AND NOTEFRAIS.IDNOTEFRAIS =:idNoteFrais;");
+    $requeteFrais ->bindValue(":idNoteFrais",$_GET["idNoteFrais"],PDO::PARAM_STR);
+    $requeteFrais->execute();
+    $dataFrais = $requeteFrais -> fetchALL(PDO::FETCH_ASSOC);
+
+                
+
+    // REPAS MIDI 
+    $requeteRepasMidi = $conn->prepare("SELECT QUANTITE, COUT FROM NOTEFRAIS JOIN LIGNENOTE ON LIGNENOTE.IDNOTEFRAIS = NOTEFRAIS.IDNOTEFRAIS WHERE LIGNENOTE.IDLIGNENOTE = 2 AND NOTEFRAIS.IDNOTEFRAIS =:idNoteFrais;");
+    $requeteRepasMidi ->bindValue(":idNoteFrais",$_GET["idNoteFrais"],PDO::PARAM_STR);
+    $requeteRepasMidi->execute();
+    $dataRepasMidi = $requeteRepasMidi -> fetchALL(PDO::FETCH_ASSOC);
+
+            
+
+    // REPAS SOIR 
+    $requeteRepasSoir = $conn->prepare("SELECT QUANTITE, COUT FROM NOTEFRAIS JOIN LIGNENOTE ON LIGNENOTE.IDNOTEFRAIS = NOTEFRAIS.IDNOTEFRAIS WHERE LIGNENOTE.IDLIGNENOTE = 3 AND NOTEFRAIS.IDNOTEFRAIS =:idNoteFrais;");
+    $requeteRepasSoir ->bindValue(":idNoteFrais",$_GET["idNoteFrais"],PDO::PARAM_STR);
+    $requeteRepasSoir->execute();
+    $dataRepasSoir = $requeteRepasSoir -> fetchALL(PDO::FETCH_ASSOC);
+
+                
+
+    // SOIR HORS PARIS 
+    $requeteHorsParis = $conn->prepare("SELECT QUANTITE, COUT FROM NOTEFRAIS JOIN LIGNENOTE ON LIGNENOTE.IDNOTEFRAIS = NOTEFRAIS.IDNOTEFRAIS WHERE LIGNENOTE.IDLIGNENOTE = 4 AND NOTEFRAIS.IDNOTEFRAIS =:idNoteFrais;");
+    $requeteHorsParis ->bindValue(":idNoteFrais",$_GET["idNoteFrais"],PDO::PARAM_STR);
+    $requeteHorsParis->execute();
+    $dataHorsParis = $requeteHorsParis -> fetchALL(PDO::FETCH_ASSOC);
+
+
+    // SOIR PARIS
+    $requeteSoirParis = $conn->prepare("SELECT QUANTITE, COUT FROM NOTEFRAIS JOIN LIGNENOTE ON LIGNENOTE.IDNOTEFRAIS = NOTEFRAIS.IDNOTEFRAIS WHERE LIGNENOTE.IDLIGNENOTE = 5 AND NOTEFRAIS.IDNOTEFRAIS =:idNoteFrais;");
+    $requeteSoirParis ->bindValue(":idNoteFrais",$_GET["idNoteFrais"],PDO::PARAM_STR);
+    $requeteSoirParis->execute();
+    $dataSoirParis = $requeteSoirParis -> fetchALL(PDO::FETCH_ASSOC);
+
+
+    foreach($dataFrais as $donneeFrais)
+    {
+        $quantiteFrais = $donneeFrais["QUANTITE"];
+        $coutFrais = $donneeFrais["COUT"];
+    }
+
+    foreach($dataRepasMidi as $donneeRepasMidi)
+    {
+        $quantiteRepasMidi = $donneeRepasMidi["QUANTITE"];
+        $coutRepasMidi = $donneeRepasMidi["COUT"];
+    }
+
+    foreach($dataRepasSoir as $donneeRepasSoir)
+    {
+        $quantiteRepasSoir = $donneeRepasSoir["QUANTITE"];
+        $coutRepasSoir = $donneeRepasSoir["COUT"];
+    }
+
+    foreach($dataHorsParis as $donneeHorsParis)
+    {
+        $quantiteHorsParis = $donneeHorsParis["QUANTITE"];
+        $coutHorsParis = $donneeHorsParis["COUT"];
+    }
+    foreach($dataSoirParis as $donneeSoirParis)
+    {
+        $quantiteSoirParis = $donneeSoirParis["QUANTITE"];
+        $coutSoirParis = $donneeSoirParis["COUT"];
+    }
+
+    $coutTotal = $coutFrais + $coutRepasMidi + $coutRepasSoir + $coutHorsParis + $coutSoirParis;
+
+
 ?>
 <div class="divdivCentralVision">
     <h1>Note de frais du <?= $donnee["DATENOTEFRAIS"]?></h1>
@@ -88,34 +160,68 @@
                         <label for="typeFrais">Type de frais</label>
                     </th>
                     <th><label for="typeFrais">Quantité</label></th>
-                    <!--<th> <label for="coutNoteFrais">Coûts</label></th>-->
                 </tr>
                 <tr>
                     <td>
                         <div>
-                            <!--<select name="typeFrais" id="typefrais" required class="inputVision" value=>
-                            <option value="1">Frais Kilométriques</option>
-                            <option value="2">Repas midi</option>
-                            <option value="3">Repas soir</option>
-                            <option value="4">Soir hors Paris</option>
-                            <option value="5">Soir Paris</option>
-                            </select>
-                        -->
-                        <textarea name='textAreaVision' id='' class='textareaVision' placeholder=<?= $typeFrais?> readonly></textarea>
+                            <label for="repasMidi">Frais Kilométriques</label>
                         </div>
                     </td>
                     <td>
                         <div>
-                            <input type="number" name="quantite" id="quantite" class="inputVision" value=<?= $quantite?> readonly required>
+                            <input type="number" name="quantite" id="quantite" class="inputVision" value=<?= $donneeFrais["QUANTITE"]?> readonly required>
                         </div>
                     </td>
-                    <!--<td>
-                        <div>
-                            <input type="text" name="coutNoteFrais" id="coutNoteFrais" class="inputVision" value=<?= $cout?> required readonly>
-                        </div>
-                    </td>
-                    -->
                 </tr>
+                <tr>
+                    <td>
+                        <div>
+                            <label for="repasMidi">Repas Midi</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            <input type="number" name="quantite" id="quantite" class="inputVision" value=<?= $donneeRepasMidi["QUANTITE"]?> readonly required>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div>
+                            <label for="repasMidi">Repas Soir</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            <input type="number" name="quantite" id="quantite" class="inputVision" value=<?= $donneeRepasSoir["QUANTITE"]?> readonly required>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div>
+                            <label for="repasMidi">Soir Hors Paris</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            <input type="number" name="quantite" id="quantite" class="inputVision" value=<?= $donneeHorsParis["QUANTITE"]?> readonly required>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div>
+                            <label for="repasMidi">Soir Paris</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            <input type="number" name="quantite" id="quantite" class="inputVision" value=<?= $donneeSoirParis["QUANTITE"]?> readonly required>
+                        </div>
+                    </td>
+                </tr>
+                
             </table>
             <table class="tableauFormSaisie">
                 <tr>
@@ -133,7 +239,7 @@
                     <th><label for="coutTotal">Coût Total : </label></th>
                     <td>
                         <div>
-                            <input type="number" name="coutTotal" id="coutTotal" class="inputCoutTotal" value=<?= $coutTotal?> require readonly>
+                            <input type="number" name="coutTotal" id="coutTotal" class="inputCoutTotal" value=<?= $cout?> require readonly>
                         </div>
                     </td>
                     <?php
@@ -211,34 +317,6 @@
                             }   
                         }
                     ?>
-                    <td>
-                        <!--<div id="valider">
-                            <?php
-                                /*if(isset($_POST["validationButton"]))
-                                {
-                                    $conn=new PDO("mysql:host=$servername;dbname=$dbname", $username,$pwd);
-                                    $requete2 = $conn->prepare("UPDATE NOTEFRAIS SET DATENOTEFRAIS=:dateNoteFrais WHERE MATRICULE = :matricule AND IDNOTEFRAIS=:idNoteFrais;");
-                                    $requete2 ->bindValue(":dateNoteFrais",$_POST["dateVision"],PDO::PARAM_STR);
-                                    $requete2 ->bindValue(":matricule",$_SESSION["MATRICULE"],PDO::PARAM_STR);
-                                    $requete2 ->bindValue(":idNoteFrais",$_GET["idNoteFrais"],PDO::PARAM_STR);
-                                    $requete2->execute();
-
-                                    $requete2 = $conn->prepare("UPDATE LIGNENOTE JOIN NOTEFRAIS ON NOTEFRAIS.IDNOTEFRAIS = LIGNENOTE.IDNOTEFRAIS SET QUANTITE = :quantite WHERE MATRICULE = :matricule AND NOTEFRAIS.IDNOTEFRAIS=:idNoteFrais;");
-                                    //$requete2 ->bindValue(":typefrais",$_POST["typeFrais"],PDO::PARAM_STR);
-                                    $requete2 ->bindValue(":quantite",$_POST["quantite"],PDO::PARAM_STR);
-                                    $requete2 ->bindValue(":coutTotal",$_POST["coutTotal"],PDO::PARAM_STR);
-                                    $requete2 ->bindValue(":cout",$_POST["coutNoteFrais"],PDO::PARAM_STR);
-                                    
-                                    $requete2 ->bindValue(":matricule",$_SESSION["MATRICULE"],PDO::PARAM_STR);
-                                    $requete2 ->bindValue(":idNoteFrais",$_GET["idNoteFrais"],PDO::PARAM_STR);
-                                    $requete2->execute();
-                                    
-                                    $conn = null;
-                                }*/
-                            ?>
-                        </div>
-                        -->
-                    </td>
                 </tr>
             </table> 
         </form>
