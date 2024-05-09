@@ -11,11 +11,6 @@
                 <button class="buttonAll"> <a href="ajoutNote.php">+ Ajouter une fiche</a> </button>
             </div>
         </td>
-        <!--<td>
-            <div>
-                <button name="btnCopie" class="buttonAll">Copier</button>
-            </div>
-        </td>-->
         <?php
             if($_SESSION["ADMINI"]==1)
             {

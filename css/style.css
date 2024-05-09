@@ -94,6 +94,16 @@ a{
     background-color:black;
     color:white;
 }
+.btnIndexVision{
+    appearance: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    background-color: transparent;
+    cursor: pointer;
+    font-family: "Lato";
+    font-size: 14pt;
+}
 
 .ajoutLigne{
     opacity: 1;

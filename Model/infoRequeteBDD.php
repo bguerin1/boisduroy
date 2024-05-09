@@ -8,6 +8,7 @@ else{
     {
         $dateNoteFrais = $donnee["DATENOTEFRAIS"];
         $nomStatut = $donnee["NOMSTATUT"];
+        $matricule = $donnee["MATRICULE"];
         // Variable de session 
         $_SESSION["DATENOTEFRAIS"] = $dateNoteFrais;
         $_SESSION["NOMSTATUT"] = $nomStatut;

@@ -23,9 +23,13 @@
                             echo "</div>";
                         echo "</td>";     
                         echo "<td>";
+                            echo "<form action='visionNote.php' method='post'>";
                             echo "<div>";
-                                echo "<a href='visionNote.php?idNoteFrais=$id' class='lienNote'><p>Note de frais de " . $donnee['PRENOM'] . " " . $donnee['NOM']. "</p> </a>";
+                                echo "<input type='hidden' name='idNoteFrais' value=$id>";
+                                echo "<button class='btnIndexVision' name='btnVision'>" . "Note de frais de " . $donnee['PRENOM'] . " " .  $donnee['NOM']. "</button>";
+                                //echo "<a href='visionNote.php?idNoteFrais=$id' class='lienNote'><p>Note de frais de " . $donnee['PRENOM'] . " " . $donnee['NOM']. "</p> </a>";
                             echo "</div>";
+                            echo "</form>";
                         echo "</td>"; 
                         echo "<td>";
                             echo "<div>";

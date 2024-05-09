@@ -1,7 +1,7 @@
 <?php
     try{
         $conn=new PDO("mysql:host=$servername;dbname=$dbname", $username,$pwd);
-        $requete=$conn ->prepare("SELECT MATRICULE,MDPCOMPTE FROM EMPLOYE WHERE MATRICULE = :matricule AND MDPCOMPTE=PASSWORD(:mdp);");
+        $requete=$conn ->prepare("SELECT MATRICULE, MDPCOMPTE FROM EMPLOYE WHERE MATRICULE = :matricule AND MDPCOMPTE=:mdp;");
         // On lie la variable $email définie au-dessus au paramètre :mail de la requête préparée
         $requete->bindValue(':matricule', $_SESSION["MATRICULE"] , PDO::PARAM_STR);
         $requete->bindValue(':mdp',$_SESSION["MDP"] , PDO::PARAM_STR);
@@ -10,7 +10,7 @@
         // On récupère le résultat
         if ($requete->fetch()) {
             // Cas de première connexion 
-            $requete1erConn = $conn ->prepare("SELECT PREMIERECONNEXION FROM EMPLOYE WHERE MATRICULE = :matricule AND MDPCOMPTE=PASSWORD(:mdp);");
+            $requete1erConn = $conn ->prepare("SELECT PREMIERECONNEXION FROM EMPLOYE WHERE MATRICULE = :matricule AND MDPCOMPTE=:mdp;");
             $requete1erConn->bindValue(':matricule', $_SESSION["MATRICULE"] , PDO::PARAM_STR);
             $requete1erConn->bindValue(':mdp',$_SESSION["MDP"] , PDO::PARAM_STR);
             $requete1erConn->execute();
@@ -34,32 +34,11 @@
             }
             else{
                 // SELECT DES INFOS LIES A LA NOTE DE FRAIS 
-                $requete2 = $conn->prepare("SELECT NOTEFRAIS.IDNOTEFRAIS AS IDNOTEFRAIS, DATE_FORMAT(DATENOTEFRAIS, '%d-%m-%Y') AS DATENOTEFRAIS, NOMSTATUT, PRENOM, NOM, COUTTOTAL FROM NOTEFRAIS JOIN EMPLOYE ON EMPLOYE.MATRICULE = NOTEFRAIS.MATRICULE JOIN VALIDER ON VALIDER.IDNOTEFRAIS = NOTEFRAIS.IDNOTEFRAIS JOIN ETAPE_VALIDATION ON ETAPE_VALIDATION.IDETAPVALID = VALIDER.IDETAPVALID JOIN STATUT ON STATUT.IDSTATUT = ETAPE_VALIDATION.IDSTATUT WHERE NOTEFRAIS.MATRICULE = :matricule;");
+                $requete2 = $conn->prepare("SELECT NOTEFRAIS.IDNOTEFRAIS AS IDNOTEFRAIS, DATE_FORMAT(DATENOTEFRAIS, '%d-%m-%Y') AS DATENOTEFRAIS, NOMSTATUT, PRENOM, NOM, COUTTOTAL, NOTEFRAIS.MATRICULE FROM NOTEFRAIS JOIN EMPLOYE ON EMPLOYE.MATRICULE = NOTEFRAIS.MATRICULE JOIN VALIDER ON VALIDER.IDNOTEFRAIS = NOTEFRAIS.IDNOTEFRAIS JOIN ETAPE_VALIDATION ON ETAPE_VALIDATION.IDETAPVALID = VALIDER.IDETAPVALID JOIN STATUT ON STATUT.IDSTATUT = ETAPE_VALIDATION.IDSTATUT WHERE NOTEFRAIS.MATRICULE = :matricule;");
                 $requete2 ->bindValue(":matricule",$_SESSION["MATRICULE"],PDO::PARAM_STR);
                 $requete2->execute();
                 $data = $requete2->fetchALL(PDO::FETCH_ASSOC);      
                 $requete2->closeCursor();
-
-                /*foreach($data as $donnee)
-                {
-                    $id=$donnee["IDNOTEFRAIS"];
-                }*/
-
-                // SELECT LIGNENOTE POUR CHAQUE NOTE DE FRAIS 
-
-                /*if($_SESSION["NBNOTE"]!=0)
-                {
-                    $requete6 = $conn->prepare("SELECT SUM(COUT) AS COUTTOTAL , IDNOTEFRAIS FROM LIGNENOTE WHERE IDNOTEFRAIS=:idNoteFrais;");
-                    $requete6 ->bindValue(":idNoteFrais",$donnee["IDNOTEFRAIS"],PDO::PARAM_STR);
-                    $requete6->execute();
-                    $data1 = $requete6->fetchALL(PDO::FETCH_ASSOC);
-                    $requete6->closeCursor();
-                }*/
-
-                /*foreach($data1 as $donneeData)
-                {
-                    $cout = $donneeData["COUTTOTAL"];
-                }*/
 
                 // SELECT EMPLOYE 
 

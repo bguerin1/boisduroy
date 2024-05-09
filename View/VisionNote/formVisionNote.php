@@ -1,13 +1,9 @@
 <?php
     try{
-        // Connexion à la base de donnée 
-        $servername="192.168.10.16";
-        $dbname="guerin2_bryan_boisduroy";
-        $username="guerin2_bryan";
-        $pwd="Bs9IP91a";
+        require("Model/infoBDD.php");
         
         $conn=new PDO("mysql:host=$servername;dbname=$dbname", $username,$pwd);
-        $requete=$conn ->prepare("SELECT MATRICULE,MDPCOMPTE FROM EMPLOYE WHERE MATRICULE = :matricule AND MDPCOMPTE=PASSWORD(:mdp);");
+        $requete=$conn ->prepare("SELECT MATRICULE,MDPCOMPTE FROM EMPLOYE WHERE MATRICULE = :matricule AND MDPCOMPTE=:mdp;");
         // On lie la variable $email définie au-dessus au paramètre :mail de la requête préparée
         $requete->bindValue(':matricule', $_SESSION["MATRICULE"] , PDO::PARAM_STR);
         $requete->bindValue(':mdp',$_SESSION["MDP"] , PDO::PARAM_STR);
@@ -15,20 +11,14 @@
         $requete->execute();
         // On récupère le résultat
         if ($requete->fetch()) {
-            if(isset($_GET["idNoteFrais"]))
+            if(isset($_POST["idNoteFrais"]))
             {
                 // CAS A PREVOIR 
-                $requete2 = $conn->prepare("SELECT NOTEFRAIS.MATRICULE, RAISONREFUS, NOTEFRAIS.IDNOTEFRAIS AS IDNOTEFRAIS,DATENOTEFRAIS, IDSTATUT, COUTTOTAL FROM NOTEFRAIS JOIN VALIDER ON VALIDER.IDNOTEFRAIS = NOTEFRAIS.IDNOTEFRAIS JOIN ETAPE_VALIDATION ON ETAPE_VALIDATION.IDETAPVALID = VALIDER.IDETAPVALID  WHERE NOTEFRAIS.IDNOTEFRAIS=:idNoteFrais;");
-                $requete2 ->bindValue(":idNoteFrais",$_GET["idNoteFrais"],PDO::PARAM_STR);
+                $requete2 = $conn->prepare("SELECT NOTEFRAIS.MATRICULE, RAISONREFUS, NOTEFRAIS.IDNOTEFRAIS AS IDNOTEFRAIS,DATENOTEFRAIS, IDSTATUT, COUTTOTAL, CURRENT_DATE() AS DATEJOUR FROM NOTEFRAIS JOIN VALIDER ON VALIDER.IDNOTEFRAIS = NOTEFRAIS.IDNOTEFRAIS JOIN ETAPE_VALIDATION ON ETAPE_VALIDATION.IDETAPVALID = VALIDER.IDETAPVALID  WHERE NOTEFRAIS.IDNOTEFRAIS=:idNoteFrais;");
+                $requete2 ->bindValue(":idNoteFrais",$_POST["idNoteFrais"],PDO::PARAM_STR);
                 $requete2->execute();
                 $data = $requete2 -> fetchALL(PDO::FETCH_ASSOC);
 
-            
-                // DATE DU JOUR POUR VALIDATION DE LA NOTE DE FRAIS 
-                $requeteDate = $conn->prepare("SELECT CURRENT_DATE() AS DATEJOUR FROM EMPLOYE WHERE MATRICULE =:matricule");
-                $requeteDate ->bindValue(":matricule",$_SESSION["MATRICULE"],PDO::PARAM_STR);
-                $requeteDate->execute();
-                $dataDate = $requeteDate -> fetch();
             }
             else{
                 header("Location: index.php");
@@ -42,8 +32,8 @@
         $conn=null;
      }
      catch(PDOException $e){
-         echo "Erreur :" . $e ->getMessage();
-         echo "Le numéro de l'erreur est : " . $e ->getCode();
+         echo "Erreur :" . $e ->POSTMessage();
+         echo "Le numéro de l'erreur est : " . $e ->POSTCode();
          die;
      }
 ?>
@@ -55,6 +45,7 @@
         $matricule = $donnee["MATRICULE"];
         $raisonRefus = $donnee["RAISONREFUS"];
         $cout = $donnee["COUTTOTAL"];
+        $idNoteFrais = $donnee["IDNOTEFRAIS"];
     }
     
     // DONNEE LIGNENOTE
@@ -62,7 +53,7 @@
     // FRAIS KILOMETRIQUES 
     $conn=new PDO("mysql:host=$servername;dbname=$dbname", $username,$pwd);
     $requeteFrais = $conn->prepare("SELECT QUANTITE, COUT FROM NOTEFRAIS JOIN LIGNENOTE ON LIGNENOTE.IDNOTEFRAIS = NOTEFRAIS.IDNOTEFRAIS WHERE LIGNENOTE.IDLIGNENOTE = 1 AND NOTEFRAIS.IDNOTEFRAIS =:idNoteFrais;");
-    $requeteFrais ->bindValue(":idNoteFrais",$_GET["idNoteFrais"],PDO::PARAM_STR);
+    $requeteFrais ->bindValue(":idNoteFrais",$_POST["idNoteFrais"],PDO::PARAM_STR);
     $requeteFrais->execute();
     $dataFrais = $requeteFrais -> fetchALL(PDO::FETCH_ASSOC);
 
@@ -70,7 +61,7 @@
 
     // REPAS MIDI 
     $requeteRepasMidi = $conn->prepare("SELECT QUANTITE, COUT FROM NOTEFRAIS JOIN LIGNENOTE ON LIGNENOTE.IDNOTEFRAIS = NOTEFRAIS.IDNOTEFRAIS WHERE LIGNENOTE.IDLIGNENOTE = 2 AND NOTEFRAIS.IDNOTEFRAIS =:idNoteFrais;");
-    $requeteRepasMidi ->bindValue(":idNoteFrais",$_GET["idNoteFrais"],PDO::PARAM_STR);
+    $requeteRepasMidi ->bindValue(":idNoteFrais",$_POST["idNoteFrais"],PDO::PARAM_STR);
     $requeteRepasMidi->execute();
     $dataRepasMidi = $requeteRepasMidi -> fetchALL(PDO::FETCH_ASSOC);
 
@@ -78,7 +69,7 @@
 
     // REPAS SOIR 
     $requeteRepasSoir = $conn->prepare("SELECT QUANTITE, COUT FROM NOTEFRAIS JOIN LIGNENOTE ON LIGNENOTE.IDNOTEFRAIS = NOTEFRAIS.IDNOTEFRAIS WHERE LIGNENOTE.IDLIGNENOTE = 3 AND NOTEFRAIS.IDNOTEFRAIS =:idNoteFrais;");
-    $requeteRepasSoir ->bindValue(":idNoteFrais",$_GET["idNoteFrais"],PDO::PARAM_STR);
+    $requeteRepasSoir ->bindValue(":idNoteFrais",$_POST["idNoteFrais"],PDO::PARAM_STR);
     $requeteRepasSoir->execute();
     $dataRepasSoir = $requeteRepasSoir -> fetchALL(PDO::FETCH_ASSOC);
 
@@ -86,14 +77,14 @@
 
     // SOIR HORS PARIS 
     $requeteHorsParis = $conn->prepare("SELECT QUANTITE, COUT FROM NOTEFRAIS JOIN LIGNENOTE ON LIGNENOTE.IDNOTEFRAIS = NOTEFRAIS.IDNOTEFRAIS WHERE LIGNENOTE.IDLIGNENOTE = 4 AND NOTEFRAIS.IDNOTEFRAIS =:idNoteFrais;");
-    $requeteHorsParis ->bindValue(":idNoteFrais",$_GET["idNoteFrais"],PDO::PARAM_STR);
+    $requeteHorsParis ->bindValue(":idNoteFrais",$_POST["idNoteFrais"],PDO::PARAM_STR);
     $requeteHorsParis->execute();
     $dataHorsParis = $requeteHorsParis -> fetchALL(PDO::FETCH_ASSOC);
 
 
     // SOIR PARIS
     $requeteSoirParis = $conn->prepare("SELECT QUANTITE, COUT FROM NOTEFRAIS JOIN LIGNENOTE ON LIGNENOTE.IDNOTEFRAIS = NOTEFRAIS.IDNOTEFRAIS WHERE LIGNENOTE.IDLIGNENOTE = 5 AND NOTEFRAIS.IDNOTEFRAIS =:idNoteFrais;");
-    $requeteSoirParis ->bindValue(":idNoteFrais",$_GET["idNoteFrais"],PDO::PARAM_STR);
+    $requeteSoirParis ->bindValue(":idNoteFrais",$_POST["idNoteFrais"],PDO::PARAM_STR);
     $requeteSoirParis->execute();
     $dataSoirParis = $requeteSoirParis -> fetchALL(PDO::FETCH_ASSOC);
 
@@ -134,7 +125,6 @@
 <div class="divdivCentralVision">
     <h1>Note de frais du <?= $donnee["DATENOTEFRAIS"]?></h1>
     <div class="central-sectionVisionNote">
-        <form action="" method="post">
             <table class="tableauFormSaisie">
                 <tr>
                     <th><label for="date">Date :</label></th>
@@ -256,69 +246,72 @@
                         }
                     ?>
                     <?php
+                        /////////////////////////////////////////////////////////////////////////////////////////////////
                         if($_SESSION["ADMINI"]==1)
                         {
-                            if($statut ==1)
+                            if($statut == 1 && $_SESSION["MATRICULE"] != $matricule)
                             {
+                                // FORM VALIDATION DE LA NOTE DE FRAIS 
+
                                 echo "<td>";
-                                    echo "<div>";
-                                        echo "<button name='btnValiderNote' id='btnValiderNote' class='buttonAll'>Valider</button>";
-                                    echo "</div>";
+                                    echo "<form action='redirectionValider.php' method='post'>";
+                                        echo "<div>";   
+                                            echo "<input type='hidden' name='idNoteFrais' value=$idNoteFrais>";
+                                            echo "<button type='submit' name='btnValiderNote' id='btnValiderNote' class='buttonAll'>Valider</button>";
+                                        echo "</div>";
+                                    echo "</form>";
                                 echo "</td>";
+
+                                // FORM REFUS DE LA NOTE DE FRAIS 
+
                                 echo "<td>";
-                                    echo "<div>";
-                                        $id=$_GET["idNoteFrais"];
-                                        echo "<button name='btnRefuserNote' id='btnRefuserNote' class='buttonAll'> <a href='refus.php?idNoteFrais=$id'>Refuser </a> </button>";
-                                    echo "</div>";
+                                    echo "<form action='refus.php' method='post'>";
+                                        echo "<div>";
+                                            echo "<input type='hidden' name='idNoteFrais' value=$idNoteFrais>";
+                                            echo "<button type='submit' name='btnRefuserNote' id='btnRefuserNote' class='buttonAll'> Refuser</button>";
+                                        echo "</div>";
+                                    echo "</form>";
                                 echo "</td>";
                             }
-                            if(isset($_POST["btnValiderNote"]))
-                            {
-                                $conn=new PDO("mysql:host=$servername;dbname=$dbname", $username,$pwd);
-                                $requete3 = $conn->prepare("UPDATE ETAPE_VALIDATION JOIN VALIDER ON VALIDER.IDETAPVALID = ETAPE_VALIDATION.IDETAPVALID SET IDSTATUT=4, DATEVALID=:dateValid WHERE IDNOTEFRAIS=:idNoteFrais;");
-                                $requete3 ->bindValue(":dateValid",$dataDate["DATEJOUR"],PDO::PARAM_STR);
-                                $requete3 ->bindValue(":idNoteFrais",$_GET["idNoteFrais"],PDO::PARAM_STR);
-                                $requete3->execute();
+                            else if($statut==1 && $_SESSION["MATRICULE"] == $matricule){
+                                echo "<td>";
+                                    echo "<div>";
+                                    echo "<form action='' method='post'>";
+                                        echo "<button class='buttonAll'> <a href='index.php'>Retour</a></button>";
+                                    echo "</form>";
+                                    echo "</div>";
+                                echo "</td>";
+                                echo "<td>";
+                                    echo "<form action='redirectionVisionNote.php' method='post'>";
+                                        echo "<div>";
+                                            echo "<input type='hidden' name='idNoteFrais' value=$idNoteFrais>";
+                                            echo "<button type='submit' name='btnAnnuler' id='btnAnnuler' class='buttonAll'>Annuler la note</button>";
+                                        echo "</div>";
+                                    echo "</form>";
+                                echo "</td>";
                             }
                         }
                         else{
                             echo "<td>";
                                 echo "<div>";
-                                    echo "<button class='buttonAll'> <a href='index.php'>Retour</a></button>";
+                                echo "<form action='' method='post'>";
+                                    echo "<button type='button' class='buttonAll'> <a href='index.php'>Retour</a></button>";
+                                echo "</form>";
                                 echo "</div>";
                             echo "</td>";
                             echo "<td>";
-                                echo "<form action='' method='post'>";
+                                echo "<form action='redirectionVisionNote.php' method='post'>";
                                     echo "<div>";
+                                        echo "<input type='hidden' name='idNoteFrais' value=$idNoteFrais>";
                                         echo "<button type='submit' name='btnAnnuler' id='btnAnnuler' class='buttonAll'>Annuler la note</button>";
                                     echo "</div>";
                                 echo "</form>";
                             echo "</td>";
-                            if(isset($_POST["btnAnnuler"]))
-                            {
-                                $conn=new PDO("mysql:host=$servername;dbname=$dbname", $username,$pwd);
-                                
-                                // SUPPRESSION DANS LA TABLE LIGNENOTE 
 
-                                $requete5 = $conn->prepare("DELETE FROM LIGNENOTE WHERE IDNOTEFRAIS=:idNoteFrais;");
-                                $requete5 ->bindValue(":idNoteFrais",$_GET["idNoteFrais"],PDO::PARAM_STR);
-                                $requete5->execute();
-
-                                // SUPPRESSION DANS LA TABLE ETAPE_VALIDATION
-                                $requete7 = $conn->prepare("DELETE FROM ETAPE_VALIDATION WHERE IDETAPVALID IN (SELECT IDETAPVALID FROM VALIDER WHERE IDNOTEFRAIS = :idNoteFrais);");
-                                $requete7 ->bindValue(":idNoteFrais",$_GET["idNoteFrais"],PDO::PARAM_STR);
-                                $requete7->execute();
-
-                                // SUPPRESSION DE LA NOTE DE FRAIS
-
-                                $requete4 = $conn->prepare("DELETE FROM NOTEFRAIS WHERE IDNOTEFRAIS=:idNoteFrais;");
-                                $requete4 ->bindValue(":idNoteFrais",$_GET["idNoteFrais"],PDO::PARAM_STR);
-                                $requete4->execute();
-                            }   
+                            //////////////////////////////////////////////////////////////////////////////////////////////////////////////
                         }
                     ?>
                 </tr>
             </table> 
-        </form>
     </div>
 </div>

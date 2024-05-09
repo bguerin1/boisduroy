@@ -36,10 +36,12 @@
                 <?php 
                     if($_SESSION["RESPONSABLE"]==NULL)
                     {
-                        $_SESSION["RESPONSABLE"]="";
+                        echo "<input type='text' value='' class='inputSaisie' readonly>";
+                    }
+                    else{
+                        echo "<input type='text' class='inputSaisie' readonly value=" . $_SESSION["RESPONSABLE"]. ">";
                     }
                 ?>
-                <input type="text" value=<?= $_SESSION["RESPONSABLE"] ?> class="inputSaisie" readonly>
             </div>
         </td>
     </tr>

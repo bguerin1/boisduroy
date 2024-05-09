@@ -1,5 +1,5 @@
 <div class="central-sectionFormSaisie">
-        <form action="ajoutNote.php" method="post">
+        <form action="redirectionAjoutNote.php" method="post">
             <h1 class="central">Saisie des notes de frais :</h1>
             <table class="tableauFormSaisie">
                 <tr>
@@ -149,7 +149,7 @@
                 <tr>
                     <td>
                         <div>
-                            <button name="btnConnexion" id="btnConnexion" class="buttonAll"> <a href="index.php">Annuler</a></button>
+                            <button type="button" name="btnConnexion" id="btnConnexion" class="buttonAll"> <a href="index.php">Annuler</a></button>
                         </div>
                     </td>
                     <td>
