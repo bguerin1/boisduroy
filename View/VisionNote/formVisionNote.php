@@ -1,7 +1,6 @@
 <?php
     try{
         require("Model/infoBDD.php");
-        
         $conn=new PDO("mysql:host=$servername;dbname=$dbname", $username,$pwd);
         $requete=$conn ->prepare("SELECT MATRICULE,MDPCOMPTE FROM EMPLOYE WHERE MATRICULE = :matricule AND MDPCOMPTE=:mdp;");
         // On lie la variable $email définie au-dessus au paramètre :mail de la requête préparée
@@ -11,14 +10,21 @@
         $requete->execute();
         // On récupère le résultat
         if ($requete->fetch()) {
+
             if(isset($_POST["idNoteFrais"]))
             {
-                // CAS A PREVOIR 
-                $requete2 = $conn->prepare("SELECT NOTEFRAIS.MATRICULE, RAISONREFUS, NOTEFRAIS.IDNOTEFRAIS AS IDNOTEFRAIS,DATENOTEFRAIS, IDSTATUT, COUTTOTAL, CURRENT_DATE() AS DATEJOUR FROM NOTEFRAIS JOIN VALIDER ON VALIDER.IDNOTEFRAIS = NOTEFRAIS.IDNOTEFRAIS JOIN ETAPE_VALIDATION ON ETAPE_VALIDATION.IDETAPVALID = VALIDER.IDETAPVALID  WHERE NOTEFRAIS.IDNOTEFRAIS=:idNoteFrais;");
-                $requete2 ->bindValue(":idNoteFrais",$_POST["idNoteFrais"],PDO::PARAM_STR);
-                $requete2->execute();
-                $data = $requete2 -> fetchALL(PDO::FETCH_ASSOC);
-
+                $idNoteFraisPost = htmlspecialchars($_POST["idNoteFrais"]);
+                if($idNoteFraisPost == 0 || $idNoteFraisPost < 0 || $idNoteFraisPost == "")
+                {
+                    header("Location: index.php");
+                    exit();
+                } 
+                else{
+                    $requete2 = $conn->prepare("SELECT NOTEFRAIS.MATRICULE, RAISONREFUS, NOTEFRAIS.IDNOTEFRAIS AS IDNOTEFRAIS,DATENOTEFRAIS, IDSTATUT, COUTTOTAL, CURRENT_DATE() AS DATEJOUR FROM NOTEFRAIS JOIN VALIDER ON VALIDER.IDNOTEFRAIS = NOTEFRAIS.IDNOTEFRAIS JOIN ETAPE_VALIDATION ON ETAPE_VALIDATION.IDETAPVALID = VALIDER.IDETAPVALID  WHERE NOTEFRAIS.IDNOTEFRAIS=:idNoteFrais;");
+                    $requete2 ->bindValue(":idNoteFrais",$idNoteFraisPost,PDO::PARAM_STR);
+                    $requete2->execute();
+                    $data = $requete2 -> fetchALL(PDO::FETCH_ASSOC);
+                }
             }
             else{
                 header("Location: index.php");
@@ -53,7 +59,7 @@
     // FRAIS KILOMETRIQUES 
     $conn=new PDO("mysql:host=$servername;dbname=$dbname", $username,$pwd);
     $requeteFrais = $conn->prepare("SELECT QUANTITE, COUT FROM NOTEFRAIS JOIN LIGNENOTE ON LIGNENOTE.IDNOTEFRAIS = NOTEFRAIS.IDNOTEFRAIS WHERE LIGNENOTE.IDLIGNENOTE = 1 AND NOTEFRAIS.IDNOTEFRAIS =:idNoteFrais;");
-    $requeteFrais ->bindValue(":idNoteFrais",$_POST["idNoteFrais"],PDO::PARAM_STR);
+    $requeteFrais ->bindValue(":idNoteFrais",$idNoteFraisPost,PDO::PARAM_STR);
     $requeteFrais->execute();
     $dataFrais = $requeteFrais -> fetchALL(PDO::FETCH_ASSOC);
 
@@ -61,7 +67,7 @@
 
     // REPAS MIDI 
     $requeteRepasMidi = $conn->prepare("SELECT QUANTITE, COUT FROM NOTEFRAIS JOIN LIGNENOTE ON LIGNENOTE.IDNOTEFRAIS = NOTEFRAIS.IDNOTEFRAIS WHERE LIGNENOTE.IDLIGNENOTE = 2 AND NOTEFRAIS.IDNOTEFRAIS =:idNoteFrais;");
-    $requeteRepasMidi ->bindValue(":idNoteFrais",$_POST["idNoteFrais"],PDO::PARAM_STR);
+    $requeteRepasMidi ->bindValue(":idNoteFrais",$idNoteFraisPost,PDO::PARAM_STR);
     $requeteRepasMidi->execute();
     $dataRepasMidi = $requeteRepasMidi -> fetchALL(PDO::FETCH_ASSOC);
 
@@ -69,7 +75,7 @@
 
     // REPAS SOIR 
     $requeteRepasSoir = $conn->prepare("SELECT QUANTITE, COUT FROM NOTEFRAIS JOIN LIGNENOTE ON LIGNENOTE.IDNOTEFRAIS = NOTEFRAIS.IDNOTEFRAIS WHERE LIGNENOTE.IDLIGNENOTE = 3 AND NOTEFRAIS.IDNOTEFRAIS =:idNoteFrais;");
-    $requeteRepasSoir ->bindValue(":idNoteFrais",$_POST["idNoteFrais"],PDO::PARAM_STR);
+    $requeteRepasSoir ->bindValue(":idNoteFrais",$idNoteFraisPost,PDO::PARAM_STR);
     $requeteRepasSoir->execute();
     $dataRepasSoir = $requeteRepasSoir -> fetchALL(PDO::FETCH_ASSOC);
 
@@ -77,14 +83,14 @@
 
     // SOIR HORS PARIS 
     $requeteHorsParis = $conn->prepare("SELECT QUANTITE, COUT FROM NOTEFRAIS JOIN LIGNENOTE ON LIGNENOTE.IDNOTEFRAIS = NOTEFRAIS.IDNOTEFRAIS WHERE LIGNENOTE.IDLIGNENOTE = 4 AND NOTEFRAIS.IDNOTEFRAIS =:idNoteFrais;");
-    $requeteHorsParis ->bindValue(":idNoteFrais",$_POST["idNoteFrais"],PDO::PARAM_STR);
+    $requeteHorsParis ->bindValue(":idNoteFrais",$idNoteFraisPost,PDO::PARAM_STR);
     $requeteHorsParis->execute();
     $dataHorsParis = $requeteHorsParis -> fetchALL(PDO::FETCH_ASSOC);
 
 
     // SOIR PARIS
     $requeteSoirParis = $conn->prepare("SELECT QUANTITE, COUT FROM NOTEFRAIS JOIN LIGNENOTE ON LIGNENOTE.IDNOTEFRAIS = NOTEFRAIS.IDNOTEFRAIS WHERE LIGNENOTE.IDLIGNENOTE = 5 AND NOTEFRAIS.IDNOTEFRAIS =:idNoteFrais;");
-    $requeteSoirParis ->bindValue(":idNoteFrais",$_POST["idNoteFrais"],PDO::PARAM_STR);
+    $requeteSoirParis ->bindValue(":idNoteFrais",$idNoteFraisPost,PDO::PARAM_STR);
     $requeteSoirParis->execute();
     $dataSoirParis = $requeteSoirParis -> fetchALL(PDO::FETCH_ASSOC);
 
@@ -246,7 +252,6 @@
                         }
                     ?>
                     <?php
-                        /////////////////////////////////////////////////////////////////////////////////////////////////
                         if($_SESSION["ADMINI"]==1)
                         {
                             if($statut == 1 && $_SESSION["MATRICULE"] != $matricule)
@@ -307,8 +312,6 @@
                                     echo "</div>";
                                 echo "</form>";
                             echo "</td>";
-
-                            //////////////////////////////////////////////////////////////////////////////////////////////////////////////
                         }
                     ?>
                 </tr>

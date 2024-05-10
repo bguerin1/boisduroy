@@ -19,34 +19,20 @@
             if($dataRequete["PREMIERECONNEXION"] == 1){
                 header("Location: connexion1.php");
             }
+            
+            // SELECT DES INFOS LIES A LA NOTE DE FRAIS 
+            $requete2 = $conn->prepare("SELECT NOTEFRAIS.IDNOTEFRAIS AS IDNOTEFRAIS, DATE_FORMAT(DATENOTEFRAIS, '%d-%m-%Y') AS DATENOTEFRAIS, NOMSTATUT, PRENOM, NOM, COUTTOTAL, NOTEFRAIS.MATRICULE FROM NOTEFRAIS JOIN EMPLOYE ON EMPLOYE.MATRICULE = NOTEFRAIS.MATRICULE JOIN VALIDER ON VALIDER.IDNOTEFRAIS = NOTEFRAIS.IDNOTEFRAIS JOIN ETAPE_VALIDATION ON ETAPE_VALIDATION.IDETAPVALID = VALIDER.IDETAPVALID JOIN STATUT ON STATUT.IDSTATUT = ETAPE_VALIDATION.IDSTATUT WHERE NOTEFRAIS.MATRICULE = :matricule ORDER BY EXTRACT(YEAR FROM DATENOTEFRAIS) DESC, EXTRACT(MONTH FROM DATENOTEFRAIS) DESC, EXTRACT(DAY FROM DATENOTEFRAIS) DESC;");
+            $requete2 ->bindValue(":matricule",$_SESSION["MATRICULE"],PDO::PARAM_STR);
+            $requete2->execute();
+            $data = $requete2->fetchALL(PDO::FETCH_ASSOC);      
 
-            // Vérification du nombre de notes de frais 
-            $requete4 = $conn->prepare("SELECT COUNT(IDNOTEFRAIS) AS NBNOTE FROM NOTEFRAIS WHERE MATRICULE=:matricule;");
-            $requete4 ->bindValue(":matricule",$_SESSION["MATRICULE"],PDO::PARAM_STR);
-            $requete4->execute();
-            $data = $requete4 -> fetch();
-            $requete4->closeCursor();
-            $_SESSION["NBNOTE"] = $data;
+            // SELECT EMPLOYE 
 
-            if($_SESSION["NBNOTE"] == 0)
-            {
-                echo "kfdgljk,ng";
-            }
-            else{
-                // SELECT DES INFOS LIES A LA NOTE DE FRAIS 
-                $requete2 = $conn->prepare("SELECT NOTEFRAIS.IDNOTEFRAIS AS IDNOTEFRAIS, DATE_FORMAT(DATENOTEFRAIS, '%d-%m-%Y') AS DATENOTEFRAIS, NOMSTATUT, PRENOM, NOM, COUTTOTAL, NOTEFRAIS.MATRICULE FROM NOTEFRAIS JOIN EMPLOYE ON EMPLOYE.MATRICULE = NOTEFRAIS.MATRICULE JOIN VALIDER ON VALIDER.IDNOTEFRAIS = NOTEFRAIS.IDNOTEFRAIS JOIN ETAPE_VALIDATION ON ETAPE_VALIDATION.IDETAPVALID = VALIDER.IDETAPVALID JOIN STATUT ON STATUT.IDSTATUT = ETAPE_VALIDATION.IDSTATUT WHERE NOTEFRAIS.MATRICULE = :matricule;");
-                $requete2 ->bindValue(":matricule",$_SESSION["MATRICULE"],PDO::PARAM_STR);
-                $requete2->execute();
-                $data = $requete2->fetchALL(PDO::FETCH_ASSOC);      
-                $requete2->closeCursor();
-
-                // SELECT EMPLOYE 
-
-                $requete7 = $conn->prepare("SELECT MATRICULE, MATRICULE_ETRE_RESPONSABLE, NOM, PRENOM, DATENAISS, ADMINI FROM EMPLOYE WHERE MATRICULE = :matricule;");
-                $requete7 ->bindValue(":matricule",$_SESSION["MATRICULE"],PDO::PARAM_STR);
-                $requete7->execute();
-                $data2 = $requete7->fetchALL(PDO::FETCH_ASSOC);
-            }
+            $requete7 = $conn->prepare("SELECT MATRICULE, MATRICULE_ETRE_RESPONSABLE, NOM, PRENOM, DATENAISS, ADMINI FROM EMPLOYE WHERE MATRICULE = :matricule;");
+            $requete7 ->bindValue(":matricule",$_SESSION["MATRICULE"],PDO::PARAM_STR);
+            $requete7->execute();
+            $data2 = $requete7->fetchALL(PDO::FETCH_ASSOC);
+            
         } else {
             header("Location: connexion.php");
             exit();

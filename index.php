@@ -23,13 +23,8 @@
 ?>
 <br>
 <?php
-    if($_SESSION["NBNOTE"] !=0)
-    {
-        echo "<h1 class='central'>Bienvenue" . " " . $_SESSION['PRENOM'] . " " . $_SESSION['NOM'] . " " . "(" . $_SESSION['MATRICULE'] . ")" . "! </h1>";    
-    }
-    else{
-        echo "<h1 class='central'>Bienvenue !</h1>";
-    }
+    
+    echo "<h1 class='central'>Bienvenue" . " " . $_SESSION['PRENOM'] . " " . $_SESSION['NOM'] . " " . "(" . $_SESSION['MATRICULE'] . ")" . "! </h1>";    
 ?>
 <?php
     require("View/Index/boutonIndex.php");

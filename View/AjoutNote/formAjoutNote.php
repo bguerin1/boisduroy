@@ -9,7 +9,15 @@
                             <?php
                                 if(isset($_POST["btnCopie"]) && isset($_POST["idNoteFrais"]))
                                 {
-                                    echo "<input type='Date' name='DATENOTEFRAIS' id='date' required class='inputSaisie' value=$dateNoteFrais>";
+                                    $idNoteFrais = htmlspecialchars($_POST["idNoteFrais"]);
+                                    if($idNoteFrais == "" || $idNoteFrais == 0 || $idNoteFrais <0)
+                                    {
+                                        header("Location: connexion.php");
+                                        exit();
+                                    }
+                                    else{
+                                        echo "<input type='Date' name='DATENOTEFRAIS' id='date' required class='inputSaisie' value=$dateNoteFrais>";
+                                    }
                                 }
                                 else{
                                     echo "<input type='Date' name='DATENOTEFRAIS' id='date' required class='inputSaisie'>";
@@ -41,7 +49,15 @@
                             <?php
                                 if(isset($_POST["btnCopie"]) && isset($_POST["idNoteFrais"]))
                                 {
-                                    echo "<label for='fraisKM'>Frais Kilométriques</label>";
+                                    $idNoteFrais = htmlspecialchars($_POST["idNoteFrais"]);
+                                    if($idNoteFrais == "" || $idNoteFrais == 0 || $idNoteFrais <0)
+                                    {
+                                        header("Location: connexion.php");
+                                        exit();
+                                    }
+                                    else{
+                                        echo "<label for='fraisKM'>Frais Kilométriques</label>";
+                                    }
                                 }
                                 else{
                                     echo "<label for='fraisKM'>Frais Kilométriques</label>";
@@ -54,7 +70,15 @@
                             <?php
                                 if(isset($_POST["btnCopie"]) && isset($_POST["idNoteFrais"]))
                                 {
-                                    echo "<input type='number' name='quantiteFraisKM' id='quantite' required class='inputSaisie' value=$quantiteFrais>";
+                                    $idNoteFrais = htmlspecialchars($_POST["idNoteFrais"]);
+                                    if($idNoteFrais == "" || $idNoteFrais == 0 || $idNoteFrais <0)
+                                    {
+                                        header("Location: connexion.php");
+                                        exit();
+                                    }
+                                    else{
+                                        echo "<input type='number' name='quantiteFraisKM' id='quantite' required class='inputSaisie' value=$quantiteFrais>";
+                                    }
                                 }
                                 else{
                                     echo "<input type='number' name='quantiteFraisKM' id='quantite' required class='inputSaisie'>";
@@ -74,7 +98,15 @@
                             <?php
                                 if(isset($_POST["btnCopie"]) && isset($_POST["idNoteFrais"]))
                                 {
-                                    echo "<input type='number' name='quantiteRepasMidi' id='quantite' required class='inputSaisie' value=$quantiteRepasMidi>";
+                                    $idNoteFrais = htmlspecialchars($_POST["idNoteFrais"]);
+                                    if($idNoteFrais == "" || $idNoteFrais == 0 || $idNoteFrais <0)
+                                    {
+                                        header("Location: connexion.php");
+                                        exit();
+                                    }
+                                    else{
+                                        echo "<input type='number' name='quantiteRepasMidi' id='quantite' required class='inputSaisie' value=$quantiteRepasMidi>";
+                                    }
                                 }
                                 else{
                                     echo "<input type='number' name='quantiteRepasMidi' id='quantite' required class='inputSaisie'>";
@@ -94,7 +126,15 @@
                             <?php
                                 if(isset($_POST["btnCopie"]) && isset($_POST["idNoteFrais"]))
                                 {
-                                    echo "<input type='number' name='quantiteRepasSoir' id='quantite' required class='inputSaisie' value=$quantiteRepasSoir>";
+                                    $idNoteFrais = htmlspecialchars($_POST["idNoteFrais"]);
+                                    if($idNoteFrais == "" || $idNoteFrais == 0 || $idNoteFrais <0)
+                                    {
+                                        header("Location: connexion.php");
+                                        exit();
+                                    }
+                                    else{
+                                        echo "<input type='number' name='quantiteRepasSoir' id='quantite' required class='inputSaisie' value=$quantiteRepasSoir>";
+                                    }
                                 }
                                 else{
                                     echo "<input type='number' name='quantiteRepasSoir' id='quantite' required class='inputSaisie'>";
@@ -114,7 +154,15 @@
                             <?php
                                 if(isset($_POST["btnCopie"]) && isset($_POST["idNoteFrais"]))
                                 {
-                                    echo "<input type='number' name='quantiteSoirHorsParis' id='quantite' required class='inputSaisie' value=$quantiteSoirHorsParis>";
+                                    $idNoteFrais = htmlspecialchars($_POST["idNoteFrais"]);
+                                    if($idNoteFrais == "" || $idNoteFrais == 0 || $idNoteFrais <0)
+                                    {
+                                        header("Location: connexion.php");
+                                        exit();
+                                    }
+                                    else{
+                                        echo "<input type='number' name='quantiteSoirHorsParis' id='quantite' required class='inputSaisie' value=$quantiteSoirHorsParis>";
+                                    }
                                 }
                                 else{
                                     echo "<input type='number' name='quantiteSoirHorsParis' id='quantite' required class='inputSaisie'>";
@@ -134,7 +182,15 @@
                                 <?php
                                     if(isset($_POST["btnCopie"]) && isset($_POST["idNoteFrais"]))
                                     {
-                                        echo "<input type='number' name='quantiteSoirParis' id='quantite' required class='inputSaisie' value=$quantiteSoirParis>";
+                                        $idNoteFrais = htmlspecialchars($_POST["idNoteFrais"]);
+                                        if($idNoteFrais == "" || $idNoteFrais == 0 || $idNoteFrais <0)
+                                        {
+                                            header("Location: connexion.php");
+                                            exit();
+                                        }
+                                        else{
+                                            echo "<input type='number' name='quantiteSoirParis' id='quantite' required class='inputSaisie' value=$quantiteSoirParis>";
+                                        }
                                     }
                                     else{
                                         echo "<input type='number' name='quantiteSoirParis' id='quantite' required class='inputSaisie'>";

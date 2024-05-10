@@ -24,7 +24,7 @@
 
                     $conn=new PDO("mysql:host=$servername;dbname=$dbname", $username,$pwd);
                     $requete7= $conn->prepare("SELECT DATENOTEFRAIS FROM NOTEFRAIS WHERE NOTEFRAIS.IDNOTEFRAIS =:idNoteFrais;");
-                    $requete7 ->bindValue(":idNoteFrais",$_POST["idNoteFrais"],PDO::PARAM_STR);
+                    $requete7 ->bindValue(":idNoteFrais",$idNoteFrais,PDO::PARAM_STR);
                     $requete7->execute();
                     $data = $requete7 -> fetchALL(PDO::FETCH_ASSOC);
                    
@@ -33,7 +33,7 @@
                     // FRAIS KILOMETRIQUES 
                     $conn=new PDO("mysql:host=$servername;dbname=$dbname", $username,$pwd);
                     $requeteFrais = $conn->prepare("SELECT QUANTITE, COUT FROM NOTEFRAIS JOIN LIGNENOTE ON LIGNENOTE.IDNOTEFRAIS = NOTEFRAIS.IDNOTEFRAIS WHERE LIGNENOTE.IDLIGNENOTE = 1 AND NOTEFRAIS.IDNOTEFRAIS =:idNoteFrais;");
-                    $requeteFrais ->bindValue(":idNoteFrais",$_POST["idNoteFrais"],PDO::PARAM_STR);
+                    $requeteFrais ->bindValue(":idNoteFrais",$idNoteFrais,PDO::PARAM_STR);
                     $requeteFrais->execute();
                     $dataFrais = $requeteFrais -> fetchALL(PDO::FETCH_ASSOC);
 
@@ -41,7 +41,7 @@
 
                     // REPAS MIDI 
                     $requeteRepasMidi = $conn->prepare("SELECT QUANTITE, COUT FROM NOTEFRAIS JOIN LIGNENOTE ON LIGNENOTE.IDNOTEFRAIS = NOTEFRAIS.IDNOTEFRAIS WHERE LIGNENOTE.IDLIGNENOTE = 2 AND NOTEFRAIS.IDNOTEFRAIS =:idNoteFrais;");
-                    $requeteRepasMidi ->bindValue(":idNoteFrais",$_POST["idNoteFrais"],PDO::PARAM_STR);
+                    $requeteRepasMidi ->bindValue(":idNoteFrais",$idNoteFrais,PDO::PARAM_STR);
                     $requeteRepasMidi->execute();
                     $dataRepasMidi = $requeteRepasMidi -> fetchALL(PDO::FETCH_ASSOC);
 
@@ -49,7 +49,7 @@
 
                     // REPAS SOIR 
                     $requeteRepasSoir = $conn->prepare("SELECT QUANTITE, COUT FROM NOTEFRAIS JOIN LIGNENOTE ON LIGNENOTE.IDNOTEFRAIS = NOTEFRAIS.IDNOTEFRAIS WHERE LIGNENOTE.IDLIGNENOTE = 3 AND NOTEFRAIS.IDNOTEFRAIS =:idNoteFrais;");
-                    $requeteRepasSoir ->bindValue(":idNoteFrais",$_POST["idNoteFrais"],PDO::PARAM_STR);
+                    $requeteRepasSoir ->bindValue(":idNoteFrais",$idNoteFrais,PDO::PARAM_STR);
                     $requeteRepasSoir->execute();
                     $dataRepasSoir = $requeteRepasSoir -> fetchALL(PDO::FETCH_ASSOC);
 
@@ -57,14 +57,14 @@
 
                     // SOIR HORS PARIS 
                     $requeteHorsParis = $conn->prepare("SELECT QUANTITE, COUT FROM NOTEFRAIS JOIN LIGNENOTE ON LIGNENOTE.IDNOTEFRAIS = NOTEFRAIS.IDNOTEFRAIS WHERE LIGNENOTE.IDLIGNENOTE = 4 AND NOTEFRAIS.IDNOTEFRAIS =:idNoteFrais;");
-                    $requeteHorsParis ->bindValue(":idNoteFrais",$_POST["idNoteFrais"],PDO::PARAM_STR);
+                    $requeteHorsParis ->bindValue(":idNoteFrais",$idNoteFrais,PDO::PARAM_STR);
                     $requeteHorsParis->execute();
                     $dataHorsParis = $requeteHorsParis -> fetchALL(PDO::FETCH_ASSOC);
 
 
                     // SOIR PARIS
                     $requeteSoirParis = $conn->prepare("SELECT QUANTITE, COUT FROM NOTEFRAIS JOIN LIGNENOTE ON LIGNENOTE.IDNOTEFRAIS = NOTEFRAIS.IDNOTEFRAIS WHERE LIGNENOTE.IDLIGNENOTE = 5 AND NOTEFRAIS.IDNOTEFRAIS =:idNoteFrais;");
-                    $requeteSoirParis ->bindValue(":idNoteFrais",$_POST["idNoteFrais"],PDO::PARAM_STR);
+                    $requeteSoirParis ->bindValue(":idNoteFrais",$idNoteFrais,PDO::PARAM_STR);
                     $requeteSoirParis->execute();
                     $dataSoirParis = $requeteSoirParis -> fetchALL(PDO::FETCH_ASSOC);
 

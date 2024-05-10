@@ -3,11 +3,11 @@
     if(isset($_POST["btnValiderNote"]) && isset($_POST["idNoteFrais"]))
     {
         $idNoteFrais = htmlspecialchars($_POST["idNoteFrais"]);
-        $dataNow = htmlspecialchars($_POST["dataNow"]);
 
         if($idNoteFrais == 0 || $idNoteFrais < 0 || $idNoteFrais == "")
         {
             header("Location: connexion.php");
+            exit();
         }
         else{
             require("Model/infoBDD.php");
@@ -23,7 +23,6 @@
 
     }   
     else{
-        echo "lkngrkg";
-        //header("Location: connexion.php");
+        header("Location: connexion.php");
     }
 ?>

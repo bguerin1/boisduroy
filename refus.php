@@ -17,7 +17,7 @@
             if(isset($_POST["idNoteFrais"]) && isset($_POST["btnRefuserNote"]))
             {
                 $idNoteFrais = htmlspecialchars($_POST["idNoteFrais"]);
-                if($idNoteFrais < 0 || $idNoteFrais =="")
+                if($idNoteFrais == 0 || $idNoteFrais < 0 || $idNoteFrais =="")
                 {
                     header("Location: connexion.php");
                 }
