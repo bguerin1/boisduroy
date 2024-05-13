@@ -12,6 +12,9 @@
         $dateNoteFrais = htmlspecialchars($_POST["DATENOTEFRAIS"]);
         $employe = htmlspecialchars($_POST["employé"]);
 
+
+        // Paramètres vides
+
         if($quantiteFrais == "")
         {
             echo "La quantité de frais kilométriques est vide !";
@@ -39,6 +42,48 @@
         else if($employe == "")
         {
             echo "Le matricule de l'employé est vide !";
+        }
+
+        // Paramètres < 0
+
+        if($quantiteFrais < 0)
+        {
+            echo "La quantité de frais kilométriques ne peut être négative !";
+        }
+        else if($quantiteRepasMidi < 0)
+        {
+            echo "La quantité de repas du midi ne peut être négative !";
+        }
+        else if($quantiteRepasSoir <  0)
+        {
+            echo "La quantité de repas du soir ne peut être négative";
+        }
+        else if($quantiteSoirHorsParis < 0)
+        {
+            echo "La quantité de soir hors Paris ne peut être négative !";
+        }
+        else if($quantiteSoirParis < 0)
+        {
+            echo "La quantité de soir Paris ne peut être négative !";
+        }
+
+        // Paramètres > 5
+
+        else if($quantiteRepasMidi > 5)
+        {
+            echo "La quantité de repas du midi ne peut pas être au dessus de 5!";
+        }
+        else if($quantiteRepasSoir >  5)
+        {
+            echo "La quantité de repas du soir ne peut être au dessus de 5 !";
+        }
+        else if($quantiteSoirHorsParis > 5)
+        {
+            echo "La quantité de soir hors Paris ne peut être au dessus de 5 !";
+        }
+        else if($quantiteSoirParis > 5)
+        {
+            echo "La quantité de soir Paris ne peut être au dessus de 5 !";
         }
         else{
             $coutFrais = $quantiteFrais * 0.5;
@@ -100,11 +145,21 @@
             
             $requete2->execute();
     
-            // Insertion d'une étape de validation de la note de frais
+            if($_SESSION["ADMINI"]==1)
+            {
+                // Insertion d'une étape de validation de la note de frais
             
-            $requete2 = $conn->prepare("INSERT INTO ETAPE_VALIDATION(IDSTATUT,MATRICULE,RAISONREFUS,DATEVALID) VALUES(1,:matricule,NULL,NULL);");
-            $requete2 -> bindValue(":matricule",$_SESSION["MATRICULE"],PDO::PARAM_STR);
-            $requete2->execute();
+                $requete2 = $conn->prepare("INSERT INTO ETAPE_VALIDATION(IDSTATUT,MATRICULE,RAISONREFUS,DATEVALID,MATRICULE_REFUS) VALUES(4,:matricule,NULL,NULL,NULL);");
+                $requete2 -> bindValue(":matricule",$_SESSION["MATRICULE"],PDO::PARAM_STR);
+                $requete2->execute();
+            }
+            else{
+                // Insertion d'une étape de validation de la note de frais
+            
+                $requete2 = $conn->prepare("INSERT INTO ETAPE_VALIDATION(IDSTATUT,MATRICULE,RAISONREFUS,DATEVALID) VALUES(1,:matricule,NULL,NULL);");
+                $requete2 -> bindValue(":matricule",$_SESSION["MATRICULE"],PDO::PARAM_STR);
+                $requete2->execute();
+            }
     
             $idEtapValid = $conn -> lastInsertId();
     

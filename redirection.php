@@ -12,7 +12,7 @@
         {
             echo "L'adresse mail est vide";
         }
-        else if($mdp=="")
+        else if($mdp=="A")
         {
             echo "Le mot de passe est vide";
         }

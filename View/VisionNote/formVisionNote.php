@@ -20,7 +20,7 @@
                     exit();
                 } 
                 else{
-                    $requete2 = $conn->prepare("SELECT NOTEFRAIS.MATRICULE, RAISONREFUS, NOTEFRAIS.IDNOTEFRAIS AS IDNOTEFRAIS,DATENOTEFRAIS, IDSTATUT, COUTTOTAL, CURRENT_DATE() AS DATEJOUR FROM NOTEFRAIS JOIN VALIDER ON VALIDER.IDNOTEFRAIS = NOTEFRAIS.IDNOTEFRAIS JOIN ETAPE_VALIDATION ON ETAPE_VALIDATION.IDETAPVALID = VALIDER.IDETAPVALID  WHERE NOTEFRAIS.IDNOTEFRAIS=:idNoteFrais;");
+                    $requete2 = $conn->prepare("SELECT NOTEFRAIS.MATRICULE, RAISONREFUS, NOTEFRAIS.IDNOTEFRAIS AS IDNOTEFRAIS,DATENOTEFRAIS, IDSTATUT,MATRICULE_REFUS, COUTTOTAL, CURRENT_DATE() AS DATEJOUR FROM NOTEFRAIS JOIN VALIDER ON VALIDER.IDNOTEFRAIS = NOTEFRAIS.IDNOTEFRAIS JOIN ETAPE_VALIDATION ON ETAPE_VALIDATION.IDETAPVALID = VALIDER.IDETAPVALID  WHERE NOTEFRAIS.IDNOTEFRAIS=:idNoteFrais;");
                     $requete2 ->bindValue(":idNoteFrais",$idNoteFraisPost,PDO::PARAM_STR);
                     $requete2->execute();
                     $data = $requete2 -> fetchALL(PDO::FETCH_ASSOC);
@@ -245,7 +245,7 @@
                             echo "<th><label for='coutTotal'>Refusé par : </label></th>";
                             echo "<td>";
                                 echo "<div>";
-                                    echo "<input type='text' name='coutNoteFrais' id='coutNoteFrais' class='inputVision' value=$matricule required readonly>";
+                                    echo "<input required readonly type='text' name='coutNoteFrais' id='coutNoteFrais' class='inputVision' value=". $donnee["MATRICULE_REFUS"] . ">";
                                 echo "</div>";
                             echo "</td>";
                             echo "</tr>";
@@ -296,7 +296,7 @@
                                 echo "</td>";
                             }
                         }
-                        else{
+                        else if($statut==1){
                             echo "<td>";
                                 echo "<div>";
                                 echo "<form action='' method='post'>";
