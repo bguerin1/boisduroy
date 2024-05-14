@@ -1,7 +1,7 @@
 <?php
     try{
         $conn=new PDO("mysql:host=$servername;dbname=$dbname", $username,$pwd);
-        $requete=$conn ->prepare("SELECT MATRICULE, MDPCOMPTE FROM EMPLOYE WHERE MATRICULE = :matricule AND MDPCOMPTE=:mdp;");
+        $requete=$conn ->prepare("SELECT MATRICULE, MDPCOMPTE FROM EMPLOYE WHERE MATRICULE = :matricule AND MDPCOMPTE=MD5(:mdp);");
         // On lie la variable $email définie au-dessus au paramètre :mail de la requête préparée
         $requete->bindValue(':matricule', $_SESSION["MATRICULE"] , PDO::PARAM_STR);
         $requete->bindValue(':mdp',$_SESSION["MDP"] , PDO::PARAM_STR);
@@ -10,7 +10,7 @@
         // On récupère le résultat
         if ($requete->fetch()) {
             // Cas de première connexion 
-            $requete1erConn = $conn ->prepare("SELECT PREMIERECONNEXION FROM EMPLOYE WHERE MATRICULE = :matricule AND MDPCOMPTE=:mdp;");
+            $requete1erConn = $conn ->prepare("SELECT PREMIERECONNEXION FROM EMPLOYE WHERE MATRICULE = :matricule AND MDPCOMPTE=MD5(:mdp);");
             $requete1erConn->bindValue(':matricule', $_SESSION["MATRICULE"] , PDO::PARAM_STR);
             $requete1erConn->bindValue(':mdp',$_SESSION["MDP"] , PDO::PARAM_STR);
             $requete1erConn->execute();

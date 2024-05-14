@@ -2,7 +2,7 @@
     try{
         require("Model/infoBDD.php");
         $conn=new PDO("mysql:host=$servername;dbname=$dbname", $username,$pwd);
-        $requete=$conn ->prepare("SELECT MATRICULE,MDPCOMPTE FROM EMPLOYE WHERE MATRICULE = :matricule AND MDPCOMPTE=:mdp;");
+        $requete=$conn ->prepare("SELECT MATRICULE,MDPCOMPTE FROM EMPLOYE WHERE MATRICULE = :matricule AND MDPCOMPTE=MD5(:mdp);");
         // On lie la variable $email définie au-dessus au paramètre :mail de la requête préparée
         $requete->bindValue(':matricule', $_SESSION["MATRICULE"] , PDO::PARAM_STR);
         $requete->bindValue(':mdp',$_SESSION["MDP"] , PDO::PARAM_STR);
@@ -278,7 +278,7 @@
                                     echo "</form>";
                                 echo "</td>";
                             }
-                            else if($statut==1 && $_SESSION["MATRICULE"] == $matricule){
+                            else if($statut==4 && $_SESSION["MATRICULE"] == $matricule){
                                 echo "<td>";
                                     echo "<div>";
                                     echo "<form action='' method='post'>";
